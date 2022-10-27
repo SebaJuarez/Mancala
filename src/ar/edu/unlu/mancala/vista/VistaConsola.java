@@ -13,31 +13,30 @@ public class VistaConsola {
 	private OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.INICIO;
 	private int jugadorActual = 1;
 
-	private String mostrarTablero(Tablero observado) {
-		Hoyo[] tablero = observado.getTablero();
+	public String mostrarTablero(Hoyo[] hoyos) {
 		String tableros = "";
 		tableros += "       L    K    J    I    H    G";
 		tableros += "\n";
 		tableros += "|   |";
-		tableros += "| " + tablero[Posicion.L.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.K.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.J.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.I.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.H.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.G.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.L.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.K.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.J.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.I.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.H.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.G.ordinal()].getCantHabas() + " |";
 		tableros += "|   |";
 		tableros += "\n";
-		tableros += "| " + tablero[Posicion.CASAJ2.ordinal()].getCantHabas() + " ||";
+		tableros += "| " + hoyos[Posicion.CASAJ2.ordinal()].getCantHabas() + " ||";
 		tableros += "----------------------------";
-		tableros += "|| " + tablero[Posicion.CASAJ1.ordinal()].getCantHabas() + " |";
+		tableros += "|| " + hoyos[Posicion.CASAJ1.ordinal()].getCantHabas() + " |";
 		tableros += "\n";
 		tableros += "|   |";
-		tableros += "| " + tablero[Posicion.A.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.B.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.C.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.D.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.E.ordinal()].getCantHabas() + " |";
-		tableros += "| " + tablero[Posicion.F.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.A.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.B.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.C.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.D.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.E.ordinal()].getCantHabas() + " |";
+		tableros += "| " + hoyos[Posicion.F.ordinal()].getCantHabas() + " |";
 		tableros += "|   |";
 		tableros += "\n";
 		tableros += "       A    B    C    D    E    F";
@@ -80,8 +79,8 @@ public class VistaConsola {
 		controlador.mover(Posicion.getPosicionDeString("L"), this.jugadorActual);
 	}
 
-	public void mostrarMensaje(String info) {
-		System.out.println(info);
+	public void mostrarMensaje(String info , CartelAdvertencia advertencia) {
+		CartelAdvertencia.mostrarMensaje(info, advertencia);
 	}
 
 	public void setControlador(Controlador controlador) {
