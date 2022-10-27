@@ -1,0 +1,42 @@
+package ar.edu.unlu.mancala.modelo;
+
+public class Hoyo {
+	private Posicion posicionAlfabetica;
+	private int cantHabas;
+	private final int longuitudTablero = 14;
+	
+	public Hoyo(Posicion posicionAlfabetica) {
+		this.posicionAlfabetica = posicionAlfabetica;
+		this.cantHabas = 0;
+	}
+	
+	public void ponerHaba() {
+		this.cantHabas ++;
+	}
+	
+	public void ponerHaba(int cantidadHaba) {
+		this.cantHabas += cantidadHaba;
+	}
+	
+	public int tomarHabas() {
+		int habas = this.cantHabas;
+		this.cantHabas = 0;
+		return habas;
+	}
+	
+	public int getCantHabas() {
+		return this.cantHabas;
+	}
+	
+	public Posicion siguienteHoyo() {
+		return Posicion.getPosicionPorValor(((this.posicionAlfabetica.ordinal()+1) % this.longuitudTablero));
+	}
+
+	public void setPosicionAlfabetica(Posicion p) {
+		this.posicionAlfabetica = p;
+	}
+	
+	public Posicion getPosicionAlfabetica() {
+		return posicionAlfabetica;
+	}
+}
