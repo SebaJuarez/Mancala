@@ -1,4 +1,4 @@
-package ar.edu.unlu.mancala.vista;
+package ar.edu.unlu.mancala.vista.consola;
 
 import ar.edu.unlu.mancala.commons.Colores;
 
@@ -13,14 +13,19 @@ public enum OpcionesMenuPrincipalConsola implements Colores {
 		this.label = label;
 	}
 	
+    public static String valueOf(int opcion) {
+        return OpcionesMenuPrincipalConsola.values()[opcion].label;
+    }
+    
 	 public static void mostrarOpcionesMenuPrincipal() {
 		 OpcionesMenuInicioConsola.mostrarLogo();
 	    	System.out.print(FONDONEGRO);
 	    	System.out.println("#   *                           *         *                *  #");
-	    	System.out.println("#      *           " + OpcionesMenuPrincipalConsola.REGLAS.label + "                #");
-	    	System.out.println("#   *          *   " + OpcionesMenuPrincipalConsola.ACCEDERALMENUPRINCIPAL.label + "     *              #");
+	    	System.out.println("#      *           " + valueOf(1) + "                #");
+	    	System.out.println("#   *          *   " + valueOf(2) + "     *              #");
 	    	System.out.println("#   *               *          *    *              *          #");
 	    	System.out.println("###############################################################");
+	    	System.out.print(RESET);
 	    }
 	
 	

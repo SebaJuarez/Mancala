@@ -10,8 +10,8 @@ import ar.edu.unlu.mancala.modelo.Informe;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Posicion;
 import ar.edu.unlu.mancala.modelo.Tablero;
-import ar.edu.unlu.mancala.vista.CartelAdvertencia;
-import ar.edu.unlu.mancala.vista.VistaConsola;
+import ar.edu.unlu.mancala.vista.consola.CartelAdvertencia;
+import ar.edu.unlu.mancala.vista.consola.VistaConsola;
 
 public class Controlador implements Observer {
 
@@ -86,9 +86,9 @@ public class Controlador implements Observer {
 	public void agregarJugador(String nombre) {
 		Jugador jugador = new Jugador(nombre);
 		jugadores.add(jugador);
-		vistaConsola.mostrarMensaje("Jugador Creado con exito..", CartelAdvertencia.COMPLETO );
+		vistaConsola.mostrarMensaje("Jugador Creado con exito..", CartelAdvertencia.COMPLETO);
 	}
-	
+
 	public void obtenerJugadores() {
 		vistaConsola.mostrarJugadores(this.jugadores);
 	}

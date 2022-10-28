@@ -5,7 +5,7 @@ import ar.edu.unlu.mancala.controlador.Controlador;
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Tablero;
-import ar.edu.unlu.mancala.vista.VistaConsola;
+import ar.edu.unlu.mancala.vista.consola.VistaConsola;
 
 public class ToDoApp {
 	

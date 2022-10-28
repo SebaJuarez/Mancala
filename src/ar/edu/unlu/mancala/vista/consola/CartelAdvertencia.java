@@ -1,12 +1,12 @@
-package ar.edu.unlu.mancala.vista;
+package ar.edu.unlu.mancala.vista.consola;
 
 import ar.edu.unlu.mancala.commons.Colores;
 
 public enum CartelAdvertencia implements Colores {
-	ERROR (ROJO),
-    ADVERTENCIA (AMARILLO),
-    COMPLETO (VERDE),
-	NORMAL (BLANCO);
+	ERROR (ROJO+FONDONEGRO),
+    ADVERTENCIA (AMARILLO+FONDONEGRO),
+    COMPLETO (VERDE+FONDONEGRO),
+	NORMAL (BLANCO+FONDONEGRO);
     
     public final String color;
 	

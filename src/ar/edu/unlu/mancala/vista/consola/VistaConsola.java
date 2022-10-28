@@ -1,17 +1,16 @@
-package ar.edu.unlu.mancala.vista;
+package ar.edu.unlu.mancala.vista.consola;
 
 import java.util.LinkedList;
 import java.util.Scanner;
-
 import ar.edu.unlu.mancala.controlador.Controlador;
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Posicion;
-import ar.edu.unlu.mancala.modelo.Tablero;
 
 public class VistaConsola {
 
 	private Controlador controlador;
+	private Scanner sc = new Scanner(System.in);
 
 	public void mostrarTablero(Hoyo[] hoyos) {
 		String tableros = "";
@@ -46,10 +45,13 @@ public class VistaConsola {
 
 	public void iniciar(){
 		OpcionesMenuPrincipalConsola opcion = OpcionesMenuPrincipalConsola.NULO ;
-		Scanner sc = new Scanner(System.in);
 		while (opcion != OpcionesMenuPrincipalConsola.ACCEDERALMENUPRINCIPAL) {
-			OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal();;
-			opcion = OpcionesMenuPrincipalConsola.values()[sc.nextInt()];
+			OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal();
+			try {
+				opcion = OpcionesMenuPrincipalConsola.values()[sc.nextInt()];
+			} catch (Exception e) {
+				this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
+			}
 			switch (opcion) {
 			case REGLAS:
 				mostrarReglas();
@@ -61,25 +63,26 @@ public class VistaConsola {
 				break;
 			}
 		}
-		sc.close();
 	}
 
-// reglas del juego
 	private void mostrarReglas() {
 		
 	}
 
-//
+
 	private void comenzarPartida() {
 
 	}
 
 	private void mostrarMenuInicio(){
 		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO ;
-		Scanner sc = new Scanner(System.in);
-		while ((OpcionesMenuInicioConsola)opcion != OpcionesMenuInicioConsola.SALIR) {
+		while (opcion != OpcionesMenuInicioConsola.SALIR) {
 			OpcionesMenuInicioConsola.mostrarOpcionesMenuInicio();
-			opcion = OpcionesMenuInicioConsola.values()[sc.nextInt()];
+			try {
+				opcion = OpcionesMenuInicioConsola.values()[sc.nextInt()];
+			} catch (Exception e) {
+				this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
+			}
 			switch (opcion) {
 			case REGISTRAR_JUGADOR:
 				registroJugador();
@@ -88,6 +91,7 @@ public class VistaConsola {
 				comenzarPartida();
 				break;
 			case LISTAR_JUGADORES:
+				controlador.obtenerJugadores();
 				break;
 			case TOP_GANADORES:
 				break;
@@ -95,20 +99,21 @@ public class VistaConsola {
 				break;
 			}
 		}
-		sc.close();
 	}
 
 	private void registroJugador(){
 		String nombre = "";
-		Scanner sc = new Scanner(System.in);
+		Scanner scline = new Scanner(System.in);
 		this.mostrarMensaje("ingrese el nombre del jugador", CartelAdvertencia.NORMAL);
-		nombre = sc.nextLine();
+		nombre = scline.nextLine();
 		while(nombre.isEmpty()) {
 			this.mostrarMensaje("No se admiten nombres vacios!", CartelAdvertencia.ERROR);
 			this.mostrarMensaje("ingrese el nombre del jugador", CartelAdvertencia.ADVERTENCIA);
-			nombre = sc.nextLine();
+			nombre = scline.nextLine();
 		}
 		controlador.agregarJugador(nombre);
+		this.mostrarMensaje("Presione una tecla para continuar..", CartelAdvertencia.NORMAL);
+        scline.nextLine();
 	}
 
 
@@ -122,7 +127,17 @@ public class VistaConsola {
 
 
 	public void mostrarJugadores(LinkedList<Jugador> jugadores) {
-		jugadores.forEach(jugador -> System.out.println(jugador.getNombre()));
+		Scanner scline = new Scanner(System.in);
+		for (Jugador jugador : jugadores) {
+			this.mostrarMensaje("ID: " + jugador.getId() + "-------------------------------------------------------", CartelAdvertencia.NORMAL);
+			this.mostrarMensaje("Nombre -> " + jugador.getNombre(), CartelAdvertencia.NORMAL);
+			this.mostrarMensaje("Jugadas -> " + jugador.getPartidasJugadas(), CartelAdvertencia.ADVERTENCIA);
+			this.mostrarMensaje("Ganadas -> " + jugador.getPartidasGanadas(), CartelAdvertencia.COMPLETO);
+			this.mostrarMensaje("Perdidas -> " + (jugador.getPartidasJugadas() - jugador.getPartidasGanadas()), CartelAdvertencia.ERROR);
+			this.mostrarMensaje("------------------------------------------------------------", CartelAdvertencia.NORMAL);
+		}
+		this.mostrarMensaje("Presione una tecla para continuar..", CartelAdvertencia.NORMAL);
+		scline.nextLine();
 	}
 
 }

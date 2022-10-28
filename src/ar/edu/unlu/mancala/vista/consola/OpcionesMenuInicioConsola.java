@@ -1,4 +1,4 @@
-package ar.edu.unlu.mancala.vista;
+package ar.edu.unlu.mancala.vista.consola;
 
 import ar.edu.unlu.mancala.commons.Colores;
 
