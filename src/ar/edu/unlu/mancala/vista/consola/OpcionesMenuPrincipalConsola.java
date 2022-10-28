@@ -1,8 +1,9 @@
 package ar.edu.unlu.mancala.vista.consola;
 
+import ar.edu.unlu.mancala.commons.Banner;
 import ar.edu.unlu.mancala.commons.Colores;
 
-public enum OpcionesMenuPrincipalConsola implements Colores {
+public enum OpcionesMenuPrincipalConsola implements Colores, Banner {
 	NULO(""),
 	REGLAS("1) Mostrar reglas del juego"),
 	ACCEDERALMENUPRINCIPAL("2) Ir al menu de inicio");
@@ -18,7 +19,7 @@ public enum OpcionesMenuPrincipalConsola implements Colores {
     }
     
 	 public static void mostrarOpcionesMenuPrincipal() {
-		 OpcionesMenuInicioConsola.mostrarLogo();
+		 	System.out.println(MOSTRARLOGO);
 	    	System.out.print(FONDONEGRO);
 	    	System.out.println("#   *                           *         *                *  #");
 	    	System.out.println("#      *           " + valueOf(1) + "                #");

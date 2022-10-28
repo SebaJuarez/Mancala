@@ -2,12 +2,14 @@ package ar.edu.unlu.mancala.vista.consola;
 
 import java.util.LinkedList;
 import java.util.Scanner;
+
+import ar.edu.unlu.mancala.commons.Colores;
 import ar.edu.unlu.mancala.controlador.Controlador;
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Posicion;
 
-public class VistaConsola {
+public class VistaConsola implements Colores{
 
 	private Controlador controlador;
 	private Scanner sc = new Scanner(System.in);
@@ -87,17 +89,28 @@ public class VistaConsola {
 				mostrarMenuInicio();
 		}
 		controlador.comenzarJuego(id1, id2);
-		movimientos();
+
 	}
 
 	public void movimientos() {
 		Scanner mov = new Scanner(System.in);
 		Posicion pos = Posicion.getPosicionDeString(mov.nextLine());
+		while(pos == null) {
+			this.mostrarMensaje("Ingrese una posicion valida!", CartelAdvertencia.ERROR);
+			pos = Posicion.getPosicionDeString(mov.nextLine());
+		}
 		controlador.mover(pos);
 	}
 
 	public void mostrarGanador(Jugador jugador) {
-
+		if(jugador != null) {
+			this.mostrarMensaje("EL GANADOR ES: ", CartelAdvertencia.COMPLETO);		
+			this.mostrarJugador(jugador);
+		} else this.mostrarMensaje("EMPATE!!", CartelAdvertencia.ADVERTENCIA);
+		Scanner scenter = new Scanner(System.in);
+		this.mostrarMensaje("Presione enter para ir al menu de inicio", CartelAdvertencia.NORMAL);
+		scenter.nextLine();
+		this.mostrarMenuInicio();
 	}
 
 	private void mostrarMenuInicio() {
@@ -121,6 +134,8 @@ public class VistaConsola {
 				break;
 			case TOP_GANADORES:
 				break;
+			case SALIR:
+				OpcionesMenuInicioConsola.mostrarDespedida();				
 			default:
 				break;
 			}
@@ -152,19 +167,21 @@ public class VistaConsola {
 
 	public void mostrarJugadores(LinkedList<Jugador> jugadores) {
 		Scanner scline = new Scanner(System.in);
-		for (Jugador jugador : jugadores) {
-			this.mostrarMensaje("ID: " + jugador.getId() + "-------------------------------------------------------",
-					CartelAdvertencia.NORMAL);
-			this.mostrarMensaje("Nombre -> " + jugador.getNombre(), CartelAdvertencia.NORMAL);
-			this.mostrarMensaje("Jugadas -> " + jugador.getPartidasJugadas(), CartelAdvertencia.ADVERTENCIA);
-			this.mostrarMensaje("Ganadas -> " + jugador.getPartidasGanadas(), CartelAdvertencia.COMPLETO);
-			this.mostrarMensaje("Perdidas -> " + (jugador.getPartidasJugadas() - jugador.getPartidasGanadas()),
-					CartelAdvertencia.ERROR);
-			this.mostrarMensaje("------------------------------------------------------------",
-					CartelAdvertencia.NORMAL);
-		}
+		for (Jugador jugador : jugadores) 
+			mostrarJugador(jugador);
 		this.mostrarMensaje("Presione una tecla para continuar..", CartelAdvertencia.NORMAL);
 		scline.nextLine();
+	}
+	
+	private void mostrarJugador(Jugador jugador) {
+		this.mostrarMensaje("ID: " + jugador.getId() + "-------------------------------------------------------",
+				CartelAdvertencia.NORMAL);
+		this.mostrarMensaje("Nombre -> " + jugador.getNombre(), CartelAdvertencia.NORMAL);
+		this.mostrarMensaje("Jugadas -> " + jugador.getPartidasJugadas(), CartelAdvertencia.NORMAL);
+		this.mostrarMensaje("Ganadas -> " + jugador.getPartidasGanadas(), CartelAdvertencia.COMPLETO);
+		this.mostrarMensaje("Empatadas -> " + jugador.getPartidasEmpatadas(), CartelAdvertencia.ADVERTENCIA);
+		this.mostrarMensaje("Perdidas -> " + (jugador.getPartidasJugadas() - jugador.getPartidasGanadas() - jugador.getPartidasEmpatadas()),CartelAdvertencia.ERROR);
+		this.mostrarMensaje("------------------------------------------------------------",CartelAdvertencia.NORMAL);
 	}
 
 }

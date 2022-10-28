@@ -6,6 +6,7 @@ public class Jugador {
 	private String nombre;
 	private int cantPartidasJugadas = 0;
 	private int cantPartidasGanadas = 0;
+	private int partidasEmpatadas = 0;
 	
 	public Jugador(String nombre) {
 		this.nombre = nombre;
@@ -33,5 +34,13 @@ public class Jugador {
 	
 	public int getId() {
 		return this.id;
+	}
+
+	public void incPartidasEmpatadas() {
+		this.partidasEmpatadas ++;
+	}
+	
+	public int getPartidasEmpatadas() {
+		return this.partidasEmpatadas;
 	}
 }

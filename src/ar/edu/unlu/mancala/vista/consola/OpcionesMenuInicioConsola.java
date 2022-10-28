@@ -1,8 +1,9 @@
 package ar.edu.unlu.mancala.vista.consola;
 
+import ar.edu.unlu.mancala.commons.Banner;
 import ar.edu.unlu.mancala.commons.Colores;
 
-public enum OpcionesMenuInicioConsola implements Colores {
+public enum OpcionesMenuInicioConsola implements Colores, Banner {
 		NULO(""),
 	    REGISTRAR_JUGADOR ("1) registrar jugador nuevo"),
 	    COMENZAR_PARTIDA ("2) comenzar partida nueva"),
@@ -22,7 +23,7 @@ public enum OpcionesMenuInicioConsola implements Colores {
  
 	    
 	    public static void mostrarOpcionesMenuInicio() {
-	    	mostrarLogo();
+	    	System.out.println(MOSTRARLOGO);
 	    	System.out.print(FONDONEGRO + BLANCO);
 	    	System.out.println("#   *                           *         *                *  #");
 	    	System.out.println("#      *             "+valueOf(1)+"               #");
@@ -35,17 +36,8 @@ public enum OpcionesMenuInicioConsola implements Colores {
 	    	System.out.print(RESET);
 	    }
 	    
-	    public static void mostrarLogo() {
-	    	System.out.print(FONDONEGRO + BLANCO);
-	    	System.out.println("###############################################################");
-	    	System.out.println("#   #     #    #    #     #  #####     #    #          #      #");
-	    	System.out.println("#   ##   ##   # #   ##    # #     #   # #   #         # #     #");
-	    	System.out.println("#   # # # #  #   #  # #   # #        #   #  #        #   #    #");
-	    	System.out.println("#   #  #  # #     # #  #  # #       #     # #       #     #   #");
-	    	System.out.println("#   #     # ####### #   # # #       ####### #       #######   #");
-	    	System.out.println("#   #     # #     # #    ## #     # #     # #       #     #   #");
-	    	System.out.println("#   #     # #     # #     #  #####  #     # ####### #     #   #");
-	    	System.out.println("#                                                             #");
-	    	System.out.print(RESET);
+	    public static void mostrarDespedida() {
+	    	System.out.println(DESPEDIDA);
 	    }
+	    
 }

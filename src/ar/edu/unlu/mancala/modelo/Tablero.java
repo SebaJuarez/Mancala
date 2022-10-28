@@ -20,7 +20,7 @@ public class Tablero implements TableroObservado {
 		               ^    ^    ^    ^    ^    ^
 	ordinal            1    2    3    4    5    6         
 	 */
-	
+
 	private int cantHabas;
 	private Hoyo[] tablero = new Hoyo[14];
 	private int numeroDeRonda = 0;
@@ -36,10 +36,11 @@ public class Tablero implements TableroObservado {
 		// recorro el tablero desde la casa1 hasta la posicion L
 		for (int pos = Posicion.CASAJ2.ordinal(); pos <= Posicion.L.ordinal(); pos++) {
 			this.tablero[pos] = new Hoyo(Posicion.getPosicionPorValor(pos));
-			if (!(Posicion.compararPosicionConOrdinal(Posicion.CASAJ2, pos)
-					|| (Posicion.compararPosicionConOrdinal(Posicion.CASAJ1, pos))))
+			if (!(Posicion.compararPosicionConOrdinal(Posicion.CASAJ2, pos) || (Posicion.compararPosicionConOrdinal(Posicion.CASAJ1, pos))))
 				this.tablero[pos].ponerHaba(cantHabas);
 		}
+		this.numeroDeRonda = 0;
+		this.notificarObservers(Informe.LISTOPARACOMENZAR);
 	}
 
 // mover las habas segun la posicion indicada
@@ -67,35 +68,27 @@ public class Tablero implements TableroObservado {
 		// voy dejando una en cada posicion siguiente del tablero
 		while (habas != 0) {
 			pos = this.tablero[pos.ordinal()].siguienteHoyo();
-			if (jugadorActual == 1 && pos == Posicion.CASAJ2) {
+			if (jugadorActual == 1 && pos == Posicion.CASAJ2)
 				pos = this.tablero[pos.ordinal()].siguienteHoyo();
-			}
-			if (jugadorActual == 2 && pos == Posicion.CASAJ1) {
+			if (jugadorActual == 2 && pos == Posicion.CASAJ1) 
 				pos = this.tablero[pos.ordinal()].siguienteHoyo();
-			}
 			this.tablero[pos.ordinal()].ponerHaba();
 			habas--;
 		}
 
 		// si la en la ultima posicion quedo una sola haba, entonces van a la casa del
 		// jugador todas las del lado contrario + esa misma
-		if (this.tablero[pos.ordinal()].getCantHabas() == 1) {
-			if (jugadorActual == 1)
+		if (this.tablero[pos.ordinal()].getCantHabas() == 1 && this.tablero[Posicion.contrario(pos).ordinal()].getCantHabas() > 0) {
+			if (jugadorActual == 1) {
 				if (this.enRango(jugadorActual, pos))
-					this.tablero[Posicion.CASAJ1.ordinal()]
-							.ponerHaba(this.tablero[Posicion.contrario(pos).ordinal()].tomarHabas()
-									+ this.tablero[pos.ordinal()].tomarHabas());
-				else if (jugadorActual == 2)
-					if (this.enRango(jugadorActual, pos))
-						this.tablero[Posicion.CASAJ2.ordinal()]
-								.ponerHaba(this.tablero[Posicion.contrario(pos).ordinal()].tomarHabas()
-										+ this.tablero[pos.ordinal()].tomarHabas());
+					this.tablero[Posicion.CASAJ1.ordinal()].ponerHaba(this.tablero[Posicion.contrario(pos).ordinal()].tomarHabas() + this.tablero[pos.ordinal()].tomarHabas());									
+			}else
+				if (this.enRango(jugadorActual, pos))
+					this.tablero[Posicion.CASAJ2.ordinal()].ponerHaba(this.tablero[Posicion.contrario(pos).ordinal()].tomarHabas() + this.tablero[pos.ordinal()].tomarHabas());							
 		}
-
 		// si llego hasta aca entonces se completo el turno
 		this.incNumeroDeRonda();
-		// si la ultima haba cae en la casa del jugador entones le corresponde jugar de
-		// nuevo
+		// si la ultima haba cae en la casa del jugador entones le corresponde jugar de nuevo
 		if (this.jugarDeNuevo(jugadorActual, pos)) {
 			this.notificarObservers(Informe.JUEGADENUEVO);
 			return Informe.JUEGADENUEVO;
@@ -104,10 +97,11 @@ public class Tablero implements TableroObservado {
 		return Informe.SIGUIENTEJUGADOR;
 	}
 
-
 	public boolean enRango(int jugador, Posicion pos) {
-		return (jugador == 1) ? pos.ordinal() >= Posicion.A.ordinal() && pos.ordinal() <= Posicion.F.ordinal()
-				: pos.ordinal() >= Posicion.G.ordinal() && pos.ordinal() <= Posicion.L.ordinal();
+		if(jugador == 1) 
+			return (pos.ordinal() >= Posicion.A.ordinal() && pos.ordinal() <= Posicion.F.ordinal());
+		else
+			return (pos.ordinal() >= Posicion.G.ordinal() && pos.ordinal() <= Posicion.L.ordinal());
 	}
 
 	private boolean jugarDeNuevo(int jugador, Posicion pos) {
@@ -129,18 +123,19 @@ public class Tablero implements TableroObservado {
 	public int getNumeroDeRonda() {
 		return this.numeroDeRonda;
 	}
-	
 
 	public void evaluarCondicion() {
 		boolean j1habas = true;
-		for(int i = Posicion.A.ordinal() ; i < Posicion.F.ordinal() && j1habas == true; i++) {
-			if(tablero[i].getCantHabas() > 0) j1habas = false;
+		for (int i = Posicion.A.ordinal(); i < Posicion.F.ordinal() && j1habas == true; i++) {
+			if (tablero[i].getCantHabas() > 0)
+				j1habas = false;
 		}
 		boolean j2habas = true;
-		for(int i = Posicion.G.ordinal() ; i < Posicion.L.ordinal() && j2habas == true; i++) {
-			if(tablero[i].getCantHabas() > 0) j2habas = false;
+		for (int i = Posicion.G.ordinal(); i < Posicion.L.ordinal() && j2habas == true; i++) {
+			if (tablero[i].getCantHabas() > 0)
+				j2habas = false;
 		}
-		if(j1habas == false || j2habas == false) {
+		if (j1habas == false || j2habas == false) {
 			this.notificarObservers(Informe.JUEGOFINALIZADO);
 		}
 	}
@@ -150,11 +145,10 @@ public class Tablero implements TableroObservado {
 	public void agregarObservador(Observer observer) {
 		this.observadores.add(observer);
 	}
-	
+
 	@Override
 	public void notificarObservers(Object informe) {
 		this.observadores.forEach((observer) -> observer.update(this, informe));
 	}
-
 
 }
