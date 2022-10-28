@@ -1,19 +1,19 @@
 package ar.edu.unlu.mancala.vista;
 
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import ar.edu.unlu.mancala.controlador.Controlador;
 import ar.edu.unlu.mancala.modelo.Hoyo;
+import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Posicion;
 import ar.edu.unlu.mancala.modelo.Tablero;
 
 public class VistaConsola {
 
 	private Controlador controlador;
-	private OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.INICIO;
-	private int jugadorActual = 1;
 
-	public String mostrarTablero(Hoyo[] hoyos) {
+	public void mostrarTablero(Hoyo[] hoyos) {
 		String tableros = "";
 		tableros += "       L    K    J    I    H    G";
 		tableros += "\n";
@@ -40,21 +40,49 @@ public class VistaConsola {
 		tableros += "|   |";
 		tableros += "\n";
 		tableros += "       A    B    C    D    E    F";
-
-		return tableros;
+		System.out.println(tableros);
 	}
 
-	public void mostrarMenu() {
-		OpcionesMenuInicioConsola.mostrarOpciones();
-	}
 
-	public void iniciar() {
+	public void iniciar(){
+		OpcionesMenuPrincipalConsola opcion = OpcionesMenuPrincipalConsola.NULO ;
 		Scanner sc = new Scanner(System.in);
-		while (opcion != OpcionesMenuInicioConsola.SALIR) {
-			mostrarMenu();
+		while (opcion != OpcionesMenuPrincipalConsola.ACCEDERALMENUPRINCIPAL) {
+			OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal();;
+			opcion = OpcionesMenuPrincipalConsola.values()[sc.nextInt()];
+			switch (opcion) {
+			case REGLAS:
+				mostrarReglas();
+				break;
+			case ACCEDERALMENUPRINCIPAL:
+				mostrarMenuInicio();
+				break;
+			default:
+				break;
+			}
+		}
+		sc.close();
+	}
+
+// reglas del juego
+	private void mostrarReglas() {
+		
+	}
+
+//
+	private void comenzarPartida() {
+
+	}
+
+	private void mostrarMenuInicio(){
+		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO ;
+		Scanner sc = new Scanner(System.in);
+		while ((OpcionesMenuInicioConsola)opcion != OpcionesMenuInicioConsola.SALIR) {
+			OpcionesMenuInicioConsola.mostrarOpcionesMenuInicio();
 			opcion = OpcionesMenuInicioConsola.values()[sc.nextInt()];
 			switch (opcion) {
 			case REGISTRAR_JUGADOR:
+				registroJugador();
 				break;
 			case COMENZAR_PARTIDA:
 				comenzarPartida();
@@ -70,21 +98,31 @@ public class VistaConsola {
 		sc.close();
 	}
 
-	private void comenzarPartida() {
-		controlador.mover(Posicion.getPosicionDeString("A"), this.jugadorActual);
-		controlador.mover(Posicion.getPosicionDeString("H"), this.jugadorActual);
-		controlador.mover(Posicion.getPosicionDeString("L"), this.jugadorActual);
-		controlador.mover(Posicion.getPosicionDeString("G"), this.jugadorActual);
-		controlador.mover(Posicion.getPosicionDeString("D"), this.jugadorActual);
-		controlador.mover(Posicion.getPosicionDeString("L"), this.jugadorActual);
+	private void registroJugador(){
+		String nombre = "";
+		Scanner sc = new Scanner(System.in);
+		this.mostrarMensaje("ingrese el nombre del jugador", CartelAdvertencia.NORMAL);
+		nombre = sc.nextLine();
+		while(nombre.isEmpty()) {
+			this.mostrarMensaje("No se admiten nombres vacios!", CartelAdvertencia.ERROR);
+			this.mostrarMensaje("ingrese el nombre del jugador", CartelAdvertencia.ADVERTENCIA);
+			nombre = sc.nextLine();
+		}
+		controlador.agregarJugador(nombre);
 	}
 
-	public void mostrarMensaje(String info , CartelAdvertencia advertencia) {
+
+	public void mostrarMensaje(String info , CartelAdvertencia advertencia){
 		CartelAdvertencia.mostrarMensaje(info, advertencia);
 	}
 
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
+	}
+
+
+	public void mostrarJugadores(LinkedList<Jugador> jugadores) {
+		jugadores.forEach(jugador -> System.out.println(jugador.getNombre()));
 	}
 
 }

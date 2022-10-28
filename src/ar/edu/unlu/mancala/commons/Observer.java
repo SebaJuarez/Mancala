@@ -1,5 +1,5 @@
 package ar.edu.unlu.mancala.commons;
 
 public interface Observer {
-	void update(Observado observado , Object informe);
+	void update(TableroObservado observado , Object informe);
 }

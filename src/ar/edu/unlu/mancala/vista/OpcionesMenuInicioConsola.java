@@ -3,7 +3,7 @@ package ar.edu.unlu.mancala.vista;
 import ar.edu.unlu.mancala.commons.Colores;
 
 public enum OpcionesMenuInicioConsola implements Colores {
-		INICIO (""),
+		NULO(""),
 	    REGISTRAR_JUGADOR ("1) registrar jugador nuevo"),
 	    COMENZAR_PARTIDA ("2) comenzar partida nueva"),
 	    LISTAR_JUGADORES ("3) lista de jugadores"),
@@ -19,16 +19,24 @@ public enum OpcionesMenuInicioConsola implements Colores {
 	    public static String valueOf(int opcion) {
 	        return OpcionesMenuInicioConsola.values()[opcion].label;
 	    }
-
-	    public static void mostrarOpciones() {
+ 
+	    
+	    public static void mostrarOpcionesMenuInicio() {
 	    	mostrarLogo();
-	        for (OpcionesMenuInicioConsola e : OpcionesMenuInicioConsola.values()) {
-	            System.out.println(AMARILLO + e.label);
-	        }
+	    	System.out.print(FONDONEGRO + BLANCO);
+	    	System.out.println("#   *                           *         *                *  #");
+	    	System.out.println("#      *             "+valueOf(1)+"               #");
+	    	System.out.println("#   *          *     "+valueOf(2)+"     *          #");
+	    	System.out.println("#          *         "+valueOf(3)+"            *       #");
+	    	System.out.println("#            *       "+valueOf(4)+"                         #");
+	    	System.out.println("#     *              "+valueOf(5)+"                    *          * #");
+	    	System.out.println("#   *               *          *    *              *          #");
+	    	System.out.println("###############################################################");
+	    	System.out.print(RESET);
 	    }
 	    
 	    public static void mostrarLogo() {
-	    	System.out.print(FONDOAMARILLO + BLANCO);
+	    	System.out.print(FONDONEGRO + BLANCO);
 	    	System.out.println("###############################################################");
 	    	System.out.println("#   #     #    #    #     #  #####     #    #          #      #");
 	    	System.out.println("#   ##   ##   # #   ##    # #     #   # #   #         # #     #");
@@ -37,6 +45,7 @@ public enum OpcionesMenuInicioConsola implements Colores {
 	    	System.out.println("#   #     # ####### #   # # #       ####### #       #######   #");
 	    	System.out.println("#   #     # #     # #    ## #     # #     # #       #     #   #");
 	    	System.out.println("#   #     # #     # #     #  #####  #     # ####### #     #   #");
-	    	System.out.println("###############################################################" + RESET);
+	    	System.out.println("#                                                             #");
+	    	System.out.print(RESET);
 	    }
 }

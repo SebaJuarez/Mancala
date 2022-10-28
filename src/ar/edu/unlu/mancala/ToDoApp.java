@@ -7,12 +7,13 @@ import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Tablero;
 import ar.edu.unlu.mancala.vista.VistaConsola;
 
-public class Mancala {
+public class ToDoApp {
 	
 	public static void main(String[] args) {
-		Tablero tablero = new Tablero(4);
 		VistaConsola vistaConsola = new VistaConsola();
+		Tablero tablero = new Tablero(4);
 		Controlador controlador =  new Controlador(tablero,vistaConsola);
+		tablero.agregarObservador(controlador);
 		vistaConsola.setControlador(controlador);
 		vistaConsola.iniciar();
 	}

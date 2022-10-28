@@ -46,18 +46,24 @@ public class Tablero implements TableroObservado {
 // mover las habas segun la posicion indicada
 	public Informe moverHabas(Posicion p, int jugadorActual) {
 		// si el turno del jugador es diferente 1 o 2 entonces existe un error
-		if (jugadorActual < 1 || jugadorActual > 2)
+		if (jugadorActual < 1 || jugadorActual > 2) {
+			this.notificarObservers(Informe.JUGADORFUERADEPARAMETRO);
 			return Informe.JUGADORFUERADEPARAMETRO;
+		}
 		// si el jugador quiere mover una fila que no es suya
-		if (!this.enRango(jugadorActual, p))
+		if (!this.enRango(jugadorActual, p)) {
+			this.notificarObservers(Informe.CASILLADEOTROJUGADOR);
 			return Informe.CASILLADEOTROJUGADOR;
+		}
 		Posicion pos = p;
 		// tomo las habas de la posicion y dejo en 0 la cuenca
 		int habas = this.tablero[pos.ordinal()].tomarHabas();
 
 		// si no hay habas en esa posicion entonces no se puede mover
-		if (habas == 0)
+		if (habas == 0) {
+			this.notificarObservers(Informe.NOHAYHABAS);
 			return Informe.NOHAYHABAS;
+		}
 
 		// voy dejando una en cada posicion siguiente del tablero
 		while (habas != 0) {
@@ -91,10 +97,13 @@ public class Tablero implements TableroObservado {
 		this.incNumeroDeRonda();
 		// si la ultima haba cae en la casa del jugador entones le corresponde jugar de
 		// nuevo
-		if (this.jugarDeNuevo(jugadorActual, pos))
+		if (this.jugarDeNuevo(jugadorActual, pos)) {
+			this.notificarObservers(Informe.JUEGADENUEVO);
 			return Informe.JUEGADENUEVO;
+		}
 
 		this.jugadorActual = siguienteJugador(this.jugadorActual);
+		this.notificarObservers(Informe.SIGUIENTEJUGADOR);
 		return Informe.SIGUIENTEJUGADOR;
 	}
 
