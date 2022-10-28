@@ -3,45 +3,20 @@ package ar.edu.unlu.mancala.vista.consola;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import ar.edu.unlu.mancala.commons.Banner;
 import ar.edu.unlu.mancala.commons.Colores;
 import ar.edu.unlu.mancala.controlador.Controlador;
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Posicion;
 
-public class VistaConsola implements Colores{
+public class VistaConsola{
 
 	private Controlador controlador;
 	private Scanner sc = new Scanner(System.in);
 
 	public void mostrarTablero(Hoyo[] hoyos) {
-		String tableros = "";
-		tableros += "       L    K    J    I    H    G";
-		tableros += "\n";
-		tableros += "|   |";
-		tableros += "| " + hoyos[Posicion.L.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.K.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.J.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.I.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.H.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.G.ordinal()].getCantHabas() + " |";
-		tableros += "|   |";
-		tableros += "\n";
-		tableros += "| " + hoyos[Posicion.CASAJ2.ordinal()].getCantHabas() + " ||";
-		tableros += "----------------------------";
-		tableros += "|| " + hoyos[Posicion.CASAJ1.ordinal()].getCantHabas() + " |";
-		tableros += "\n";
-		tableros += "|   |";
-		tableros += "| " + hoyos[Posicion.A.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.B.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.C.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.D.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.E.ordinal()].getCantHabas() + " |";
-		tableros += "| " + hoyos[Posicion.F.ordinal()].getCantHabas() + " |";
-		tableros += "|   |";
-		tableros += "\n";
-		tableros += "       A    B    C    D    E    F";
-		System.out.println(tableros);
+		Banner.tablero(hoyos);
 	}
 
 
@@ -174,8 +149,7 @@ public class VistaConsola implements Colores{
 	}
 	
 	private void mostrarJugador(Jugador jugador) {
-		this.mostrarMensaje("ID: " + jugador.getId() + "-------------------------------------------------------",
-				CartelAdvertencia.NORMAL);
+		this.mostrarMensaje("ID: " + jugador.getId() + "-------------------------------------------------------",CartelAdvertencia.NORMAL);
 		this.mostrarMensaje("Nombre -> " + jugador.getNombre(), CartelAdvertencia.NORMAL);
 		this.mostrarMensaje("Jugadas -> " + jugador.getPartidasJugadas(), CartelAdvertencia.NORMAL);
 		this.mostrarMensaje("Ganadas -> " + jugador.getPartidasGanadas(), CartelAdvertencia.COMPLETO);
