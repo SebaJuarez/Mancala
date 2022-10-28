@@ -28,11 +28,29 @@ public class Controlador implements Observer {
 
 	public void mover(Posicion p) {
 		tablero.moverHabas(p, this.turnoJugador);
+		tablero.evaluarCondicion();
 	}
 
-	public void comenzarJuego(Jugador j1, Jugador j2) {
-		this.j1 = j1;
-		this.j2 = j2;
+	public boolean comenzarJuego(int j1, int j2) {
+		if(buscarJugador(j1) == null ) {
+			this.vistaConsola.mostrarMensaje("ID del jugador 1 no existe", CartelAdvertencia.ERROR);
+			return false;
+		}
+		if(buscarJugador(j2) == null ) {
+			this.vistaConsola.mostrarMensaje("ID del jugador 2 no existe", CartelAdvertencia.ERROR);
+			return false;
+		}
+		this.j1 = buscarJugador(j1);
+		this.j2 = buscarJugador(j2);
+		this.tablero.inicializarFichas();
+		return true;
+	}
+	
+	private Jugador buscarJugador(int id) {
+		for(Jugador jugador : this.jugadores) {
+			if(jugador.getId() == id) return jugador;
+		}
+		return null;
 	}
 
 	@Override
@@ -41,6 +59,7 @@ public class Controlador implements Observer {
 		case CASILLADEOTROJUGADOR: {
 			vistaConsola.mostrarMensaje("LA CASILLA PERTENECE A OTRO JUGADOR, JUEGUE DE NUEVO",
 					CartelAdvertencia.ERROR);
+			vistaConsola.movimientos();
 			break;
 		}
 		case SIGUIENTEJUGADOR: {
@@ -48,25 +67,39 @@ public class Controlador implements Observer {
 			this.turnoSiguienteJugador(this.turnoJugador);
 			vistaConsola.mostrarMensaje("TURNO DEL JUGAODR:  " + this.jugadorOfValue(this.turnoJugador).getNombre(),
 					CartelAdvertencia.COMPLETO);
+			((Tablero) observado).incNumeroDeRonda();
+			vistaConsola.movimientos();
 			break;
 		}
 		case NOHAYHABAS: {
 			vistaConsola.mostrarMensaje("LA CASILLA NO CONTIENE HABAS, SELECCIONE OTRA", CartelAdvertencia.ADVERTENCIA);
+			vistaConsola.movimientos();
 			break;
 		}
 		case JUEGADENUEVO: {
 			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
 			vistaConsola.mostrarMensaje("ULTIMA HABA EN ZONA, JUEGUE DE NUEVO", CartelAdvertencia.COMPLETO);
+			((Tablero) observado).incNumeroDeRonda();
+			vistaConsola.movimientos();
 			break;
 		}
 		case JUEGOFINALIZADO: {
 			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
 			vistaConsola.mostrarMensaje("EL JUEGO AH FINALIZADO, EL GANADOR ES...", CartelAdvertencia.COMPLETO);
+			vistaConsola.mostrarGanador(buscarGanador());
 			break;
 		}
 		default:
 			break;
 		}
+	}
+
+	private Jugador buscarGanador() {
+		if(this.tablero.getTablero()[Posicion.CASAJ1.ordinal()].getCantHabas() > this.tablero.getTablero()[Posicion.CASAJ2.ordinal()].getCantHabas() )
+		return this.j1;
+		else if(this.tablero.getTablero()[Posicion.CASAJ1.ordinal()].getCantHabas() < this.tablero.getTablero()[Posicion.CASAJ2.ordinal()].getCantHabas())
+			return this.j2;
+		else return null;
 	}
 
 	private void turnoSiguienteJugador(int jugadorActual) {

@@ -25,7 +25,6 @@ public class Tablero implements TableroObservado {
 	private Hoyo[] tablero = new Hoyo[14];
 	private int numeroDeRonda = 0;
 	private LinkedList<Observer> observadores = new LinkedList<Observer>();
-	private int jugadorActual = 1;
 
 	public Tablero(int cantHabas) {
 		this.cantHabas = cantHabas;
@@ -101,18 +100,10 @@ public class Tablero implements TableroObservado {
 			this.notificarObservers(Informe.JUEGADENUEVO);
 			return Informe.JUEGADENUEVO;
 		}
-
-		this.jugadorActual = siguienteJugador(this.jugadorActual);
 		this.notificarObservers(Informe.SIGUIENTEJUGADOR);
 		return Informe.SIGUIENTEJUGADOR;
 	}
 
-	private int siguienteJugador(int jugadorActual) {
-		if (jugadorActual == 1)
-			return 2;
-		else
-			return 1;
-	}
 
 	public boolean enRango(int jugador, Posicion pos) {
 		return (jugador == 1) ? pos.ordinal() >= Posicion.A.ordinal() && pos.ordinal() <= Posicion.F.ordinal()
@@ -127,7 +118,7 @@ public class Tablero implements TableroObservado {
 		return this.tablero;
 	}
 
-	private void incNumeroDeRonda() {
+	public void incNumeroDeRonda() {
 		this.numeroDeRonda++;
 	}
 
@@ -138,9 +129,20 @@ public class Tablero implements TableroObservado {
 	public int getNumeroDeRonda() {
 		return this.numeroDeRonda;
 	}
+	
 
-	public int getJugadorActual() {
-		return this.jugadorActual;
+	public void evaluarCondicion() {
+		boolean j1habas = true;
+		for(int i = Posicion.A.ordinal() ; i < Posicion.F.ordinal() && j1habas == true; i++) {
+			if(tablero[i].getCantHabas() > 0) j1habas = false;
+		}
+		boolean j2habas = true;
+		for(int i = Posicion.G.ordinal() ; i < Posicion.L.ordinal() && j2habas == true; i++) {
+			if(tablero[i].getCantHabas() > 0) j2habas = false;
+		}
+		if(j1habas == false || j2habas == false) {
+			this.notificarObservers(Informe.JUEGOFINALIZADO);
+		}
 	}
 
 	// MVC-Observer zone
@@ -148,12 +150,11 @@ public class Tablero implements TableroObservado {
 	public void agregarObservador(Observer observer) {
 		this.observadores.add(observer);
 	}
-
+	
 	@Override
 	public void notificarObservers(Object informe) {
 		this.observadores.forEach((observer) -> observer.update(this, informe));
 	}
-
 
 
 }
