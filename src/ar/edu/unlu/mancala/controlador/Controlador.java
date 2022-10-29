@@ -31,16 +31,18 @@ public class Controlador implements Observer {
 	}
 
 	public boolean comenzarJuego(int j1, int j2) {
-		if(buscarJugador(j1) == null ) {
+		Jugador jugador1 = buscarJugador(j1);
+		Jugador jugador2 = buscarJugador(j2);
+		if(jugador1 == null ) {
 			this.vistaConsola.mostrarMensaje("ID del jugador 1 no existe", CartelAdvertencia.ERROR);
 			return false;
 		}
-		if(buscarJugador(j2) == null ) {
+		if(jugador2 == null ) {
 			this.vistaConsola.mostrarMensaje("ID del jugador 2 no existe", CartelAdvertencia.ERROR);
 			return false;
 		}
-		this.j1 = buscarJugador(j1);
-		this.j2 = buscarJugador(j2);
+		this.j1 = jugador1;
+		this.j2 = jugador2;
 		this.tablero.inicializarFichas();
 		return true;
 	}
@@ -66,8 +68,8 @@ public class Controlador implements Observer {
 			break;
 		}
 		case SIGUIENTEJUGADOR: {
-			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
 			this.turnoSiguienteJugador(this.turnoJugador);
+			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
 			vistaConsola.mostrarMensaje(" TURNO DEL JUGAODR " + this.turnoJugador + ": " + this.jugadorOfValue(this.turnoJugador).getNombre(),CartelAdvertencia.COMPLETO);
 			((Tablero) observado).incNumeroDeRonda();
 			tablero.evaluarCondicion();

@@ -11,7 +11,7 @@ public class ToDoApp {
 	
 	public static void main(String[] args) {
 		VistaConsola vistaConsola = new VistaConsola();
-		Tablero tablero = new Tablero(4);
+		Tablero tablero = new Tablero();
 		Controlador controlador =  new Controlador(tablero,vistaConsola);
 		tablero.agregarObservador(controlador);
 		vistaConsola.setControlador(controlador);
