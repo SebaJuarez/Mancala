@@ -41,7 +41,8 @@ public class VistaConsola{
 	}
 
 	private void mostrarReglas() {
-		OpcionesMenuPrincipalConsola.mostrarReglas();
+		//OpcionesMenuPrincipalConsola.mostrarReglas();
+		Regla.mostrarReglas();
 		precioneEnter();
 	}
 
@@ -112,6 +113,7 @@ public class VistaConsola{
 				controlador.obtenerJugadores();
 				break;
 			case TOP_GANADORES:
+				
 				break;
 			case SALIR:
 				OpcionesMenuInicioConsola.mostrarDespedida();				
