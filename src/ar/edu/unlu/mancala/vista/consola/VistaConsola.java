@@ -2,8 +2,7 @@ package ar.edu.unlu.mancala.vista.consola;
 
 import java.util.LinkedList;
 import java.util.Scanner;
-
-import ar.edu.unlu.mancala.commons.*;
+import ar.edu.unlu.mancala.commons.Banner;
 import ar.edu.unlu.mancala.controlador.Controlador;
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Jugador;
@@ -76,17 +75,21 @@ public class VistaConsola{
 		controlador.mover(pos);
 	}
 
-	public void mostrarGanador(Jugador jugador) {
-		if(jugador != null) {
-			this.mostrarMensaje("EL GANADOR ES: ", CartelAdvertencia.COMPLETO);		
+	public void mostrarGanador(Jugador jugador , int numeroJugador) {
+		Banner.ganador(numeroJugador);
+		if(jugador != null) 	
 			this.mostrarJugador(jugador);
-		} else this.mostrarMensaje("EMPATE!!", CartelAdvertencia.ADVERTENCIA);
-		Scanner scenter = new Scanner(System.in);
-		this.mostrarMensaje("Presione enter para ir al menu de inicio", CartelAdvertencia.NORMAL);
-		scenter.nextLine();
+		 else 
+			 this.mostrarMensaje("EMPATE!!", CartelAdvertencia.ADVERTENCIA);
+		precioneEnter();
 		this.mostrarMenuInicio();
 	}
 
+	private void precioneEnter() {
+		Scanner scenter = new Scanner(System.in);
+		this.mostrarMensaje("Presione enter para continuar", CartelAdvertencia.NORMAL);
+		scenter.nextLine();		
+	}
 	private void mostrarMenuInicio() {
 		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO;
 		while (opcion != OpcionesMenuInicioConsola.SALIR) {
@@ -127,8 +130,7 @@ public class VistaConsola{
 			nombre = scline.nextLine();
 		}
 		controlador.agregarJugador(nombre);
-		this.mostrarMensaje("Presione una tecla para continuar..", CartelAdvertencia.NORMAL);
-		scline.nextLine();
+		precioneEnter();
 	}
 
 	public void mostrarMensaje(String info, CartelAdvertencia advertencia) {
@@ -140,11 +142,9 @@ public class VistaConsola{
 	}
 
 	public void mostrarJugadores(LinkedList<Jugador> jugadores) {
-		Scanner scline = new Scanner(System.in);
 		for (Jugador jugador : jugadores) 
 			mostrarJugador(jugador);
-		this.mostrarMensaje("Presione una tecla para continuar..", CartelAdvertencia.NORMAL);
-		scline.nextLine();
+		precioneEnter();
 	}
 	
 	private void mostrarJugador(Jugador jugador) {

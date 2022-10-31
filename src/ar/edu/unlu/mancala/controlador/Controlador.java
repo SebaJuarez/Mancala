@@ -92,7 +92,7 @@ public class Controlador implements Observer {
 			this.j2.incPartidasJugadas();
 			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
 			vistaConsola.mostrarMensaje("EL JUEGO AH FINALIZADO \nNUMERO DE RONDAS: " + ((Tablero) observado).getNumeroDeRonda(), CartelAdvertencia.COMPLETO);
-			vistaConsola.mostrarGanador(buscarGanador());
+			vistaConsola.mostrarGanador(buscarGanador(),(buscarGanador() == this.j1)? 1 : (buscarGanador() == this.j2)? 2 : 0);
 			break;
 		}
 		default:
