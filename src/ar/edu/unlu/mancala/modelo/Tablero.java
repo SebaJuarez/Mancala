@@ -1,9 +1,7 @@
 package ar.edu.unlu.mancala.modelo;
 
 import java.util.LinkedList;
-import ar.edu.unlu.mancala.commons.Observado;
-import ar.edu.unlu.mancala.commons.Observer;
-import ar.edu.unlu.mancala.commons.TableroObservado;
+import ar.edu.unlu.mancala.commons.*;
 
 public class Tablero implements TableroObservado {
 

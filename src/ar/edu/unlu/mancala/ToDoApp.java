@@ -1,9 +1,6 @@
 package ar.edu.unlu.mancala;
-import java.util.LinkedList;
 
 import ar.edu.unlu.mancala.controlador.Controlador;
-import ar.edu.unlu.mancala.modelo.Hoyo;
-import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Tablero;
 import ar.edu.unlu.mancala.vista.consola.VistaConsola;
 

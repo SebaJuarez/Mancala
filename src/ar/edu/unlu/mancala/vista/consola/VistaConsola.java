@@ -3,8 +3,7 @@ package ar.edu.unlu.mancala.vista.consola;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import ar.edu.unlu.mancala.commons.Banner;
-import ar.edu.unlu.mancala.commons.Colores;
+import ar.edu.unlu.mancala.commons.*;
 import ar.edu.unlu.mancala.controlador.Controlador;
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Jugador;

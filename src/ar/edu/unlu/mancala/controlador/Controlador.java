@@ -1,7 +1,6 @@
 package ar.edu.unlu.mancala.controlador;
 
 import java.util.LinkedList;
-
 import ar.edu.unlu.mancala.ToDoApp;
 import ar.edu.unlu.mancala.commons.Observado;
 import ar.edu.unlu.mancala.commons.Observer;
@@ -10,8 +9,7 @@ import ar.edu.unlu.mancala.modelo.Informe;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Posicion;
 import ar.edu.unlu.mancala.modelo.Tablero;
-import ar.edu.unlu.mancala.vista.consola.CartelAdvertencia;
-import ar.edu.unlu.mancala.vista.consola.VistaConsola;
+import ar.edu.unlu.mancala.vista.consola.*;
 
 public class Controlador implements Observer {
 
