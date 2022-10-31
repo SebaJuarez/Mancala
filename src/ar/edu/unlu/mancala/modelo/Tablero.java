@@ -65,15 +65,14 @@ public class Tablero implements TableroObservado {
 			habas--;
 		}
 		// si la en la ultima posicion quedo una sola haba, entonces van a la casa del
-		// jugador todas las del lado contrario + esa misma
-		if (tomarHabasOpuestas(pos)) {
-			if (jugadorActual == 1) {
-				if (enRango(jugadorActual, pos))
-					tablero[Posicion.CASAJ1.ordinal()].ponerHaba(this.tablero[Posicion.contrario(pos).ordinal()].tomarHabas() + this.tablero[pos.ordinal()].tomarHabas());									
-			}else
-				if (enRango(jugadorActual, pos))
-					tablero[Posicion.CASAJ2.ordinal()].ponerHaba(this.tablero[Posicion.contrario(pos).ordinal()].tomarHabas() + this.tablero[pos.ordinal()].tomarHabas());							
+		// jugador todas las del lado contrario
+		if (tomarHabasOpuestas(pos, jugadorActual)) {
+			if (jugadorActual == 1)
+				tablero[Posicion.CASAJ1.ordinal()].ponerHaba(this.tablero[Posicion.contrario(pos).ordinal()].tomarHabas());
+			else
+				tablero[Posicion.CASAJ2.ordinal()].ponerHaba(this.tablero[Posicion.contrario(pos).ordinal()].tomarHabas());			
 		}
+	
 		// si llego hasta aca entonces se completo el turno
 		this.incNumeroDeRonda();
 		// si la ultima haba cae en la casa del jugador entones le corresponde jugar de nuevo
@@ -90,8 +89,8 @@ public class Tablero implements TableroObservado {
 			return (pos.ordinal() >= Posicion.G.ordinal() && pos.ordinal() <= Posicion.L.ordinal());
 	}
 
-	private boolean tomarHabasOpuestas(Posicion pos){
-		return (this.tablero[pos.ordinal()].getCantHabas() == 1 && this.tablero[Posicion.contrario(pos).ordinal()].getCantHabas() > 0);
+	private boolean tomarHabasOpuestas(Posicion pos , int jugadorActual){
+		return ((this.tablero[pos.ordinal()].getCantHabas() == 1 && this.tablero[Posicion.contrario(pos).ordinal()].getCantHabas() > 0) && enRango(jugadorActual, pos));
 	}
 	
 	private boolean jugarDeNuevo(int jugador, Posicion pos) {

@@ -41,7 +41,8 @@ public class VistaConsola{
 	}
 
 	private void mostrarReglas() {
-
+		OpcionesMenuPrincipalConsola.mostrarReglas();
+		precioneEnter();
 	}
 
 	private void comenzarPartida() {
@@ -90,6 +91,7 @@ public class VistaConsola{
 		this.mostrarMensaje("Presione enter para continuar", CartelAdvertencia.NORMAL);
 		scenter.nextLine();		
 	}
+	
 	private void mostrarMenuInicio() {
 		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO;
 		while (opcion != OpcionesMenuInicioConsola.SALIR) {
