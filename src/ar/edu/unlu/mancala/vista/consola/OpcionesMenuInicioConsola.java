@@ -1,7 +1,7 @@
 package ar.edu.unlu.mancala.vista.consola;
 
 import ar.edu.unlu.mancala.commons.Banner;
-import ar.edu.unlu.mancala.commons.Colores;
+import ar.edu.unlu.mancala.commons.Coloreable;
 
 public enum OpcionesMenuInicioConsola implements Banner {
 		NULO(""),

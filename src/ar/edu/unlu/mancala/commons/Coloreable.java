@@ -1,6 +1,6 @@
 package ar.edu.unlu.mancala.commons;
 
-public interface Colores {
+public interface Coloreable {
 	static final String NEGRO = "\033[30m";
 	static final String ROJO = "\033[31m";
 	static final String VERDE = "\033[32m";

@@ -11,7 +11,7 @@ import ar.edu.unlu.mancala.modelo.Posicion;
 import ar.edu.unlu.mancala.modelo.Tablero;
 import ar.edu.unlu.mancala.vista.consola.*;
 
-public class Controlador implements Observer {
+public class MancalaController implements Observer {
 
 	private Tablero tablero;
 	LinkedList<Jugador> jugadores = new LinkedList<Jugador>();
@@ -19,7 +19,7 @@ public class Controlador implements Observer {
 	private Jugador j1, j2;
 	private int turnoJugador = 1;
 
-	public Controlador(Tablero tablero, VistaConsola vistaConsola) {
+	public MancalaController(Tablero tablero, VistaConsola vistaConsola) {
 		this.tablero = tablero;
 		this.vistaConsola = vistaConsola;
 	}

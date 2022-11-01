@@ -1,8 +1,8 @@
 package ar.edu.unlu.mancala.vista.consola;
 
-import ar.edu.unlu.mancala.commons.Colores;
+import ar.edu.unlu.mancala.commons.Coloreable;
 
-public enum CartelAdvertencia implements Colores {
+public enum CartelAdvertencia implements Coloreable {
 	ERROR (ROJO+FONDONEGRO),
     ADVERTENCIA (AMARILLO+FONDONEGRO),
     COMPLETO (VERDE+FONDONEGRO),

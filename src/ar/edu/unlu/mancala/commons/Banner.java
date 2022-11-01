@@ -3,7 +3,7 @@ package ar.edu.unlu.mancala.commons;
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Posicion;
 
-public interface Banner extends Colores{
+public interface Banner extends Coloreable{
 
 	public  final String MOSTRARLOGO = FONDONEGRO + BLANCO +
 			"###############################################################\n"+

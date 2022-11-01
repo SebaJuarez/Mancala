@@ -3,14 +3,14 @@ package ar.edu.unlu.mancala.vista.consola;
 import java.util.LinkedList;
 import java.util.Scanner;
 import ar.edu.unlu.mancala.commons.Banner;
-import ar.edu.unlu.mancala.controlador.Controlador;
+import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Posicion;
 
 public class VistaConsola{
 
-	private Controlador controlador;
+	private MancalaController controlador;
 	private Scanner sc = new Scanner(System.in);
 
 	public void mostrarTablero(Hoyo[] hoyos) {
@@ -141,7 +141,7 @@ public class VistaConsola{
 		CartelAdvertencia.mostrarMensaje(info, advertencia);
 	}
 
-	public void setControlador(Controlador controlador) {
+	public void setControlador(MancalaController controlador) {
 		this.controlador = controlador;
 	}
 
