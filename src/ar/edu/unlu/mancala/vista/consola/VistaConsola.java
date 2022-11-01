@@ -113,7 +113,7 @@ public class VistaConsola{
 				controlador.obtenerJugadores();
 				break;
 			case TOP_GANADORES:
-				
+				controlador.topGanadores();
 				break;
 			case SALIR:
 				OpcionesMenuInicioConsola.mostrarDespedida();				

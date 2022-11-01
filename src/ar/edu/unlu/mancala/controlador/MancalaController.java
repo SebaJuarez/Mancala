@@ -1,5 +1,6 @@
 package ar.edu.unlu.mancala.controlador;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import ar.edu.unlu.mancala.ToDoApp;
 import ar.edu.unlu.mancala.commons.Observado;
@@ -131,6 +132,12 @@ public class MancalaController implements Observer {
 			return this.j2;
 	}
 
+	
+	public void topGanadores() {
+		jugadores.sort(Comparator.comparing(Jugador::getPartidasGanadas).reversed());
+		vistaConsola.mostrarJugadores(this.jugadores);
+	}
+	
 	public void agregarJugador(String nombre) {
 		Jugador jugador = new Jugador(nombre);
 		jugadores.add(jugador);
@@ -138,6 +145,7 @@ public class MancalaController implements Observer {
 	}
 
 	public void obtenerJugadores() {
+		jugadores.sort(Comparator.comparing(Jugador::getId));
 		vistaConsola.mostrarJugadores(this.jugadores);
 	}
 	
