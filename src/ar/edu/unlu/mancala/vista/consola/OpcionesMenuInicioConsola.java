@@ -23,7 +23,7 @@ public enum OpcionesMenuInicioConsola implements Banner {
  
 	    
 	    public static void mostrarOpcionesMenuInicio() {
-	    	System.out.println(MOSTRARLOGO);
+	    	System.out.println(LOGO);
 	    	System.out.print(FONDONEGRO + BLANCO);
 	    	System.out.println("#   *                           *         *                *  #");
 	    	System.out.println("#      *            "+valueOf(1)+"                #");
@@ -36,8 +36,5 @@ public enum OpcionesMenuInicioConsola implements Banner {
 	    	System.out.print(RESET);
 	    }
 	    
-	    public static void mostrarDespedida() {
-	    	System.out.println(DESPEDIDA);
-	    }
 	    
 }

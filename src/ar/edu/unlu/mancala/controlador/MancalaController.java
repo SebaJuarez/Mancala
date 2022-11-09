@@ -2,8 +2,6 @@ package ar.edu.unlu.mancala.controlador;
 
 import java.util.Comparator;
 import java.util.LinkedList;
-import ar.edu.unlu.mancala.ToDoApp;
-import ar.edu.unlu.mancala.commons.Observado;
 import ar.edu.unlu.mancala.commons.Observer;
 import ar.edu.unlu.mancala.commons.TableroObservado;
 import ar.edu.unlu.mancala.modelo.Informe;
@@ -95,7 +93,6 @@ public class MancalaController implements Observer {
 			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
 			vistaConsola.mostrarMensaje("EL JUEGO AH FINALIZADO \nNUMERO DE RONDAS: " + ((Tablero) observado).getNumeroDeRonda(), CartelAdvertencia.COMPLETO);
 			vistaConsola.mostrarGanador(jugador,(jugador == this.j1)? 1 : (jugador == this.j2)? 2 : 0);
-			break;
 		}
 		default:
 			break;
@@ -119,17 +116,11 @@ public class MancalaController implements Observer {
 	}
 
 	private void turnoSiguienteJugador(int jugadorActual) {
-		if (jugadorActual == 1)
-			this.turnoJugador = 2;
-		else
-			this.turnoJugador = 1;
+		this.turnoJugador = (jugadorActual == 1)? 2 : 1;
 	}
 
 	private Jugador jugadorOfValue(int turno) {
-		if (turno == 1)
-			return this.j1;
-		else
-			return this.j2;
+		return (turno == 1)? j1 : j2;
 	}
 
 	

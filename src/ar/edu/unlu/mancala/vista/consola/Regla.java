@@ -41,7 +41,7 @@ public enum Regla implements Banner{
 	}
 	
 	public static void mostrarReglas() {
-		System.out.println(Banner.MOSTRARLOGO);
+		System.out.println(Banner.LOGO);
 		for(Regla r : values()) {
 			System.out.print(r.regla);
 		}

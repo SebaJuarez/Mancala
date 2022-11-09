@@ -14,7 +14,7 @@ public class VistaConsola{
 	private Scanner sc = new Scanner(System.in);
 
 	public void mostrarTablero(Hoyo[] hoyos) {
-		Banner.tablero(hoyos);
+		Banner.mostrarTablero(hoyos);
 	}
 
 
@@ -64,7 +64,6 @@ public class VistaConsola{
 				mostrarMenuInicio();
 		}
 		controlador.comenzarJuego(id1, id2);
-
 	}
 
 	public void movimientos() {
@@ -78,7 +77,7 @@ public class VistaConsola{
 	}
 
 	public void mostrarGanador(Jugador jugador , int numeroJugador) {
-		Banner.ganador(numeroJugador);
+		Banner.mostrarGanador(numeroJugador);
 		if(jugador != null) 	
 			this.mostrarJugador(jugador);
 		 else 
@@ -116,7 +115,7 @@ public class VistaConsola{
 				controlador.topGanadores();
 				break;
 			case SALIR:
-				OpcionesMenuInicioConsola.mostrarDespedida();				
+				Banner.mostrarDespedida();				
 			default:
 				break;
 			}

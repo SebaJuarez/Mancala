@@ -19,7 +19,7 @@ public enum OpcionesMenuPrincipalConsola implements Banner {
 	}
 
 	public static void mostrarOpcionesMenuPrincipal() {
-		System.out.println(MOSTRARLOGO);
+		System.out.println(LOGO);
 		System.out.print(FONDONEGRO);
 		System.out.println("#   *                           *         *                *  #");
 		System.out.println("#      *           " + valueOf(1) + "                #");

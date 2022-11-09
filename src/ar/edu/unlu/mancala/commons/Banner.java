@@ -5,7 +5,7 @@ import ar.edu.unlu.mancala.modelo.Posicion;
 
 public interface Banner extends Coloreable{
 
-	public  final String MOSTRARLOGO = FONDONEGRO + BLANCO +
+	public  final String LOGO = FONDONEGRO + BLANCO +
 			"###############################################################\n"+
 			"#   #     #    #    #     #  #####     #    #          #      #\n"+
 			"#   ##   ##   # #   ##    # #     #   # #   #         # #     #\n"+
@@ -65,7 +65,7 @@ public interface Banner extends Coloreable{
 			+ "#                              (0 0)                          #\r\n"
 			+ "#--------------------╔════oOO═══(_)════oOO════╗---------------#\r\n"
 			+ "#                    ║                        ║               #\r\n"
-			+ "#                    ║ " + AMARILLO + "       empate!        " + BLANCO + "  ║               #\r\n"
+			+ "#                    ║ " + AMARILLO + "       empate!       " + BLANCO + "  ║               #\r\n"
 			+ "#                    ║                        ║               #\r\n"
 			+ "#--------------------╚════════════════════════╝---------------#\r\n"
 			+ "#                             |__|__|                         #\r\n"
@@ -85,13 +85,17 @@ public interface Banner extends Coloreable{
 			+ "#         #     # #######  #####  ####### #     #  #####      #\n" 
 			+ "#                                                             #" + RESET;
 	
-	public static void ganador(int jugador) {
+	public static void mostrarGanador(int jugador) {
 		if(jugador == 1) System.out.println(jugador1win); 
 		else if(jugador == 2) System.out.println(jugador2win);
 		else System.out.println(empate);
 	}
 	
-	public static void tablero(Hoyo[] tablero) {
+    public static void mostrarDespedida() {
+    	System.out.println(DESPEDIDA);
+    }
+	
+	public static void mostrarTablero(Hoyo[] tablero) {
 		String tableros = FONDONEGRO + "************************************************\n";
 		tableros += "*              << mancala game>>               *\n";
 		tableros += "*                                              *\n";
@@ -120,7 +124,7 @@ public interface Banner extends Coloreable{
 		tableros += "\n";
 		tableros += "*" + AZUL + "          A    B    C    D    E    F          " + BLANCO + "*\n";
 		 tableros += "*                                              *\n";
-		tableros += "************************************************";
+		tableros += "************************************************" + RESET;
 		System.out.println(tableros);
 	}
 }
