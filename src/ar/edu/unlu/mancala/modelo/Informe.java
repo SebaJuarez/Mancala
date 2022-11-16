@@ -1,5 +1,6 @@
 package ar.edu.unlu.mancala.modelo;
 
+
 public enum Informe {
 	LISTOPARACOMENZAR,
 	POSICIONINEXISTENTE,

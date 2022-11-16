@@ -3,12 +3,13 @@ package ar.edu.unlu.mancala.vista.consola;
 import java.util.LinkedList;
 import java.util.Scanner;
 import ar.edu.unlu.mancala.commons.Banner;
+import ar.edu.unlu.mancala.commons.Vista;
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Posicion;
 
-public class VistaConsola{
+public class VistaConsola implements Vista{
 
 	private MancalaController controlador;
 	private Scanner sc = new Scanner(System.in);
@@ -17,16 +18,12 @@ public class VistaConsola{
 		Banner.mostrarTablero(hoyos);
 	}
 
-
+	@Override
 	public void iniciar() {
 		OpcionesMenuPrincipalConsola opcion = OpcionesMenuPrincipalConsola.NULO;
 		while (opcion != OpcionesMenuPrincipalConsola.ACCEDERALMENUPRINCIPAL) {
 			OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal();
-			try {
-				opcion = OpcionesMenuPrincipalConsola.values()[sc.nextInt()];
-			} catch (Exception e) {
-				this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
-			}
+			opcion = validarEntradaMenuPrincipal();
 			switch (opcion) {
 			case REGLAS:
 				mostrarReglas();
@@ -41,8 +38,7 @@ public class VistaConsola{
 	}
 
 	private void mostrarReglas() {
-		//OpcionesMenuPrincipalConsola.mostrarReglas();
-		Regla.mostrarReglas();
+		Reglamento.mostrarReglas();
 		precioneEnter();
 	}
 
@@ -87,26 +83,24 @@ public class VistaConsola{
 	}
 
 	private void precioneEnter() {
-		Scanner scenter = new Scanner(System.in);
 		this.mostrarMensaje("Presione enter para continuar", CartelAdvertencia.NORMAL);
-		scenter.nextLine();		
+		sc.nextLine();
 	}
 	
 	private void mostrarMenuInicio() {
 		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO;
 		while (opcion != OpcionesMenuInicioConsola.SALIR) {
 			OpcionesMenuInicioConsola.mostrarOpcionesMenuInicio();
-			try {
-				opcion = OpcionesMenuInicioConsola.values()[sc.nextInt()];
-			} catch (Exception e) {
-				this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
-			}
+			opcion = validarEntradaMenuInicio();
 			switch (opcion) {
 			case REGISTRAR_JUGADOR:
 				registroJugador();
 				break;
 			case COMENZAR_PARTIDA:
 				comenzarPartida();
+				break;
+			case CONTINUAR_PARTIDA:
+				controlador.continuarPartida();
 				break;
 			case LISTAR_JUGADORES:
 				controlador.obtenerJugadores();
@@ -124,13 +118,12 @@ public class VistaConsola{
 
 	private void registroJugador() {
 		String nombre = "";
-		Scanner scline = new Scanner(System.in);
 		this.mostrarMensaje("ingrese el nombre del jugador", CartelAdvertencia.NORMAL);
-		nombre = scline.nextLine();
+		nombre = sc.nextLine();
 		while (nombre.isEmpty()) {
 			this.mostrarMensaje("No se admiten nombres vacios!", CartelAdvertencia.ERROR);
 			this.mostrarMensaje("ingrese el nombre del jugador", CartelAdvertencia.ADVERTENCIA);
-			nombre = scline.nextLine();
+			nombre = sc.nextLine();
 		}
 		controlador.agregarJugador(nombre);
 		precioneEnter();
@@ -158,6 +151,52 @@ public class VistaConsola{
 		this.mostrarMensaje("Empatadas -> " + jugador.getPartidasEmpatadas(), CartelAdvertencia.ADVERTENCIA);
 		this.mostrarMensaje("Perdidas -> " + (jugador.getPartidasJugadas() - jugador.getPartidasGanadas() - jugador.getPartidasEmpatadas()),CartelAdvertencia.ERROR);
 		this.mostrarMensaje("------------------------------------------------------------",CartelAdvertencia.NORMAL);
+	}
+	
+	@SuppressWarnings("finally")
+	private OpcionesMenuPrincipalConsola validarEntradaMenuPrincipal(){
+		String indice = "0";
+		int indice2 = 0;
+		OpcionesMenuPrincipalConsola opcion = OpcionesMenuPrincipalConsola.NULO;
+		indice = sc.nextLine();
+		try {
+			indice2 = Integer.parseInt(indice);
+		} catch (Exception e) {
+			this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
+			indice2 = 0;
+		} finally {
+			try {
+				opcion = OpcionesMenuPrincipalConsola.values()[indice2];
+			} catch(Exception e) {
+				this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
+				opcion = OpcionesMenuPrincipalConsola.NULO;
+			} finally {
+				return  opcion;			
+			}
+		}
+	}
+	
+	@SuppressWarnings("finally")
+	private OpcionesMenuInicioConsola validarEntradaMenuInicio(){
+		String indice = "0";
+		int indice2 = 0;
+		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO;
+		indice = sc.nextLine();
+		try {
+			indice2 = Integer.parseInt(indice);
+		} catch (Exception e) {
+			this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
+			indice2 = 0;
+		} finally {
+			try {
+				opcion = OpcionesMenuInicioConsola.values()[indice2];
+			} catch(Exception e) {
+				this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
+				opcion = OpcionesMenuInicioConsola.NULO;
+			} finally {
+				return  opcion;			
+			}
+		}
 	}
 
 }

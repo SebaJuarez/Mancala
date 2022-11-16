@@ -1,5 +1,6 @@
 package ar.edu.unlu.mancala.modelo;
 
+
 public enum Posicion {
 //  [  0 , 1,2,3,4,5,6 ,  7 , 8,9,10,11,12,13] ordinal del enum
 	CASAJ2,A,B,C,D,E,F,CASAJ1,G,H, I, J, K, L;

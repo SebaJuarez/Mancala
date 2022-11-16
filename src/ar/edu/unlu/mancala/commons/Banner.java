@@ -1,7 +1,9 @@
 package ar.edu.unlu.mancala.commons;
 
+
 import ar.edu.unlu.mancala.modelo.Hoyo;
 import ar.edu.unlu.mancala.modelo.Posicion;
+import ar.edu.unlu.mancala.commons.Coloreable;
 
 public interface Banner extends Coloreable{
 

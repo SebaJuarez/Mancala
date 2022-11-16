@@ -1,6 +1,10 @@
 package ar.edu.unlu.mancala.modelo;
 
-public class Hoyo {
+import java.io.Serializable;
+
+public class Hoyo implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private Posicion posicionAlfabetica;
 	private int cantHabas;
 	private final int longuitudTablero = 14;

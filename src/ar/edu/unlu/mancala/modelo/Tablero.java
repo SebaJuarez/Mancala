@@ -1,9 +1,10 @@
 package ar.edu.unlu.mancala.modelo;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import ar.edu.unlu.mancala.commons.*;
 
-public class Tablero implements TableroObservado {
+public class Tablero implements TableroObservado, Serializable {
 
 	/*     
    concepto del tablero con sus respectivas posiciones
@@ -19,6 +20,7 @@ public class Tablero implements TableroObservado {
 	ordinal            1    2    3    4    5    6         
 	 */
 
+	private static final long serialVersionUID = 1L;
 	private final int cantHabas = 4;
 	private Hoyo[] tablero = new Hoyo[14];
 	private int numeroDeRonda;
@@ -145,6 +147,10 @@ public class Tablero implements TableroObservado {
 		}
 	}
 	
+	public void setTablero(Hoyo[] tablero) {
+		this.tablero = tablero;
+	}
+	
 	// MVC-Observer zone
 	@Override
 	public void agregarObservador(Observer observer) {
@@ -155,5 +161,6 @@ public class Tablero implements TableroObservado {
 	public void notificarObservers(Object informe) {
 		this.observadores.forEach((observer) -> observer.update(this, informe));
 	}
+
 
 }

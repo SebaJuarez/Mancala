@@ -4,27 +4,34 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import ar.edu.unlu.mancala.commons.Observer;
 import ar.edu.unlu.mancala.commons.TableroObservado;
+import ar.edu.unlu.mancala.commons.Vista;
 import ar.edu.unlu.mancala.modelo.Informe;
 import ar.edu.unlu.mancala.modelo.Jugador;
+import ar.edu.unlu.mancala.modelo.Partida;
 import ar.edu.unlu.mancala.modelo.Posicion;
 import ar.edu.unlu.mancala.modelo.Tablero;
+import ar.edu.unlu.mancala.serializacion.services.AdministradorDeSerializacion;
 import ar.edu.unlu.mancala.vista.consola.*;
 
 public class MancalaController implements Observer {
 
 	private Tablero tablero;
-	LinkedList<Jugador> jugadores = new LinkedList<Jugador>();
-	private VistaConsola vistaConsola;
-	private Jugador j1, j2;
-	private int turnoJugador = 1;
+	private LinkedList<Jugador> jugadores = new LinkedList<Jugador>();
+	private Vista vistaConsola;
+	private Partida partidaActual;
+	private AdministradorDeSerializacion serializadorAdmin = new AdministradorDeSerializacion();
 
-	public MancalaController(Tablero tablero, VistaConsola vistaConsola) {
+	public MancalaController(Tablero tablero, Vista vistaConsola) {
 		this.tablero = tablero;
 		this.vistaConsola = vistaConsola;
+		if(serializadorAdmin.existeJugadoresFile()){
+			this.jugadores = serializadorAdmin.obtenerJugadores();
+			Jugador.ids = this.jugadores.getLast().getId() + 1;	
+		}
 	}
 
 	public void mover(Posicion p) {
-		tablero.moverHabas(p, this.turnoJugador);
+		tablero.moverHabas(p, partidaActual.getTurno());
 	}
 
 	public boolean comenzarJuego(int j1, int j2) {
@@ -38,11 +45,11 @@ public class MancalaController implements Observer {
 			this.vistaConsola.mostrarMensaje("ID del jugador 2 no existe", CartelAdvertencia.ERROR);
 			return false;
 		}
-		this.j1 = jugador1;
-		this.j2 = jugador2;
+		partidaActual = new Partida(jugador1,jugador2,tablero.getTablero());
+		serializadorAdmin.guardar(partidaActual);
 		this.tablero.inicializarFichas();
 		return true;
-	}
+	}	
 	
 	private Jugador buscarJugador(int id) {
 		for(Jugador jugador : this.jugadores) {
@@ -53,10 +60,11 @@ public class MancalaController implements Observer {
 
 	@Override
 	public void update(TableroObservado observado, Object informe) {
+		partidaActual.setUltimoEstado((Informe)informe);
 		switch ((Informe) informe) {
 		case LISTOPARACOMENZAR : {
 			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
-			vistaConsola.mostrarMensaje(" TURNO DEL JUGAODR " + this.turnoJugador + ": " + this.jugadorOfValue(this.turnoJugador).getNombre(),CartelAdvertencia.COMPLETO);
+			vistaConsola.mostrarMensaje(" TURNO DEL JUGAODR " + partidaActual.getTurno() + ": " + partidaActual.jugadorOfValue(partidaActual.getTurno()).getNombre(),CartelAdvertencia.COMPLETO);
 			vistaConsola.movimientos();
 		}
 		case CASILLADEOTROJUGADOR: {
@@ -65,9 +73,9 @@ public class MancalaController implements Observer {
 			break;
 		}
 		case SIGUIENTEJUGADOR: {
-			this.turnoSiguienteJugador(this.turnoJugador);
+			partidaActual.turnoSiguienteJugador(partidaActual.getTurno());
 			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
-			vistaConsola.mostrarMensaje(" TURNO DEL JUGAODR " + this.turnoJugador + ": " + this.jugadorOfValue(this.turnoJugador).getNombre(),CartelAdvertencia.COMPLETO);
+			vistaConsola.mostrarMensaje(" TURNO DEL JUGAODR " + partidaActual.getTurno() + ": " + partidaActual.jugadorOfValue(partidaActual.getTurno()).getNombre(),CartelAdvertencia.COMPLETO);
 			((Tablero) observado).incNumeroDeRonda();
 			tablero.evaluarCondicion();
 			vistaConsola.movimientos();
@@ -87,43 +95,18 @@ public class MancalaController implements Observer {
 			break;
 		}
 		case JUEGOFINALIZADO: {
-			this.j1.incPartidasJugadas();
-			this.j2.incPartidasJugadas();
-			Jugador jugador = buscarGanador();
+			partidaActual.getJ1().incPartidasJugadas();
+			partidaActual.getJ2().incPartidasJugadas();
+			Jugador jugador = partidaActual.buscarGanador();
 			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
 			vistaConsola.mostrarMensaje("EL JUEGO AH FINALIZADO \nNUMERO DE RONDAS: " + ((Tablero) observado).getNumeroDeRonda(), CartelAdvertencia.COMPLETO);
-			vistaConsola.mostrarGanador(jugador,(jugador == this.j1)? 1 : (jugador == this.j2)? 2 : 0);
+			vistaConsola.mostrarGanador(jugador,(jugador == partidaActual.getJ1())? 1 : (jugador == partidaActual.getJ2())? 2 : 0);
 		}
 		default:
 			break;
 		}
 	}
 
-	private Jugador buscarGanador() {
-		if(this.tablero.getTablero()[Posicion.CASAJ1.ordinal()].getCantHabas() > this.tablero.getTablero()[Posicion.CASAJ2.ordinal()].getCantHabas() ) {
-			this.j1.incPartidasGanadas();
-			return this.j1;
-		}
-		else if(this.tablero.getTablero()[Posicion.CASAJ1.ordinal()].getCantHabas() < this.tablero.getTablero()[Posicion.CASAJ2.ordinal()].getCantHabas()) {
-			this.j2.incPartidasGanadas();
-			return this.j2;			
-		}
-		else {
-			this.j1.incPartidasEmpatadas();
-			this.j2.incPartidasEmpatadas();
-			return null;
-		}
-	}
-
-	private void turnoSiguienteJugador(int jugadorActual) {
-		this.turnoJugador = (jugadorActual == 1)? 2 : 1;
-	}
-
-	private Jugador jugadorOfValue(int turno) {
-		return (turno == 1)? j1 : j2;
-	}
-
-	
 	public void topGanadores() {
 		jugadores.sort(Comparator.comparing(Jugador::getPartidasGanadas).reversed());
 		vistaConsola.mostrarJugadores(this.jugadores);
@@ -132,6 +115,7 @@ public class MancalaController implements Observer {
 	public void agregarJugador(String nombre) {
 		Jugador jugador = new Jugador(nombre);
 		jugadores.add(jugador);
+		serializadorAdmin.guardar(jugadores);
 		vistaConsola.mostrarMensaje("Jugador Creado con exito..", CartelAdvertencia.COMPLETO);
 	}
 
@@ -139,6 +123,17 @@ public class MancalaController implements Observer {
 		jugadores.sort(Comparator.comparing(Jugador::getId));
 		vistaConsola.mostrarJugadores(this.jugadores);
 	}
-	
 
+	public void continuarPartida() {
+		if(serializadorAdmin.existePartidaFile()) {
+			Partida partida = serializadorAdmin.obtenerPartida();	
+			if(partida.getUltimoEstado() != Informe.JUEGOFINALIZADO){
+				this.tablero.setTablero(partida.getTablero());
+				this.partidaActual = partida;
+				this.update(tablero, partida.getUltimoEstado());
+			} else vistaConsola.mostrarMensaje("LA ULTIMA PARTIDA AH FINALIZADO.", CartelAdvertencia.ADVERTENCIA);
+		} else  vistaConsola.mostrarMensaje("NO HAY REGISTROS DE LA ULTIMA PARTIDA.", CartelAdvertencia.ADVERTENCIA);
+
+	}
+	
 }

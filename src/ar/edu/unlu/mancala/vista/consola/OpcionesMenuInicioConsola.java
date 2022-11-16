@@ -7,9 +7,10 @@ public enum OpcionesMenuInicioConsola implements Banner {
 		NULO(""),
 	    REGISTRAR_JUGADOR (AZUL + "1) Registrar jugador nuevo" + BLANCO),
 	    COMENZAR_PARTIDA (VERDE +"2) Comenzar partida nueva" + BLANCO),
-	    LISTAR_JUGADORES (BLANCO +"3) Lista de jugadores" + BLANCO),
-	    TOP_GANADORES (AMARILLO +"4) Top ganadores" + BLANCO),
-	    SALIR (ROJO + "5) Salir" + BLANCO);
+	    CONTINUAR_PARTIDA (VERDE +"3) Continuar partida" + BLANCO),
+	    LISTAR_JUGADORES (BLANCO +"4) Lista de jugadores" + BLANCO),
+	    TOP_GANADORES (AMARILLO +"5) Top ganadores" + BLANCO),
+	    SALIR (ROJO + "6) Salir" + BLANCO);
 
 	    public final String label;
 
@@ -28,9 +29,10 @@ public enum OpcionesMenuInicioConsola implements Banner {
 	    	System.out.println("#   *                           *         *                *  #");
 	    	System.out.println("#      *            "+valueOf(1)+"                #");
 	    	System.out.println("#   *          *    "+valueOf(2)+"     *           #");
-	    	System.out.println("#          *        "+valueOf(3)+"             *       #");
-	    	System.out.println("#            *      "+valueOf(4)+"                          #");
-	    	System.out.println("#     *             "+valueOf(5)+"                     *          * #");
+	    	System.out.println("#            *      "+valueOf(3)+"                      #");
+	    	System.out.println("#            *      "+valueOf(4)+"                     #");
+	    	System.out.println("#            *      "+valueOf(5)+"                          #");
+	    	System.out.println("#     *             "+valueOf(6)+"                     *          * #");
 	    	System.out.println("#   *               *          *    *              *          #");
 	    	System.out.println("###############################################################");
 	    	System.out.print(RESET);

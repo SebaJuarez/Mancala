@@ -2,7 +2,7 @@ package ar.edu.unlu.mancala.vista.consola;
 
 import ar.edu.unlu.mancala.commons.Banner;
 
-public enum Regla implements Banner{
+public enum Reglamento implements Banner{
 	OBJETIVO(FONDONEGRO + "# " + AZUL + "OBJETIVO " + BLANCO + "                                                   #\r\n"
 				+ "# El objetivo del juego consiste en obtener más puntos que el #\n"
 				+ "# adversario mediante el traslado de las " + VIOLETA + " habas" + BLANCO + " a la zona     #\r\n"
@@ -36,13 +36,13 @@ public enum Regla implements Banner{
 	
 	public final String regla;
 
-	Regla(String regla) {
+	Reglamento(String regla) {
 		this.regla = regla;
 	}
 	
 	public static void mostrarReglas() {
 		System.out.println(Banner.LOGO);
-		for(Regla r : values()) {
+		for(Reglamento r : values()) {
 			System.out.print(r.regla);
 		}
 	}
