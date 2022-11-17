@@ -46,7 +46,6 @@ public class MancalaController implements Observer {
 			return false;
 		}
 		partidaActual = new Partida(jugador1,jugador2,tablero.getTablero());
-		serializadorAdmin.guardar(partidaActual);
 		this.tablero.inicializarFichas();
 		return true;
 	}	
@@ -94,10 +93,19 @@ public class MancalaController implements Observer {
 			vistaConsola.movimientos();
 			break;
 		}
+		case CONTINUARPARTIDA:{
+			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
+			vistaConsola.mostrarMensaje("CONTNUA EL JUEGO, TURNO DEL JUGAODR " + partidaActual.getTurno() + ": " + partidaActual.jugadorOfValue(partidaActual.getTurno()).getNombre(),CartelAdvertencia.COMPLETO);
+			((Tablero) observado).incNumeroDeRonda();
+			tablero.evaluarCondicion();
+			vistaConsola.movimientos();
+			break;
+		}
 		case JUEGOFINALIZADO: {
 			partidaActual.getJ1().incPartidasJugadas();
 			partidaActual.getJ2().incPartidasJugadas();
 			Jugador jugador = partidaActual.buscarGanador();
+			guardarDatos();
 			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
 			vistaConsola.mostrarMensaje("EL JUEGO AH FINALIZADO \nNUMERO DE RONDAS: " + ((Tablero) observado).getNumeroDeRonda(), CartelAdvertencia.COMPLETO);
 			vistaConsola.mostrarGanador(jugador,(jugador == partidaActual.getJ1())? 1 : (jugador == partidaActual.getJ2())? 2 : 0);
@@ -115,7 +123,6 @@ public class MancalaController implements Observer {
 	public void agregarJugador(String nombre) {
 		Jugador jugador = new Jugador(nombre);
 		jugadores.add(jugador);
-		serializadorAdmin.guardar(jugadores);
 		vistaConsola.mostrarMensaje("Jugador Creado con exito..", CartelAdvertencia.COMPLETO);
 	}
 
@@ -130,10 +137,15 @@ public class MancalaController implements Observer {
 			if(partida.getUltimoEstado() != Informe.JUEGOFINALIZADO){
 				this.tablero.setTablero(partida.getTablero());
 				this.partidaActual = partida;
-				this.update(tablero, partida.getUltimoEstado());
+				this.update(tablero, Informe.CONTINUARPARTIDA);
 			} else vistaConsola.mostrarMensaje("LA ULTIMA PARTIDA AH FINALIZADO.", CartelAdvertencia.ADVERTENCIA);
 		} else  vistaConsola.mostrarMensaje("NO HAY REGISTROS DE LA ULTIMA PARTIDA.", CartelAdvertencia.ADVERTENCIA);
 
+	}
+
+	public void guardarDatos() {
+		serializadorAdmin.guardar(jugadores);
+		serializadorAdmin.guardar(partidaActual);
 	}
 	
 }

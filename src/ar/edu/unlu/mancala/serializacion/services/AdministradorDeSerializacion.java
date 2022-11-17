@@ -33,7 +33,7 @@ public class AdministradorDeSerializacion {
 	}
 	
 	public void guardar(Partida partida) {
-		System.out.println(serializadorPartida.writeOneObject(partida));
+		serializadorPartida.writeOneObject(partida);
 	}
 	
 	public LinkedList<Jugador> obtenerJugadores(){

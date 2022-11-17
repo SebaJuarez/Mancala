@@ -18,7 +18,6 @@ public class VistaConsola implements Vista{
 		Banner.mostrarTablero(hoyos);
 	}
 
-	@Override
 	public void iniciar() {
 		OpcionesMenuPrincipalConsola opcion = OpcionesMenuPrincipalConsola.NULO;
 		while (opcion != OpcionesMenuPrincipalConsola.ACCEDERALMENUPRINCIPAL) {
@@ -64,12 +63,18 @@ public class VistaConsola implements Vista{
 
 	public void movimientos() {
 		Scanner mov = new Scanner(System.in);
-		Posicion pos = Posicion.getPosicionDeString(mov.nextLine());
-		while(pos == null) {
-			this.mostrarMensaje("Ingrese una posicion valida!", CartelAdvertencia.ERROR);
-			pos = Posicion.getPosicionDeString(mov.nextLine());
+		String movs = mov.nextLine();
+		if(movs.toUpperCase().equalsIgnoreCase("S")) {
+			controlador.guardarDatos();
+			movimientos();
+		} else {
+			Posicion pos = Posicion.getPosicionDeString(movs);
+			while(pos == null) {
+				this.mostrarMensaje("Ingrese una posicion valida!", CartelAdvertencia.ERROR);
+				pos = Posicion.getPosicionDeString(mov.nextLine());
+			}
+			controlador.mover(pos);			
 		}
-		controlador.mover(pos);
 	}
 
 	public void mostrarGanador(Jugador jugador , int numeroJugador) {
@@ -109,6 +114,7 @@ public class VistaConsola implements Vista{
 				controlador.topGanadores();
 				break;
 			case SALIR:
+				controlador.guardarDatos();
 				Banner.mostrarDespedida();				
 			default:
 				break;
