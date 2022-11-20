@@ -44,8 +44,7 @@ public class Partida implements Serializable {
 		if(this.tablero[Posicion.CASAJ1.ordinal()].getCantHabas() > this.tablero[Posicion.CASAJ2.ordinal()].getCantHabas() ) {
 			this.j1.incPartidasGanadas();
 			return this.j1;
-		}
-		else if(this.tablero[Posicion.CASAJ1.ordinal()].getCantHabas() < this.tablero[Posicion.CASAJ2.ordinal()].getCantHabas()) {
+		} else if(this.tablero[Posicion.CASAJ1.ordinal()].getCantHabas() < this.tablero[Posicion.CASAJ2.ordinal()].getCantHabas()){
 			this.j2.incPartidasGanadas();
 			return this.j2;			
 		}

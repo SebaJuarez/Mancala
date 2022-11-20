@@ -17,8 +17,8 @@ public class MancalaController implements Observer {
 
 	private Tablero tablero;
 	private LinkedList<Jugador> jugadores = new LinkedList<Jugador>();
-	private Vista vistaConsola;
 	private Partida partidaActual;
+	private Vista vistaConsola;
 	private AdministradorDeSerializacion serializadorAdmin = new AdministradorDeSerializacion();
 
 	public MancalaController(Tablero tablero, Vista vistaConsola) {
@@ -105,8 +105,9 @@ public class MancalaController implements Observer {
 			partidaActual.getJ1().incPartidasJugadas();
 			partidaActual.getJ2().incPartidasJugadas();
 			Jugador jugador = partidaActual.buscarGanador();
-			guardarDatos();
 			vistaConsola.mostrarTablero(((Tablero) observado).getTablero());
+			guardarJugador();
+			guardarPartida();
 			vistaConsola.mostrarMensaje("EL JUEGO AH FINALIZADO \nNUMERO DE RONDAS: " + ((Tablero) observado).getNumeroDeRonda(), CartelAdvertencia.COMPLETO);
 			vistaConsola.mostrarGanador(jugador,(jugador == partidaActual.getJ1())? 1 : (jugador == partidaActual.getJ2())? 2 : 0);
 		}
@@ -124,6 +125,11 @@ public class MancalaController implements Observer {
 		Jugador jugador = new Jugador(nombre);
 		jugadores.add(jugador);
 		vistaConsola.mostrarMensaje("Jugador Creado con exito..", CartelAdvertencia.COMPLETO);
+		
+	}
+
+	public void guardarJugador() {
+		serializadorAdmin.guardar(jugadores);
 	}
 
 	public void obtenerJugadores() {
@@ -137,14 +143,24 @@ public class MancalaController implements Observer {
 			if(partida.getUltimoEstado() != Informe.JUEGOFINALIZADO){
 				this.tablero.setTablero(partida.getTablero());
 				this.partidaActual = partida;
+				actualizarJugadores(partida.getJ1(),partida.getJ2());
 				this.update(tablero, Informe.CONTINUARPARTIDA);
 			} else vistaConsola.mostrarMensaje("LA ULTIMA PARTIDA AH FINALIZADO.", CartelAdvertencia.ADVERTENCIA);
 		} else  vistaConsola.mostrarMensaje("NO HAY REGISTROS DE LA ULTIMA PARTIDA.", CartelAdvertencia.ADVERTENCIA);
 
 	}
 
-	public void guardarDatos() {
-		serializadorAdmin.guardar(jugadores);
+	private void actualizarJugadores(Jugador jugador1, Jugador jugador2) {
+		this.jugadores.forEach(jugador -> {
+			if(jugador.getId() == jugador1.getId()) {
+				this.jugadores.set(jugadores.indexOf(jugador), jugador1);
+			} else if (jugador.getId() == jugador2.getId()) {
+				this.jugadores.set(jugadores.indexOf(jugador), jugador2);
+			}
+		});
+	}
+
+	public void guardarPartida() {
 		serializadorAdmin.guardar(partidaActual);
 	}
 	

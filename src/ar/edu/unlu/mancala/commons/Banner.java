@@ -99,7 +99,7 @@ public interface Banner extends Coloreable{
 	
 	public static void mostrarTablero(Hoyo[] tablero) {
 		String tableros = FONDONEGRO + "************************************************\n";
-		tableros += "*              << mancala game >>  " + AMARILLO + "S) guardar " + BLANCO + " *\n";
+		tableros += "*              << mancala game >>  " + AMARILLO + "S) Salir   " + BLANCO + " *\n";
 		tableros += "*                                              *\n";
 		tableros +=  "*" + ROJO + "          L    K    J    I    H    G        " + BLANCO + "  *\n";
 		tableros +=  "*" + ROJO + "   |   |" + VERDE;

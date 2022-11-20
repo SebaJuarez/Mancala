@@ -65,8 +65,8 @@ public class VistaConsola implements Vista{
 		Scanner mov = new Scanner(System.in);
 		String movs = mov.nextLine();
 		if(movs.toUpperCase().equalsIgnoreCase("S")) {
-			controlador.guardarDatos();
-			movimientos();
+			controlador.guardarPartida();
+			mostrarMenuInicio();
 		} else {
 			Posicion pos = Posicion.getPosicionDeString(movs);
 			while(pos == null) {
@@ -114,8 +114,8 @@ public class VistaConsola implements Vista{
 				controlador.topGanadores();
 				break;
 			case SALIR:
-				controlador.guardarDatos();
-				Banner.mostrarDespedida();				
+				Banner.mostrarDespedida();
+				controlador.guardarJugador();
 			default:
 				break;
 			}
