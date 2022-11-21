@@ -2,7 +2,7 @@ package ar.edu.unlu.mancala.modelo;
 
 import java.io.Serializable;
 
-public class Jugador implements Serializable{
+public class Jugador implements Serializable, IJugador{
 	private static final long serialVersionUID = 1L;
 	public static int ids = 0;
 	private int id = ids ++;

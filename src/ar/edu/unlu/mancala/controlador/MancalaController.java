@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import ar.edu.unlu.mancala.commons.Observer;
 import ar.edu.unlu.mancala.commons.TableroObservado;
 import ar.edu.unlu.mancala.commons.Vista;
+import ar.edu.unlu.mancala.modelo.IJugador;
 import ar.edu.unlu.mancala.modelo.Informe;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Partida;
@@ -53,6 +54,7 @@ public class MancalaController implements Observer {
 		this.tablero.inicializarFichas();
 		return true;
 	}	
+	
 	
 	private Jugador buscarJugador(int id) {
 		for(Jugador jugador : this.jugadores) {
@@ -124,12 +126,11 @@ public class MancalaController implements Observer {
 		jugadores.sort(Comparator.comparing(Jugador::getPartidasGanadas).reversed());
 		vistaConsola.mostrarJugadores(this.jugadores);
 	}
-	
+
 	public void agregarJugador(String nombre) {
 		Jugador jugador = new Jugador(nombre);
 		jugadores.add(jugador);
 		vistaConsola.mostrarMensaje("Jugador Creado con exito..", CartelAdvertencia.COMPLETO);
-		
 	}
 
 	public void guardarJugador() {
@@ -142,21 +143,24 @@ public class MancalaController implements Observer {
 	}
 
 	public void continuarPartida() {
-		if(serializadorAdmin.existePartidaFile()) {
-			Partida partida = serializadorAdmin.obtenerPartida();	
-			if(partida.getUltimoEstado() != Informe.JUEGOFINALIZADO){
+		if (serializadorAdmin.existePartidaFile()) {
+			Partida partida = serializadorAdmin.obtenerPartida();
+			if (partida.getUltimoEstado() != Informe.JUEGOFINALIZADO) {
 				this.tablero.setTablero(partida.getTablero());
+				this.tablero.setNumeroDeRonda(partida.getNumeroDeRonda());
 				this.partidaActual = partida;
-				actualizarJugadores(partida.getJ1(),partida.getJ2());
+				actualizarJugadores(partida.getJ1(), partida.getJ2());
 				this.update(tablero, Informe.CONTINUARPARTIDA);
-			} else vistaConsola.mostrarMensaje("LA ULTIMA PARTIDA AH FINALIZADO.", CartelAdvertencia.ADVERTENCIA);
-		} else  vistaConsola.mostrarMensaje("NO HAY REGISTROS DE LA ULTIMA PARTIDA.", CartelAdvertencia.ADVERTENCIA);
+			} else
+				vistaConsola.mostrarMensaje("LA ULTIMA PARTIDA AH FINALIZADO.", CartelAdvertencia.ADVERTENCIA);
+		} else
+			vistaConsola.mostrarMensaje("NO HAY REGISTROS DE LA ULTIMA PARTIDA.", CartelAdvertencia.ADVERTENCIA);
 
 	}
 
 	private void actualizarJugadores(Jugador jugador1, Jugador jugador2) {
 		this.jugadores.forEach(jugador -> {
-			if(jugador.getId() == jugador1.getId()) {
+			if (jugador.getId() == jugador1.getId()) {
 				this.jugadores.set(jugadores.indexOf(jugador), jugador1);
 			} else if (jugador.getId() == jugador2.getId()) {
 				this.jugadores.set(jugadores.indexOf(jugador), jugador2);
@@ -165,7 +169,8 @@ public class MancalaController implements Observer {
 	}
 
 	public void guardarPartida() {
+		partidaActual.setNumeroDeRonda(tablero.getNumeroDeRonda());
 		serializadorAdmin.guardar(partidaActual);
 	}
-	
+
 }

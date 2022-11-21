@@ -6,17 +6,15 @@ import ar.edu.unlu.mancala.commons.Banner;
 import ar.edu.unlu.mancala.commons.Vista;
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.Hoyo;
+import ar.edu.unlu.mancala.modelo.IJugador;
+import ar.edu.unlu.mancala.modelo.Ihoyo;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Posicion;
 
-public class VistaConsola implements Vista{
+public class VistaConsola implements Vista {
 
 	private MancalaController controlador;
 	private Scanner sc = new Scanner(System.in);
-
-	public void mostrarTablero(Hoyo[] hoyos) {
-		Banner.mostrarTablero(hoyos);
-	}
 
 	public void iniciar() {
 		OpcionesMenuPrincipalConsola opcion = OpcionesMenuPrincipalConsola.NULO;
@@ -29,6 +27,37 @@ public class VistaConsola implements Vista{
 				break;
 			case ACCEDERALMENUPRINCIPAL:
 				mostrarMenuInicio();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	private void mostrarMenuInicio() {
+		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO;
+		while (opcion != OpcionesMenuInicioConsola.SALIR) {
+			OpcionesMenuInicioConsola.mostrarOpcionesMenuInicio();
+			opcion = validarEntradaMenuInicio();
+			switch (opcion) {
+			case REGISTRAR_JUGADOR:
+				registroJugador();
+				break;
+			case COMENZAR_PARTIDA:
+				comenzarPartida();
+				break;
+			case CONTINUAR_PARTIDA:
+				controlador.continuarPartida();
+				break;
+			case LISTAR_JUGADORES:
+				controlador.obtenerJugadores();
+				break;
+			case TOP_GANADORES:
+				controlador.topGanadores();
+				break;
+			case SALIR:
+				Banner.mostrarDespedida();
+				controlador.guardarJugador();
 				break;
 			default:
 				break;
@@ -64,25 +93,26 @@ public class VistaConsola implements Vista{
 	public void movimientos() {
 		Scanner mov = new Scanner(System.in);
 		String movs = mov.nextLine();
-		if(movs.toUpperCase().equalsIgnoreCase("S")) {
+		if (movs.toUpperCase().equalsIgnoreCase("S")) {
 			controlador.guardarPartida();
 			mostrarMenuInicio();
 		} else {
 			Posicion pos = Posicion.getPosicionDeString(movs);
-			while(pos == null) {
+			while (pos == null) {
 				this.mostrarMensaje("Ingrese una posicion valida!", CartelAdvertencia.ERROR);
 				pos = Posicion.getPosicionDeString(mov.nextLine());
 			}
-			controlador.mover(pos);			
+			controlador.mover(pos);
 		}
 	}
 
-	public void mostrarGanador(Jugador jugador , int numeroJugador) {
+	@Override
+	public void mostrarGanador(IJugador jugador, int numeroJugador) {
 		Banner.mostrarGanador(numeroJugador);
-		if(jugador != null) 	
+		if (jugador != null)
 			this.mostrarJugador(jugador);
-		 else 
-			 this.mostrarMensaje("EMPATE!!", CartelAdvertencia.ADVERTENCIA);
+		else
+			this.mostrarMensaje("EMPATE!!", CartelAdvertencia.ADVERTENCIA);
 		precioneEnter();
 		this.mostrarMenuInicio();
 	}
@@ -91,35 +121,9 @@ public class VistaConsola implements Vista{
 		this.mostrarMensaje("Presione enter para continuar", CartelAdvertencia.NORMAL);
 		sc.nextLine();
 	}
-	
-	private void mostrarMenuInicio() {
-		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO;
-		while (opcion != OpcionesMenuInicioConsola.SALIR) {
-			OpcionesMenuInicioConsola.mostrarOpcionesMenuInicio();
-			opcion = validarEntradaMenuInicio();
-			switch (opcion) {
-			case REGISTRAR_JUGADOR:
-				registroJugador();
-				break;
-			case COMENZAR_PARTIDA:
-				comenzarPartida();
-				break;
-			case CONTINUAR_PARTIDA:
-				controlador.continuarPartida();
-				break;
-			case LISTAR_JUGADORES:
-				controlador.obtenerJugadores();
-				break;
-			case TOP_GANADORES:
-				controlador.topGanadores();
-				break;
-			case SALIR:
-				Banner.mostrarDespedida();
-				controlador.guardarJugador();
-			default:
-				break;
-			}
-		}
+
+	public void setControlador(MancalaController controlador) {
+		this.controlador = controlador;
 	}
 
 	private void registroJugador() {
@@ -139,28 +143,29 @@ public class VistaConsola implements Vista{
 		CartelAdvertencia.mostrarMensaje(info, advertencia);
 	}
 
-	public void setControlador(MancalaController controlador) {
-		this.controlador = controlador;
-	}
-
+	@Override
 	public void mostrarJugadores(LinkedList<Jugador> jugadores) {
-		for (Jugador jugador : jugadores) 
+		for (IJugador jugador : jugadores)
 			mostrarJugador(jugador);
 		precioneEnter();
 	}
-	
-	private void mostrarJugador(Jugador jugador) {
+
+	private void mostrarJugador(IJugador jugador) {
 		this.mostrarMensaje("ID: " + jugador.getId() + "-------------------------------------------------------",CartelAdvertencia.NORMAL);
 		this.mostrarMensaje("Nombre -> " + jugador.getNombre(), CartelAdvertencia.NORMAL);
 		this.mostrarMensaje("Jugadas -> " + jugador.getPartidasJugadas(), CartelAdvertencia.NORMAL);
 		this.mostrarMensaje("Ganadas -> " + jugador.getPartidasGanadas(), CartelAdvertencia.COMPLETO);
 		this.mostrarMensaje("Empatadas -> " + jugador.getPartidasEmpatadas(), CartelAdvertencia.ADVERTENCIA);
 		this.mostrarMensaje("Perdidas -> " + (jugador.getPartidasJugadas() - jugador.getPartidasGanadas() - jugador.getPartidasEmpatadas()),CartelAdvertencia.ERROR);
-		this.mostrarMensaje("------------------------------------------------------------",CartelAdvertencia.NORMAL);
+		this.mostrarMensaje("------------------------------------------------------------", CartelAdvertencia.NORMAL);
 	}
-	
+
+	public void mostrarTablero(Ihoyo[] hoyos) {
+		Banner.mostrarTablero(hoyos);
+	}
+
 	@SuppressWarnings("finally")
-	private OpcionesMenuPrincipalConsola validarEntradaMenuPrincipal(){
+	private OpcionesMenuPrincipalConsola validarEntradaMenuPrincipal() {
 		String indice = "0";
 		int indice2 = 0;
 		OpcionesMenuPrincipalConsola opcion = OpcionesMenuPrincipalConsola.NULO;
@@ -168,22 +173,22 @@ public class VistaConsola implements Vista{
 		try {
 			indice2 = Integer.parseInt(indice);
 		} catch (Exception e) {
-			this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
+			this.mostrarMensaje("Ingrese un numero!!", CartelAdvertencia.ADVERTENCIA);
 			indice2 = 0;
 		} finally {
 			try {
 				opcion = OpcionesMenuPrincipalConsola.values()[indice2];
-			} catch(Exception e) {
+			} catch (Exception e) {
 				this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
 				opcion = OpcionesMenuPrincipalConsola.NULO;
 			} finally {
-				return  opcion;			
+				return opcion;
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("finally")
-	private OpcionesMenuInicioConsola validarEntradaMenuInicio(){
+	private OpcionesMenuInicioConsola validarEntradaMenuInicio() {
 		String indice = "0";
 		int indice2 = 0;
 		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO;
@@ -191,18 +196,17 @@ public class VistaConsola implements Vista{
 		try {
 			indice2 = Integer.parseInt(indice);
 		} catch (Exception e) {
-			this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
+			this.mostrarMensaje("Ingrese un numero!!", CartelAdvertencia.ADVERTENCIA);
 			indice2 = 0;
 		} finally {
 			try {
 				opcion = OpcionesMenuInicioConsola.values()[indice2];
-			} catch(Exception e) {
+			} catch (Exception e) {
 				this.mostrarMensaje("Numero de opcion invalida!!", CartelAdvertencia.ERROR);
 				opcion = OpcionesMenuInicioConsola.NULO;
 			} finally {
-				return  opcion;			
+				return opcion;
 			}
 		}
 	}
-
 }

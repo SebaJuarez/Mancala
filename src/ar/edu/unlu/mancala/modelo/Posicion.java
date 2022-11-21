@@ -13,7 +13,7 @@ public enum Posicion {
 	//devuelve la posicion desde un ordinal
 	public static Posicion getPosicionPorValor(int p) {
 		  for(Posicion n : values()){
-			  if(n.ordinal() == p) return n;
+			  if(compararPosicionConOrdinal(n,p)) return n;
 	        }
 		  return null;
 	}
@@ -63,7 +63,7 @@ public enum Posicion {
 		}
 	}
 	
-	//devuelve la posicion opuesta del tablero a la posicion pasada por parametros
+	//devuelve la posicion de un string
 	public static Posicion getPosicionDeString(String p) {
 		p = p.toUpperCase();
 		switch(p){

@@ -10,6 +10,7 @@ public class Partida implements Serializable {
 	private int turno = 1;
 	private Hoyo[] tablero;
 	private int ultimoEstado;
+	private int numeroDeRonda;
 	
 	public Partida(Jugador j1, Jugador j2, Hoyo[] tablero) {
 		this.j1 = j1;
@@ -70,5 +71,12 @@ public class Partida implements Serializable {
 	public void setUltimoEstado(Informe ultimoEstado) {
 		this.ultimoEstado = ultimoEstado.ordinal();
 	}
-	
+
+	public int getNumeroDeRonda() {
+		return this.numeroDeRonda;
+	}
+
+	public void setNumeroDeRonda(int numeroDeRonda) {
+		this.numeroDeRonda = numeroDeRonda;
+	}
 }

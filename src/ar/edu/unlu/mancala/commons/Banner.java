@@ -1,9 +1,8 @@
 package ar.edu.unlu.mancala.commons;
 
 
-import ar.edu.unlu.mancala.modelo.Hoyo;
+import ar.edu.unlu.mancala.modelo.Ihoyo;
 import ar.edu.unlu.mancala.modelo.Posicion;
-import ar.edu.unlu.mancala.commons.Coloreable;
 
 public interface Banner extends Coloreable{
 
@@ -97,7 +96,7 @@ public interface Banner extends Coloreable{
     	System.out.println(DESPEDIDA);
     }
 	
-	public static void mostrarTablero(Hoyo[] tablero) {
+	public static void mostrarTablero(Ihoyo[] tablero) {
 		String tableros = FONDONEGRO + "************************************************\n";
 		tableros += "*              << mancala game >>  " + AMARILLO + "S) Salir   " + BLANCO + " *\n";
 		tableros += "*                                              *\n";
