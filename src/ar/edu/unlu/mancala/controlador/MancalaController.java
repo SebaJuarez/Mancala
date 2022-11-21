@@ -45,6 +45,10 @@ public class MancalaController implements Observer {
 			this.vistaConsola.mostrarMensaje("ID del jugador 2 no existe", CartelAdvertencia.ERROR);
 			return false;
 		}
+		if(jugador1 == jugador2 ) {
+			this.vistaConsola.mostrarMensaje("No se admiten jugadores iguales", CartelAdvertencia.ERROR);
+			return false;
+		}
 		partidaActual = new Partida(jugador1,jugador2,tablero.getTablero());
 		this.tablero.inicializarFichas();
 		return true;
