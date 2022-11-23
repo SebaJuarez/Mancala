@@ -5,10 +5,8 @@ import java.util.Scanner;
 import ar.edu.unlu.mancala.commons.Banner;
 import ar.edu.unlu.mancala.commons.Vista;
 import ar.edu.unlu.mancala.controlador.MancalaController;
-import ar.edu.unlu.mancala.modelo.Hoyo;
-import ar.edu.unlu.mancala.modelo.IJugador;
-import ar.edu.unlu.mancala.modelo.Ihoyo;
-import ar.edu.unlu.mancala.modelo.Jugador;
+import ar.edu.unlu.mancala.modelo.JugadorMostrable;
+import ar.edu.unlu.mancala.modelo.HoyoMostrable;
 import ar.edu.unlu.mancala.modelo.Posicion;
 
 public class VistaConsola implements Vista {
@@ -107,7 +105,7 @@ public class VistaConsola implements Vista {
 	}
 
 	@Override
-	public void mostrarGanador(IJugador jugador, int numeroJugador) {
+	public void mostrarGanador(JugadorMostrable jugador, int numeroJugador) {
 		Banner.mostrarGanador(numeroJugador);
 		if (jugador != null)
 			this.mostrarJugador(jugador);
@@ -144,13 +142,13 @@ public class VistaConsola implements Vista {
 	}
 
 	@Override
-	public void mostrarJugadores(LinkedList<Jugador> jugadores) {
-		for (IJugador jugador : jugadores)
+	public void mostrarJugadores(LinkedList<JugadorMostrable> jugadores) {
+		for (JugadorMostrable jugador : jugadores)
 			mostrarJugador(jugador);
 		precioneEnter();
 	}
 
-	private void mostrarJugador(IJugador jugador) {
+	private void mostrarJugador(JugadorMostrable jugador) {
 		this.mostrarMensaje("ID: " + jugador.getId() + "-------------------------------------------------------",CartelAdvertencia.NORMAL);
 		this.mostrarMensaje("Nombre -> " + jugador.getNombre(), CartelAdvertencia.NORMAL);
 		this.mostrarMensaje("Jugadas -> " + jugador.getPartidasJugadas(), CartelAdvertencia.NORMAL);
@@ -160,7 +158,7 @@ public class VistaConsola implements Vista {
 		this.mostrarMensaje("------------------------------------------------------------", CartelAdvertencia.NORMAL);
 	}
 
-	public void mostrarTablero(Ihoyo[] hoyos) {
+	public void mostrarTablero(HoyoMostrable[] hoyos) {
 		Banner.mostrarTablero(hoyos);
 	}
 

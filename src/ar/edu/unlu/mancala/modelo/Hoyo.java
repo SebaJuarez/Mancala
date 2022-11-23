@@ -2,7 +2,7 @@ package ar.edu.unlu.mancala.modelo;
 
 import java.io.Serializable;
 
-public class Hoyo implements Ihoyo,Serializable{
+public class Hoyo implements HoyoMostrable,Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Posicion posicionAlfabetica;

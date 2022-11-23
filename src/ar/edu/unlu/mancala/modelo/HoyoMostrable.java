@@ -1,5 +1,5 @@
 package ar.edu.unlu.mancala.modelo;
 
-public interface Ihoyo {
+public interface HoyoMostrable {
 	int getCantHabas();
 }

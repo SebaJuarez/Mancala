@@ -1,6 +1,6 @@
 package ar.edu.unlu.mancala.modelo;
 
-public interface IJugador {
+public interface JugadorMostrable {
 
 	int getId();
 

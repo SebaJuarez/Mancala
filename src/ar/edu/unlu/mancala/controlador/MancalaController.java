@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import ar.edu.unlu.mancala.commons.Observer;
 import ar.edu.unlu.mancala.commons.TableroObservado;
 import ar.edu.unlu.mancala.commons.Vista;
-import ar.edu.unlu.mancala.modelo.IJugador;
+import ar.edu.unlu.mancala.modelo.JugadorMostrable;
 import ar.edu.unlu.mancala.modelo.Informe;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Partida;
@@ -124,7 +124,11 @@ public class MancalaController implements Observer {
 
 	public void topGanadores() {
 		jugadores.sort(Comparator.comparing(Jugador::getPartidasGanadas).reversed());
-		vistaConsola.mostrarJugadores(this.jugadores);
+		LinkedList<JugadorMostrable> jugadoresMostrables = new LinkedList<JugadorMostrable>();
+		this.jugadores.forEach(jugador -> {
+			jugadoresMostrables.add(jugador);
+		});
+		vistaConsola.mostrarJugadores(jugadoresMostrables);
 	}
 
 	public void agregarJugador(String nombre) {
@@ -139,7 +143,11 @@ public class MancalaController implements Observer {
 
 	public void obtenerJugadores() {
 		jugadores.sort(Comparator.comparing(Jugador::getId));
-		vistaConsola.mostrarJugadores(this.jugadores);
+		LinkedList<JugadorMostrable> jugadoresMostrables = new LinkedList<JugadorMostrable>();
+		this.jugadores.forEach(jugador -> {
+			jugadoresMostrables.add(jugador);
+		});
+		vistaConsola.mostrarJugadores(jugadoresMostrables);
 	}
 
 	public void continuarPartida() {
