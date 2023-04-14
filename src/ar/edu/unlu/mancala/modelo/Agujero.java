@@ -12,6 +12,10 @@ public abstract class Agujero {
 	        this.jugador = indice <= 6? 1 : 2;
 	    }
 
+	    public void ponerHaba() {
+	    	this.habas ++;
+	    }
+	    
 	    public int getHabas() {
 	        return habas;
 	    }
@@ -34,7 +38,7 @@ public abstract class Agujero {
 
 		@Override
 		public String toString() {
-			return  this.getClass().getName() + "[habas=" + habas + ", indice=" + indice + ", jugador=" + jugador + "]";
+			return  this.getClass().getSimpleName() + "[habas=" + habas + ", indice=" + indice + ", jugador=" + jugador + "]";
 		}
 
 

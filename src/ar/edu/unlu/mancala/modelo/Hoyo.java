@@ -6,6 +6,12 @@ public class Hoyo extends Agujero {
 		super(habas,indice);
 	}
 	
+	public int tomarHabas() {
+		int habas = this.getHabas();
+		this.setHabas(0);
+		return habas;
+	}
+	
 	@Override
 	public boolean esCasa() {
 		return false;
