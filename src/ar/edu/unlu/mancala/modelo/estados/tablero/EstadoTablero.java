@@ -1,0 +1,10 @@
+package ar.edu.unlu.mancala.modelo.estados.tablero;
+
+public enum EstadoTablero {
+	MOVIMIENTO_REALIZADO,
+	MOVIMIENTO_VALIDO,
+	MOVIMIENTO_INVALIDO_RANGO, 
+	MOVIMIENTO_INVALIDO_POSICION, 
+	CAPTURA_REALIZADA, 
+	TURNO_INVALIDO;
+}
