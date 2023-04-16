@@ -22,7 +22,8 @@ public class MoveValidator {
 	}
 
 	private boolean enPosicion(Tablero tablero, int jugador, int indice) {
-		return (tablero.getAgujeros()[indice].getJugador() == jugador);
+		return (tablero.getAgujeros()[indice].getJugador() == jugador &&
+				tablero.getAgujeros()[indice] instanceof Hoyo);
 	}
 
 	private boolean enRango(int indice, Tablero tablero) {

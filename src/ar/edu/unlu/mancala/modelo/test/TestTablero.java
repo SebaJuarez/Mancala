@@ -15,9 +15,12 @@ public class TestTablero {
 		partida.conectarJugador(user);
 		partida.conectarJugador(user);
 		System.out.println(partida.getJugadores().toString());
-		Tablero tablero = new Tablero();
-		System.out.println(tablero.getAgujeros().length);
-		System.out.println((((int) Math.random()*2)+1));
+		System.out.println(partida.iniciarPartida());
+		System.out.println(partida.mover(1, 2));
+		System.out.println(partida.mover(7, 1));
+		System.out.println(partida.mover(4, 1));
+		System.out.println(partida.mover(5, 1));
+		System.out.println(partida.getTablero().toString());
 		/*
 		mostrar(tablero);
 		System.out.println(tablero.mover(5, 1)); 
