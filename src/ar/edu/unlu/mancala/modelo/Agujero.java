@@ -35,6 +35,8 @@ public abstract class Agujero {
 	    public abstract boolean esCasa();
 
 	    public abstract boolean esHoyo();
+	    
+	    public abstract int siguienteAgujero(int jugadorActual, int longuitudTablero);
 
 		@Override
 		public String toString() {

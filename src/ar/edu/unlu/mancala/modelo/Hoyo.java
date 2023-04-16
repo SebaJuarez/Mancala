@@ -13,6 +13,11 @@ public class Hoyo extends Agujero {
 	}
 	
 	@Override
+	public int siguienteAgujero(int jugador, int longuitudTablero) {
+       return (this.getIndice() + 1) % longuitudTablero;
+    }
+	
+	@Override
 	public boolean esCasa() {
 		return false;
 	}
