@@ -69,5 +69,13 @@ public class Tablero {
 	public int getPOS_CASAJ2() {
 		return POS_CASAJ2;
 	}
+	
+	public String toString() {
+		
+		return null;
+	}
+
+
+	
 
 }
