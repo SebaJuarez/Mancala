@@ -1,17 +1,17 @@
 package ar.edu.unlu.mancala.modelo.test;
 
 import ar.edu.unlu.mancala.modelo.Jugador;
-import ar.edu.unlu.mancala.modelo.MancalaPartia;
+import ar.edu.unlu.mancala.modelo.MancalaPartida;
 import ar.edu.unlu.mancala.modelo.Tablero;
 
 public class TestTablero {
 
 	public static void main(String[] args) {
 		
-		MancalaPartia partida = new MancalaPartia();
+		MancalaPartida partida = new MancalaPartida();
 		Jugador user = new Jugador();
 		partida.conectarJugador(user);
-		partida.conectarJugador(user);
+		System.out.println(partida.iniciarPartida());
 		partida.conectarJugador(user);
 		partida.conectarJugador(user);
 		System.out.println(partida.getJugadores().toString());
@@ -30,7 +30,6 @@ public class TestTablero {
 		System.out.println(tablero.mover(1, 1));
 		mostrar(tablero);
 		*/
-		
 	}
 
 	public static void mostrar(Tablero tablero) {
@@ -38,6 +37,6 @@ public class TestTablero {
 		for(int i = 0; i < tablero.getAgujeros().length; i++) {
 			System.out.println(tablero.getAgujeros()[i].toString());
 		}
-		System.out.println("movimeitno");
+		System.out.println("movimiento");
 	}
 }

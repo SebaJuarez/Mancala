@@ -6,14 +6,14 @@ import java.util.Map;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 
-public class MancalaPartia {
+public class MancalaPartida {
 
 	private Map<Integer, Jugador> jugadores;
 	private Tablero tablero;
 	private MoveValidator moveValidator;
 	private int turnoActual;
 
-	public MancalaPartia() {
+	public MancalaPartida() {
 		this.jugadores = new HashMap<Integer, Jugador>(2);
 	}
 
@@ -40,7 +40,12 @@ public class MancalaPartia {
 	}
 
 	public EstadoTablero mover(int indice, int jugador) {
-		return this.moveValidator.validarMovimiento(tablero, turnoActual, jugador, indice);
+		// valido el movimiento 
+		EstadoTablero estado = this.moveValidator.validarMovimiento(tablero, turnoActual, jugador, indice);
+		// si el movimiento es valido entonces cambio el turno
+		if (estado == EstadoTablero.MOVIMIENTO_VALIDO) 
+			this.cambiarTurno();
+		return estado;
 	}
 
 	public EstadoPartida termino() {
@@ -60,6 +65,10 @@ public class MancalaPartia {
 		return ladoVacio ? EstadoPartida.PARTIDA_TERMINADA : EstadoPartida.PARTIDA_EN_PROGRESO;
 	}
 
+	public void cambiarTurno() {
+		this.turnoActual = (this.turnoActual == 1) ? 2 : 1;
+	}
+	
 	public Tablero getTablero() {
 		return tablero;
 	}
