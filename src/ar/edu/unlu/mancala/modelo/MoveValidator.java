@@ -18,7 +18,15 @@ public class MoveValidator {
 			return EstadoTablero.MOVIMIENTO_INVALIDO_POSICION;
 		}
 		
+		if(!hayHabas(tablero,indice)) {
+			return EstadoTablero.MOVIMIENTO_INVALIDO_HABAS;
+		}
+		
 		return EstadoTablero.MOVIMIENTO_VALIDO;
+	}
+
+	private boolean hayHabas(Tablero tablero, int indice) {
+		return (tablero.getAgujeros()[indice].getHabas() != 0);
 	}
 
 	private boolean enPosicion(Tablero tablero, int jugador, int indice) {
