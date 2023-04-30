@@ -22,6 +22,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
+import ar.edu.unlu.mancala.modelo.Jugador;
+import ar.edu.unlu.mancala.modelo.Tablero;
 
 public class VistaConsola extends JFrame {
 
@@ -29,8 +31,12 @@ public class VistaConsola extends JFrame {
     private JTextField campoTexto;
     private JTextArea pantalla;
     private MancalaController controlador;
+    private EstadosFlujo estadoFlujo = EstadosFlujo.LOGIN;
+    private String textoActual ;
+    private JPanel panelComandos;
 
-    public VistaConsola() {
+
+	public VistaConsola() {
         // Configuración de la ventana principal
         setTitle("Consola");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,15 +53,42 @@ public class VistaConsola extends JFrame {
         
         // Creación del campo de texto para escribir los comandos
         campoTexto = new JTextField(50);
+        campoTexto.setToolTipText("");
         campoTexto.setFont(new Font("Consolas", Font.PLAIN, 12));
         campoTexto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Cuando se presiona ENTER en el campo de texto, se agrega el comando a la pantalla
+            	
+            	
+            	switch(estadoFlujo) {
+            	case LOGIN :
+            		textoActual = nextLine();
+            		Jugador jugador = new Jugador();
+            		jugador.setNombre(textoActual);
+            		controlador.setJugador(jugador);
+            		estadoFlujo = EstadosFlujo.MOVIMIENTOS;
+            		formularioMovimientos();
+            		break;
+            	case MOVIMIENTOS :
+            		controlador.mover(Integer.parseInt(nextLine()));
+            		;
+            		break;
+            	}
+            	
+            	
                 String entrada = campoTexto.getText();
                 pantalla.append("$ " + entrada + "\n");
                 campoTexto.setText("");
             }
+
+			private void formularioMovimientos() {
+				println("ingrese su nombre");				
+			}
+
+			private String nextLine() {
+				return campoTexto.getText();
+			}
         });
         
         // Creación del botón para enviar los comandos
@@ -80,11 +113,8 @@ public class VistaConsola extends JFrame {
             }});
         
         // Creación del panel para el campo de texto y el botón
-        JPanel panelComandos = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelComandos.setBorder(BorderFactory.createCompoundBorder(
-                new EmptyBorder(5, 5, 5, 5),
-                BorderFactory.createLineBorder(Color.GRAY)
-        ));
+        panelComandos = new JPanel();
+        panelComandos.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panelComandos.add(campoTexto);
         panelComandos.add(botonEnviar);
         
@@ -99,49 +129,40 @@ public class VistaConsola extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-        mostrarMenuInicio();
+        formularioUsuario();
+        //mostrarMenuInicio();
     }
 
-
-	private void mostrarMenuInicio() {
-		OpcionesMenuInicioConsola opcion = OpcionesMenuInicioConsola.NULO;
-			OpcionesMenuInicioConsola.mostrarOpcionesMenuInicio(this.pantalla);
-			OpcionesMenuInicioConsola.getOpcion(Integer.parseInt(campoTexto.getText()));
-			switch (opcion) {
-			case REGISTRAR_JUGADOR:
-				//registroJugador();
-				break;
-			case COMENZAR_PARTIDA:
-				//comenzarPartida();
-				break;
-			case CONTINUAR_PARTIDA:
-				//controlador.continuarPartida();
-				break;
-			case LISTAR_JUGADORES:
-				//controlador.obtenerJugadores();
-				break;
-			case TOP_GANADORES:
-				//controlador.topGanadores();
-				break;
-			case SALIR:
-				//Banner.mostrarDespedida();
-				//controlador.guardarJugador();
-				break;
-			default:
-				break;
-			}
-	}
-
-
+    private void println(String texto) {
+    	pantalla.append(texto + "\n");
+    }
+    
 	private void comenzarPartida() {
-		// TODO Auto-generated method stub
 		
 	}
+	public MancalaController getControlador() {
+		return controlador;
+	}
+	
+	
+	public void setControlador(MancalaController controlador) {
+		this.controlador = controlador;
+	}
 
+	private void formularioUsuario() {
+		println("$ ingrese su nombre");
+	}
 
-	private void registroJugador() {
-		// TODO Auto-generated method stub
-		
+	public void mostrarTablero(Tablero modelo) {
+		println(modelo.toString());
+	}
+
+	public void informar(String string) {
+		println(string);
+	}
+
+	public void informar(Jugador modelo, String string) {
+		println(string + modelo.getNombre());
 	}
 
 }

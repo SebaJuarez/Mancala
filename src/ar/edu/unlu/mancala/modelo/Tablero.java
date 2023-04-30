@@ -49,6 +49,40 @@ public class Tablero {
 		((Casa) this.agujeros[this.agujeros[indice].getJugador() == 1 ? POS_CASAJ1 : POS_CASAJ2])
 				.ponerHaba(((Hoyo) this.agujeros[(LONGUITUD_TABLERO - indice) % LONGUITUD_TABLERO]).tomarHabas());
 	}
+	
+	@Override
+	public String toString() {	
+			String tablero ="$ ************************************************\n";
+			tablero += "$ *              << mancala game >>  S) Salir    *\n";
+			tablero += "$ *                                              *\n";
+			tablero +=  "$ *          L    K    J    I    H    G          *\n";
+			tablero +=  "$ *   |   |";
+			tablero += "$ | " + agujeros[13].getHabas() + " |";
+			tablero += "| " + agujeros[12].getHabas() + " |";
+			tablero += "| " + agujeros[11].getHabas() + " |";
+			tablero += "| " + agujeros[10].getHabas() + " |";
+			tablero += "| " + agujeros[9].getHabas() + " |";
+			tablero += "| " + agujeros[8].getHabas() + " |";
+			tablero += "|   |   *";
+			tablero += "\n";
+			tablero += "$ *   | " + agujeros[7].getHabas() + " ||";
+			tablero += "----------------------------";
+			tablero += "|| " + agujeros[0].getHabas() + " |   *";
+			tablero += "\n";
+			tablero += "*   |   |";
+			tablero += "| " + agujeros[1].getHabas() + " |";
+			tablero += "| " + agujeros[2].getHabas() + " |";
+			tablero += "| " + agujeros[3].getHabas() + " |";
+			tablero += "| " + agujeros[4].getHabas() + " |";
+			tablero += "| " + agujeros[5].getHabas() + " |";
+			tablero += "| " + agujeros[6].getHabas() + " |";
+			tablero += "|   |   *";
+			tablero += "\n";
+			tablero += "*          A    B    C    D    E    F          *\n";
+			 tablero += "*                                              *\n";
+			tablero += "************************************************";
+		return tablero;		
+	}
 
 	public Agujero[] getAgujeros() {
 		return agujeros;
@@ -68,14 +102,6 @@ public class Tablero {
 
 	public int getPOS_CASAJ2() {
 		return POS_CASAJ2;
-	}
-	
-	public String toString() {
-		
-		return null;
-	}
-
-
-	
+	}	
 
 }

@@ -8,7 +8,7 @@ public class TestTablero {
 
 	public static void main(String[] args) {
 		
-		MancalaPartida partida = new MancalaPartida();
+		/*MancalaPartida partida = new MancalaPartida();
 		Jugador user1 = new Jugador();
 		Jugador user2 = new Jugador();
 		partida.conectarJugador(user1);
@@ -26,7 +26,7 @@ public class TestTablero {
 		mostrar(partida.getTablero());
 		System.out.println(partida.mover(2, user1));
 		mostrar(partida.getTablero());
-		System.out.println(partida.getTablero().toString());
+		System.out.println(partida.getTablero().toString());*/
 		/*
 		mostrar(tablero);
 		System.out.println(tablero.mover(5, 1)); 
