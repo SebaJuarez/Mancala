@@ -37,12 +37,15 @@ public class Tablero {
 		}
 		Agujero agujeroUltimo = this.agujeros[indice];
 		// devuelvo el estado del movimiento realizado
-		// si puedo realizar camptura devuelvo que se ah hecho
+		// si puedo realizar camptura devuelvo que se ha hecho
 		if (agujeroUltimo.getJugador() == jugador && agujeroUltimo.getHabas() == 1 && agujeroUltimo instanceof Hoyo) {
 			this.capturarHabas(agujeroUltimo.getIndice());
 			return EstadoTablero.CAPTURA_REALIZADA;
-		} else
-			return EstadoTablero.MOVIMIENTO_REALIZADO;
+		} else if (agujeroUltimo.getJugador() == jugador && agujeroUltimo instanceof Casa) {
+			return EstadoTablero.MOVIMIENTO_VALIDO_SIGUE;
+		} else {
+			return EstadoTablero.MOVIMIENTO_REALIZADO;			
+		}
 	}
 
 	private void capturarHabas(int indice) {
@@ -53,11 +56,11 @@ public class Tablero {
 	@Override
 	public String toString() {	
 			String tablero ="$ ************************************************\n";
-			tablero += "$ *              << mancala game >>  S) Salir    *\n";
+			tablero += "$ *              <<   TABLERO   >>               *\n";
 			tablero += "$ *                                              *\n";
 			tablero +=  "$ *          L    K    J    I    H    G          *\n";
 			tablero +=  "$ *   |   |";
-			tablero += "$ | " + agujeros[13].getHabas() + " |";
+			tablero += "| " + agujeros[13].getHabas() + " |";
 			tablero += "| " + agujeros[12].getHabas() + " |";
 			tablero += "| " + agujeros[11].getHabas() + " |";
 			tablero += "| " + agujeros[10].getHabas() + " |";
@@ -69,7 +72,7 @@ public class Tablero {
 			tablero += "----------------------------";
 			tablero += "|| " + agujeros[0].getHabas() + " |   *";
 			tablero += "\n";
-			tablero += "*   |   |";
+			tablero += "$ *   |   |";
 			tablero += "| " + agujeros[1].getHabas() + " |";
 			tablero += "| " + agujeros[2].getHabas() + " |";
 			tablero += "| " + agujeros[3].getHabas() + " |";
@@ -78,9 +81,9 @@ public class Tablero {
 			tablero += "| " + agujeros[6].getHabas() + " |";
 			tablero += "|   |   *";
 			tablero += "\n";
-			tablero += "*          A    B    C    D    E    F          *\n";
-			 tablero += "*                                              *\n";
-			tablero += "************************************************";
+			tablero += "$ *          A    B    C    D    E    F          *\n";
+			 tablero += "$ *                                              *\n";
+			tablero += "$ ************************************************";
 		return tablero;		
 	}
 

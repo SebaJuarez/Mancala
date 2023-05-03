@@ -32,9 +32,7 @@ public class VistaConsola extends JFrame {
     private JTextArea pantalla;
     private MancalaController controlador;
     private EstadosFlujo estadoFlujo = EstadosFlujo.LOGIN;
-    private String textoActual ;
     private JPanel panelComandos;
-
 
 	public VistaConsola() {
         // Configuración de la ventana principal
@@ -59,37 +57,24 @@ public class VistaConsola extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Cuando se presiona ENTER en el campo de texto, se agrega el comando a la pantalla
-            	
-            	
-            	switch(estadoFlujo) {
-            	case LOGIN :
-            		textoActual = nextLine();
-            		Jugador jugador = new Jugador();
-            		jugador.setNombre(textoActual);
-            		controlador.setJugador(jugador);
-            		estadoFlujo = EstadosFlujo.MOVIMIENTOS;
-            		formularioMovimientos();
-            		break;
-            	case MOVIMIENTOS :
-            		controlador.mover(Integer.parseInt(nextLine()));
-            		;
-            		break;
-            	}
-            	
-            	
                 String entrada = campoTexto.getText();
                 pantalla.append("$ " + entrada + "\n");
                 campoTexto.setText("");
+            	switch(estadoFlujo) {
+            	case LOGIN :
+            		Jugador jugador = new Jugador();
+            		jugador.setNombre(entrada);
+            		controlador.setJugador(jugador);
+            		estadoFlujo = EstadosFlujo.MOVIMIENTOS;
+            		break;
+            	case MOVIMIENTOS :
+            		controlador.mover(Integer.parseInt(entrada));
+            		break;
+            	}
             }
 
-			private void formularioMovimientos() {
-				println("ingrese su nombre");				
-			}
-
-			private String nextLine() {
-				return campoTexto.getText();
-			}
         });
+        
         
         // Creación del botón para enviar los comandos
         JButton botonEnviar = new JButton("Enviar");
@@ -137,9 +122,6 @@ public class VistaConsola extends JFrame {
     	pantalla.append(texto + "\n");
     }
     
-	private void comenzarPartida() {
-		
-	}
 	public MancalaController getControlador() {
 		return controlador;
 	}
@@ -153,8 +135,8 @@ public class VistaConsola extends JFrame {
 		println("$ ingrese su nombre");
 	}
 
-	public void mostrarTablero(Tablero modelo) {
-		println(modelo.toString());
+	public void mostrarTablero(Tablero tablero) {
+		println(tablero.toString());
 	}
 
 	public void informar(String string) {
@@ -164,6 +146,10 @@ public class VistaConsola extends JFrame {
 	public void informar(Jugador modelo, String string) {
 		println(string + modelo.getNombre());
 	}
+	
+    private void formularioMovimientos() {
+    	println("ingrese el inidice para mover");				
+    }
 
 }
 

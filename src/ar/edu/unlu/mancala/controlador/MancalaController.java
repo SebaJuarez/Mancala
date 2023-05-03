@@ -17,30 +17,31 @@ public class MancalaController implements Observer {
 	
 	@Override
 	public void update(Object modelo, Object evento) {
-		
 		if (evento instanceof EstadoPartida){
 			switch((EstadoPartida) evento) {
 			case USUARIO_CONECTADO:
-				vista.mostrarTablero((Tablero)modelo);
-				vista.informar((Jugador)modelo , "se conecto");
+			    Jugador ultimoJugador = mancalaPartida.getJugadores().get(mancalaPartida.getJugadores().size());
+			    vista.informar(ultimoJugador, "se conectó ");
 				break;
 			case USUARIO_DESCONECTADO:
-				vista.informar("el usuario se desconecto");
+				vista.informar("se desconecto ");
 				break;
 			case PARTIDA_LLENA:
-				vista.informar("no se admiten mas participantes");
+				vista.informar("no se admiten mas participantes ");
 				break;
 			case ESPERANDO_USUARIO:
-				vista.informar("esperando usuario");
+				vista.informar("esperando usuario ");
 				break;
 			case COMENZANDO_PARTIDA:
-				vista.informar((Jugador) modelo,"la partida comenzo, mueve :");
+				vista.mostrarTablero(mancalaPartida.getTablero());
+				vista.informar(mancalaPartida.getJugadores().get(mancalaPartida.getTurnoActual()),"la partida comenzo, mueve : ");
 				break;
 			case PARTIDA_TERMINADA:
 				vista.informar((Jugador) modelo, "el ganador es..");
 				break;
 			case PARTIDA_EN_PROGRESO:
-				vista.informar((Jugador)modelo, "le toca a ");
+				vista.mostrarTablero(mancalaPartida.getTablero());
+				vista.informar(mancalaPartida.getJugadores().get(mancalaPartida.getTurnoActual()), "le toca a: ");
 				break;
 			default:
 				break;
@@ -48,8 +49,8 @@ public class MancalaController implements Observer {
 		}
 		if (evento instanceof EstadoTablero){
 			switch((EstadoTablero) evento) {
-			case MOVIMIENTO_VALIDO:
-				vista.mostrarTablero((Tablero)modelo);
+			case MOVIMIENTO_REALIZADO:
+				vista.informar("movimiento realizado!");
 				break;
 			case MOVIMIENTO_INVALIDO_RANGO:
 				vista.informar("Ingreso un indice fuera del rango del tablero");
@@ -59,7 +60,6 @@ public class MancalaController implements Observer {
 				break;
 			case CAPTURA_REALIZADA:
 				vista.informar("excelente, realizo una captura!!");
-				vista.mostrarTablero((Tablero)modelo);
 				break;
 			case TURNO_INVALIDO:
 				vista.informar("no es su turno");
@@ -67,6 +67,8 @@ public class MancalaController implements Observer {
 			case MOVIMIENTO_INVALIDO_HABAS:
 				vista.informar("no hay habas para mover en ese indice");
 				break;
+			case MOVIMIENTO_VALIDO_SIGUE:
+				vista.informar(mancalaPartida.getJugadores().get(mancalaPartida.getTurnoActual()),"Genial!, ultima haba en casa");
 			default:
 				break;
 			}
@@ -80,5 +82,15 @@ public class MancalaController implements Observer {
 	
 	public void setJugador(Jugador jugador) {
 		mancalaPartida.conectarJugador(jugador);
+		this.jugador = jugador;
+	}
+	
+	public void setModel(MancalaPartida mancalaModel) {
+		this.mancalaPartida = mancalaModel;
+	}
+
+
+	public void setVista(VistaConsola vista) {
+		this.vista = vista;
 	}
 }

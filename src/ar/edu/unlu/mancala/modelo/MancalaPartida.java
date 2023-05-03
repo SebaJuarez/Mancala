@@ -16,7 +16,7 @@ public class MancalaPartida implements Observado{
 	private MoveValidator moveValidator;
 	private int turnoActual;
 	private boolean partidaTerminada;
-	private LinkedList<Observer> observadores;
+	private LinkedList<Observer> observadores = new LinkedList<Observer>();
 
 	public MancalaPartida() {
 		this.jugadores = new HashMap<Integer, Jugador>(2);
@@ -36,9 +36,6 @@ public class MancalaPartida implements Observado{
 	}
 
 	public void iniciarPartida() {
-		if (this.jugadores.size() != 2) {
-			notificarObservers(EstadoPartida.ESPERANDO_USUARIO);
-		}
 		this.tablero = new Tablero();
 		this.moveValidator = new MoveValidator();
 		this.setTurnoActual(((int) Math.random() * 2) + 1);
@@ -46,15 +43,24 @@ public class MancalaPartida implements Observado{
 	}
 
 	public void mover(int indice, Jugador jugador) {
-		// valido el movimiento 
-		EstadoTablero estado = this.moveValidator.validarMovimiento(tablero, turnoActual, obtenerClaveDeJugador(jugador), indice);
-		// si el movimiento es valido entonces cambio el turno
-		if (estado == EstadoTablero.MOVIMIENTO_VALIDO) {
-			tablero.mover(indice, obtenerClaveDeJugador(jugador));
-			termino();
-			this.cambiarTurno();
+		// si no estan todos los jugadores entonces no puedo mover
+		if (this.jugadores.size() != 2) {
+			notificarObservers(EstadoPartida.ESPERANDO_USUARIO);
+		} else {
+			// valido el movimiento 
+			EstadoTablero estado = this.moveValidator.validarMovimiento(tablero, turnoActual, obtenerClaveDeJugador(jugador), indice);
+			// si el movimiento es valido entonces cambio el turno
+			if (estado == EstadoTablero.MOVIMIENTO_VALIDO) {
+				EstadoTablero movimientoEstado = tablero.mover(indice, obtenerClaveDeJugador(jugador));
+				notificarObservers(movimientoEstado);
+				if( EstadoTablero.MOVIMIENTO_VALIDO_SIGUE != movimientoEstado) {
+					this.cambiarTurno();					
+				}
+				termino();
+			} else {
+				notificarObservers(estado);				
+			}
 		}
-		notificarObservers(estado);
 	}
 
 	public void termino() {
