@@ -5,13 +5,13 @@ import ar.edu.unlu.mancala.modelo.MancalaPartida;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.observer.Observer;
-import ar.edu.unlu.mancala.vista.consola.VistaConsola;
+import ar.edu.unlu.mancala.vista.Ivista;
 
 public class MancalaController implements Observer {
 
 	private MancalaPartida mancalaPartida;
 	private Jugador jugador;
-	private VistaConsola vista ;
+	private Ivista vista ;
 	
 	
 	@Override
@@ -29,14 +29,16 @@ public class MancalaController implements Observer {
 				vista.informar("no se admiten mas participantes ");
 				break;
 			case ESPERANDO_USUARIO:
-				vista.informar("esperando usuario ");
+				if(mancalaPartida.getUltimoEnMover() == this.jugador) {
+					vista.informar("esperando usuario... ");					
+				}
 				break;
 			case COMENZANDO_PARTIDA:
 				vista.mostrarTablero(mancalaPartida.getTablero());
 				vista.informar(mancalaPartida.getJugadores().get(mancalaPartida.getTurnoActual()),"la partida comenzo, mueve : ");
 				break;
 			case PARTIDA_TERMINADA:
-				vista.informar((Jugador) modelo, "el ganador es..");
+				vista.mostrarGanador(mancalaPartida.obtenerGanador());
 				break;
 			case PARTIDA_EN_PROGRESO:
 				vista.mostrarTablero(mancalaPartida.getTablero());
@@ -49,25 +51,45 @@ public class MancalaController implements Observer {
 		if (evento instanceof EstadoTablero){
 			switch((EstadoTablero) evento) {
 			case MOVIMIENTO_REALIZADO:
-				vista.informar("movimiento realizado!");
+				if(mancalaPartida.getUltimoEnMover() == this.jugador) {
+					vista.informar("movimiento realizado!");					
+				} else {
+					vista.informar("su rival movio!");
+				}
 				break;
 			case MOVIMIENTO_INVALIDO_RANGO:
-				vista.informar("Ingreso un indice fuera del rango del tablero");
+				if(mancalaPartida.getUltimoEnMover() == this.jugador) {
+					vista.informar("Ingreso un indice fuera del rango del tablero");					
+				}
 				break;
 			case MOVIMIENTO_INVALIDO_POSICION:
-				vista.informar("ingreso un indice que no le pertenece");
+				if(mancalaPartida.getUltimoEnMover() == this.jugador) {
+					vista.informar("ingreso un indice que no le pertenece");					
+				}
 				break;
 			case CAPTURA_REALIZADA:
-				vista.informar("excelente, realizo una captura!!");
+				if(mancalaPartida.getUltimoEnMover() == this.jugador) {
+					vista.informar("excelente, realizo una captura!!");					
+				} else {
+					vista.informar("capuraron uno de sus agujeros!");
+				}
 				break;
 			case TURNO_INVALIDO:
-				vista.informar("no es su turno");
+				if(mancalaPartida.getUltimoEnMover() == this.jugador) {
+					vista.informar("no es su turno");					
+				}
 				break;
 			case MOVIMIENTO_INVALIDO_HABAS:
-				vista.informar("no hay habas para mover en ese indice");
+				if(mancalaPartida.getUltimoEnMover() == this.jugador) {
+					vista.informar("no hay habas para mover en ese indice");					
+				}
 				break;
 			case MOVIMIENTO_VALIDO_SIGUE:
-				vista.informar("Genial!, ultima haba en casa");
+				if(mancalaPartida.getUltimoEnMover() == this.jugador) {
+					vista.informar("Genial!, ultima haba en casa");					
+				} else {
+					vista.informar("Su rival puso la ultima haba en casa!");
+				}
 			default:
 				break;
 			}
@@ -89,7 +111,7 @@ public class MancalaController implements Observer {
 	}
 
 
-	public void setVista(VistaConsola vista) {
+	public void setVista(Ivista vista) {
 		this.vista = vista;
 	}
 }

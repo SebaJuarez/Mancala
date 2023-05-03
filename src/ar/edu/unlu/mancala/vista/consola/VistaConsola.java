@@ -10,8 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,20 +19,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.EmptyBorder;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Tablero;
+import ar.edu.unlu.mancala.vista.Ivista;
 
-public class VistaConsola extends JFrame {
+public class VistaConsola extends JFrame implements Ivista {
 
     private static final long serialVersionUID = 1L;
     private JTextField campoTexto;
     private JTextArea pantalla;
     private MancalaController controlador;
-    private EstadosFlujo estadoFlujo = EstadosFlujo.LOGIN;
+    private EstadosFlujo estadoFlujo = EstadosFlujo.MENU_INICIO;
     private JPanel panelComandos;
+    private boolean esperandoTecla = false;
 
 	public VistaConsola() {
         // Configuración de la ventana principal
@@ -58,9 +59,28 @@ public class VistaConsola extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Cuando se presiona ENTER en el campo de texto, se agrega el comando a la pantalla
                 String entrada = campoTexto.getText();
-                pantalla.append("$ " + entrada + "\n");
+                println(entrada);
                 campoTexto.setText("");
             	switch(estadoFlujo) {
+            	case MENU_INICIO : 
+            		if(!esperandoTecla) {
+        				switch(entrada) {
+        				case "1" :
+        					println(Reglamento.mostrarReglas());
+        					println("ingrese cualquier tecla para volver al menu");
+        					esperandoTecla = true;
+        					break;
+        				case "2" : 
+        					break;
+        				default :
+        					println("ingrese una opcion correcta !");    
+        					break;
+        				}        			
+            		} else {
+            			esperandoTecla = false;
+            			menuInicio();
+            		}
+            		break;
             	case LOGIN :
             		Jugador jugador = new Jugador();
             		jugador.setNombre(entrada);
@@ -70,6 +90,8 @@ public class VistaConsola extends JFrame {
             	case MOVIMIENTOS :
             		controlador.mover(Integer.parseInt(entrada));
             		break;
+				default:
+					break;
             	}
             }
 
@@ -109,40 +131,53 @@ public class VistaConsola extends JFrame {
     }
 
 
-    public void iniciar() {
+    @Override
+	public void iniciar() {
         // Mostramos la ventana
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-        formularioUsuario();
+        menuInicio();
+        //formularioUsuario();
         //mostrarMenuInicio();
     }
 
-    private void println(String texto) {
-    	pantalla.append(texto + "\n");
+    public void menuInicio() {
+    	println(OpcionesMenuInicioConsola.mostrarOpcionesMenuPrincipal());
+	}
+
+
+	private void println(String texto) {
+    	pantalla.append("$ " + texto + "\n");
+    	pantalla.setCaretPosition(pantalla.getDocument().getLength());
     }
     
+	@Override
 	public MancalaController getControlador() {
 		return controlador;
 	}
 	
 	
+	@Override
 	public void setControlador(MancalaController controlador) {
 		this.controlador = controlador;
 	}
 
 	private void formularioUsuario() {
-		println("$ ingrese su nombre");
+		println("ingrese su nombre");
 	}
 
+	@Override
 	public void mostrarTablero(Tablero tablero) {
 		println(tablero.toString());
 	}
 
+	@Override
 	public void informar(String string) {
 		println(string);
 	}
 
+	@Override
 	public void informar(Jugador modelo, String string) {
 		println(string + modelo.getNombre());
 	}
@@ -150,6 +185,12 @@ public class VistaConsola extends JFrame {
     private void formularioMovimientos() {
     	println("ingrese el inidice para mover");				
     }
+
+
+	@Override
+	public void mostrarGanador(Jugador obtenerGanador) {
+		//aca voy a operar el ganador para mostrar en pantalla la partida
+	}
 
 }
 

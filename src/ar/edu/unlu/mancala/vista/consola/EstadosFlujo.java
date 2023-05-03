@@ -1,6 +1,5 @@
 package ar.edu.unlu.mancala.vista.consola;
 
 public enum EstadosFlujo {
-	LOGIN, MOVIMIENTOS
-
+	MENU_INICIO, MENU_PRINCIPAL,LOGIN, MOVIMIENTOS
 }

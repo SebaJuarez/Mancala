@@ -16,6 +16,7 @@ public class MancalaPartida implements Observado{
 	private MoveValidator moveValidator;
 	private int turnoActual;
 	private boolean partidaTerminada;
+	private Jugador ultimoEnMover;
 	private LinkedList<Observer> observadores = new LinkedList<Observer>();
 
 	public MancalaPartida() {
@@ -50,6 +51,7 @@ public class MancalaPartida implements Observado{
 	}
 
 	public void mover(int indice, Jugador jugador) {
+		this.ultimoEnMover = jugador;
 		// si no estan todos los jugadores entonces no puedo mover
 		if (this.jugadores.size() != 2) {
 			notificarObservers(EstadoPartida.ESPERANDO_USUARIO);
@@ -150,6 +152,10 @@ public class MancalaPartida implements Observado{
 
 	public boolean isPartidaTerminada() {
 		return partidaTerminada;
+	}
+	
+	public Jugador getUltimoEnMover() {
+		return this.ultimoEnMover;
 	}
 
 	public void setPartidaTerminada(boolean partidaTerminada) {
