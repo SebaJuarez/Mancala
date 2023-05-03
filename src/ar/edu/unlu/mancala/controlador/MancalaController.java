@@ -2,7 +2,6 @@ package ar.edu.unlu.mancala.controlador;
 
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.MancalaPartida;
-import ar.edu.unlu.mancala.modelo.Tablero;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.observer.Observer;
@@ -68,7 +67,7 @@ public class MancalaController implements Observer {
 				vista.informar("no hay habas para mover en ese indice");
 				break;
 			case MOVIMIENTO_VALIDO_SIGUE:
-				vista.informar(mancalaPartida.getJugadores().get(mancalaPartida.getTurnoActual()),"Genial!, ultima haba en casa");
+				vista.informar("Genial!, ultima haba en casa");
 			default:
 				break;
 			}

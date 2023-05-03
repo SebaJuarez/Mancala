@@ -68,9 +68,9 @@ public class Tablero {
 			tablero += "| " + agujeros[8].getHabas() + " |";
 			tablero += "|   |   *";
 			tablero += "\n";
-			tablero += "$ *   | " + agujeros[7].getHabas() + " ||";
+			tablero += "$ *   | " + agujeros[0].getHabas() + " ||";
 			tablero += "----------------------------";
-			tablero += "|| " + agujeros[0].getHabas() + " |   *";
+			tablero += "|| " + agujeros[7].getHabas() + " |   *";
 			tablero += "\n";
 			tablero += "$ *   |   |";
 			tablero += "| " + agujeros[1].getHabas() + " |";
@@ -82,7 +82,7 @@ public class Tablero {
 			tablero += "|   |   *";
 			tablero += "\n";
 			tablero += "$ *          A    B    C    D    E    F          *\n";
-			 tablero += "$ *                                              *\n";
+			tablero += "$ *                                              *\n";
 			tablero += "$ ************************************************";
 		return tablero;		
 	}

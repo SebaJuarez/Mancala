@@ -31,6 +31,12 @@ public class MancalaPartida implements Observado{
 		} else {
 			jugadores.put(2, jugador);	
 			notificarObservers(EstadoPartida.USUARIO_CONECTADO);
+			// borrar aca 
+			for(Integer key : jugadores.keySet()) {
+				Jugador jugadorn = jugadores.get(key);
+				System.out.println(key + " nombre " + jugadorn.getNombre());
+			}
+			
 			iniciarPartida();
 		}
 	}
@@ -39,6 +45,7 @@ public class MancalaPartida implements Observado{
 		this.tablero = new Tablero();
 		this.moveValidator = new MoveValidator();
 		this.setTurnoActual(((int) Math.random() * 2) + 1);
+		System.out.println(this.turnoActual);
 		notificarObservers(EstadoPartida.COMENZANDO_PARTIDA);
 	}
 
