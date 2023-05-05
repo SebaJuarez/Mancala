@@ -20,4 +20,7 @@ public interface Ivista {
 
 	void mostrarGanador(Jugador obtenerGanador);
 
+	void mostrarSalaDeEspera();
+
+
 }

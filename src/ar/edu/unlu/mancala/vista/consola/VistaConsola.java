@@ -10,16 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.Tablero;
@@ -53,6 +49,7 @@ public class VistaConsola extends JFrame implements Ivista {
         // Creación del campo de texto para escribir los comandos
         campoTexto = new JTextField(50);
         campoTexto.setToolTipText("");
+        campoTexto.hasFocus();
         campoTexto.setFont(new Font("Consolas", Font.PLAIN, 12));
         campoTexto.addActionListener(new ActionListener() {
             @Override
@@ -64,18 +61,15 @@ public class VistaConsola extends JFrame implements Ivista {
             	switch(estadoFlujo) {
             	case MENU_INICIO : 
             		if(!esperandoTecla) {
-        				switch(entrada) {
-        				case "1" :
-        					println(Reglamento.mostrarReglas());
-        					println("ingrese cualquier tecla para volver al menu");
-        					esperandoTecla = true;
-        					break;
-        				case "2" : 
-        					break;
-        				default :
-        					println("ingrese una opcion correcta !");    
-        					break;
-        				}        			
+        				opcionesMenuInicio(entrada);        			
+            		} else {
+            			esperandoTecla = false;
+            			menuInicio();
+            		}
+            		break;
+            	case MENU_PRINCIPAL : 
+            		if(!esperandoTecla) {
+        				opcionesPrincipal(entrada);        			
             		} else {
             			esperandoTecla = false;
             			menuInicio();
@@ -88,16 +82,15 @@ public class VistaConsola extends JFrame implements Ivista {
             		estadoFlujo = EstadosFlujo.MOVIMIENTOS;
             		break;
             	case MOVIMIENTOS :
-            		controlador.mover(Integer.parseInt(entrada));
+            		mover(entrada);
             		break;
 				default:
 					break;
             	}
             }
-
         });
         
-        
+        /*
         // Creación del botón para enviar los comandos
         JButton botonEnviar = new JButton("Enviar");
         botonEnviar.setFont(new Font("Consolas", Font.PLAIN, 12));
@@ -110,6 +103,7 @@ public class VistaConsola extends JFrame implements Ivista {
                 campoTexto.setText("");
             }
         });
+        */
         
         // accion que sucede cuando se cierra una ventana (una vista)
         this.addWindowListener((WindowListener) new WindowAdapter() {
@@ -121,48 +115,86 @@ public class VistaConsola extends JFrame implements Ivista {
         
         // Creación del panel para el campo de texto y el botón
         panelComandos = new JPanel();
-        panelComandos.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        panelComandos.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         panelComandos.add(campoTexto);
-        panelComandos.add(botonEnviar);
+        //panelComandos.add(botonEnviar);
         
         // Agregamos los componentes a la ventana
         getContentPane().add(scrollPantalla, BorderLayout.CENTER);
         getContentPane().add(panelComandos, BorderLayout.SOUTH);
     }
 
-
-    @Override
-	public void iniciar() {
-        // Mostramos la ventana
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-        menuInicio();
-        //formularioUsuario();
-        //mostrarMenuInicio();
-    }
-
+    // menu inicio ---------------------------------------------------------------
     public void menuInicio() {
     	println(OpcionesMenuInicioConsola.mostrarOpcionesMenuPrincipal());
 	}
 
+	private void opcionesMenuInicio(String entrada) {
+		switch(entrada) {
+		case "1" :
+			println(Reglamento.mostrarReglas());
+			println("ingrese cualquier tecla para volver al menu");
+			esperandoTecla = true;
+			break;
+		case "2" : 
+			estadoFlujo = EstadosFlujo.MENU_PRINCIPAL; 
+			println(OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal());
+			break;
+		default :
+			println("ingrese una opcion correcta !");    
+			break;
+		}
+	}
+	//----------------------------------------------------------------------------
+	
+	// mwnu principal ------------------------------------------------------------
+	private void opcionesPrincipal(String entrada) {
+		switch(entrada) {
+		case "1":
+			break;
+		case "2" :
+			controlador.setJugador(new Jugador());
+			break;
+		case "3" :
+			break;
+		default :
+			println("ingrese una opcion valida!");
+			break;
+		}
+	}
+	//----------------------------------------------------------------------------
 
+	// movimiento ---------------------------------------------------------------
+	private void mover(String entrada) {
+		int pos = -1;
+		try {
+			pos = Integer.parseInt(entrada);
+			controlador.mover(pos);
+		} catch (NumberFormatException e) {
+			println("ingrese un numero!");
+		}
+	}
+	//---------------------------------------------------------------------------
+	
+	// reemplazo el println -----------------------------------------------------
 	private void println(String texto) {
     	pantalla.append("$ " + texto + "\n");
     	pantalla.setCaretPosition(pantalla.getDocument().getLength());
     }
-    
+	//---------------------------------------------------------------------------
+  
+	// metodos de la interfaz Ivista ---------------------------------------------
 	@Override
-	public MancalaController getControlador() {
-		return controlador;
+	public void iniciar() {
+		// Mostramos la ventana
+		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
+		menuInicio();
+		//formularioUsuario();
+		//mostrarMenuInicio();
 	}
 	
-	
-	@Override
-	public void setControlador(MancalaController controlador) {
-		this.controlador = controlador;
-	}
-
 	private void formularioUsuario() {
 		println("ingrese su nombre");
 	}
@@ -186,11 +218,30 @@ public class VistaConsola extends JFrame implements Ivista {
     	println("ingrese el inidice para mover");				
     }
 
-
 	@Override
 	public void mostrarGanador(Jugador obtenerGanador) {
 		//aca voy a operar el ganador para mostrar en pantalla la partida
 	}
+	
+	@Override
+	public void mostrarSalaDeEspera() {
+		estadoFlujo = EstadosFlujo.MOVIMIENTOS;
+		println(Banner.esperandoJugador);
+	}
+	//---------------------------------------------------------------------------
+
+	// Setters y Getters
+	@Override
+	public MancalaController getControlador() {
+		return controlador;
+	}
+	
+	
+	@Override
+	public void setControlador(MancalaController controlador) {
+		this.controlador = controlador;
+	}
+	//---------------------------------------------------------------------------
 
 }
 

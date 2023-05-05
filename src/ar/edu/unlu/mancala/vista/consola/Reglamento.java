@@ -39,11 +39,11 @@ public enum Reglamento implements Banner{
 	}
 	
 	public static String mostrarReglas() {
-		String reglas = "";
-		reglas = LOGO + "\n";
+		String reglastx = "";
+		reglastx = reglas + "\n";
 		for(Reglamento r : values()) {
-			reglas = reglas + r.regla;
+			reglastx = reglastx + r.regla + "\n";
 		}
-		return reglas;
+		return reglastx;
 	}
 }

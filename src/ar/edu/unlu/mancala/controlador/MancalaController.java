@@ -21,6 +21,9 @@ public class MancalaController implements Observer {
 			case USUARIO_CONECTADO:
 			    Jugador ultimoJugador = mancalaPartida.getJugadores().get(mancalaPartida.getJugadores().size());
 			    vista.informar(ultimoJugador, "se conectó ");
+			    if (mancalaPartida.getJugadores().size() == 1 && ultimoJugador == jugador) {
+			    	vista.mostrarSalaDeEspera();
+			    }
 				break;
 			case USUARIO_DESCONECTADO:
 				vista.informar("se desconecto ");
@@ -102,8 +105,8 @@ public class MancalaController implements Observer {
 	}
 	
 	public void setJugador(Jugador jugador) {
-		mancalaPartida.conectarJugador(jugador);
 		this.jugador = jugador;
+		mancalaPartida.conectarJugador(jugador);
 	}
 	
 	public void setModel(MancalaPartida mancalaModel) {
