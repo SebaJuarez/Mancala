@@ -126,17 +126,20 @@ public class VistaConsola extends JFrame implements Ivista {
 
     // menu inicio ---------------------------------------------------------------
     public void menuInicio() {
+    	clearScreen();
     	println(OpcionesMenuInicioConsola.mostrarOpcionesMenuPrincipal());
 	}
 
 	private void opcionesMenuInicio(String entrada) {
 		switch(entrada) {
 		case "1" :
+			clearScreen();
 			println(Reglamento.mostrarReglas());
 			println("ingrese cualquier tecla para volver al menu");
 			esperandoTecla = true;
 			break;
 		case "2" : 
+			clearScreen();
 			estadoFlujo = EstadosFlujo.MENU_PRINCIPAL; 
 			println(OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal());
 			break;
@@ -169,6 +172,7 @@ public class VistaConsola extends JFrame implements Ivista {
 		int pos = -1;
 		try {
 			pos = Integer.parseInt(entrada);
+			//clearScreen();
 			controlador.mover(pos);
 		} catch (NumberFormatException e) {
 			println("ingrese un numero!");
@@ -181,6 +185,10 @@ public class VistaConsola extends JFrame implements Ivista {
     	pantalla.append("$ " + texto + "\n");
     	pantalla.setCaretPosition(pantalla.getDocument().getLength());
     }
+	
+	private void clearScreen() {
+		pantalla.setText("");
+	}
 	//---------------------------------------------------------------------------
   
 	// metodos de la interfaz Ivista ---------------------------------------------
@@ -191,8 +199,6 @@ public class VistaConsola extends JFrame implements Ivista {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		menuInicio();
-		//formularioUsuario();
-		//mostrarMenuInicio();
 	}
 	
 	private void formularioUsuario() {
@@ -200,42 +206,46 @@ public class VistaConsola extends JFrame implements Ivista {
 	}
 
 	@Override
-	public void mostrarTablero(Tablero tablero) {
-		println(tablero.toString());
-	}
-
-	@Override
-	public void informar(String string) {
-		println(string);
+	public void mostrarPartida(Tablero tablero, Jugador jugador) {
+		if(this.estadoFlujo != EstadosFlujo.MOVIMIENTOS) {
+			this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;
+			clearScreen();
+			informar("¡¡Comienza la partida!!");
+		} 
+		
+		pantalla.append(tablero.toString() + "\n");
+		informar(jugador, "Le toca al jugador: ");
 	}
 
 	@Override
 	public void informar(Jugador modelo, String string) {
-		println(string + modelo.getNombre());
+		informar(string + modelo.getNombre());
 	}
 	
-    private void formularioMovimientos() {
-    	println("ingrese el inidice para mover");				
-    }
+	@Override
+	public void informar(String string) {
+		pantalla.append("Mancala: "+ string + "\n");
+	}
 
+	
 	@Override
 	public void mostrarGanador(Jugador obtenerGanador) {
-		//aca voy a operar el ganador para mostrar en pantalla la partida
+		
 	}
 	
 	@Override
 	public void mostrarSalaDeEspera() {
-		estadoFlujo = EstadosFlujo.MOVIMIENTOS;
+		clearScreen();
+		estadoFlujo = EstadosFlujo.ESPERA;
 		println(Banner.esperandoJugador);
 	}
 	//---------------------------------------------------------------------------
 
-	// Setters y Getters
+	// Setters y Getters --------------------------------------------------------
 	@Override
 	public MancalaController getControlador() {
 		return controlador;
 	}
-	
 	
 	@Override
 	public void setControlador(MancalaController controlador) {

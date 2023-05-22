@@ -12,7 +12,7 @@ public interface Ivista {
 
 	void setControlador(MancalaController controlador);
 
-	void mostrarTablero(Tablero tablero);
+	void mostrarPartida(Tablero tablero, Jugador jugadorMueve);
 
 	void informar(String string);
 

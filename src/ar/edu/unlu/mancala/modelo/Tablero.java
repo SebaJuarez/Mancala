@@ -55,11 +55,11 @@ public class Tablero {
 	
 	@Override
 	public String toString() {	
-			String tablero ="$ ************************************************\n";
-			tablero += "$ *              <<   TABLERO   >>               *\n";
-			tablero += "$ *                                              *\n";
-			tablero +=  "$ *          L    K    J    I    H    G          *\n";
-			tablero +=  "$ *   |   |";
+			String tablero ="************************************************\n";
+			tablero += "*              <<   TABLERO   >>               *\n";
+			tablero += "*                                              *\n";
+			tablero +=  "*          L    K    J    I    H    G          *\n";
+			tablero +=  "*   |   |";
 			tablero += "| " + agujeros[13].getHabas() + " |";
 			tablero += "| " + agujeros[12].getHabas() + " |";
 			tablero += "| " + agujeros[11].getHabas() + " |";
@@ -68,11 +68,11 @@ public class Tablero {
 			tablero += "| " + agujeros[8].getHabas() + " |";
 			tablero += "|   |   *";
 			tablero += "\n";
-			tablero += "$ *   | " + agujeros[0].getHabas() + " ||";
+			tablero += "*   | " + agujeros[0].getHabas() + " ||";
 			tablero += "----------------------------";
 			tablero += "|| " + agujeros[7].getHabas() + " |   *";
 			tablero += "\n";
-			tablero += "$ *   |   |";
+			tablero += "*   |   |";
 			tablero += "| " + agujeros[1].getHabas() + " |";
 			tablero += "| " + agujeros[2].getHabas() + " |";
 			tablero += "| " + agujeros[3].getHabas() + " |";
@@ -81,9 +81,9 @@ public class Tablero {
 			tablero += "| " + agujeros[6].getHabas() + " |";
 			tablero += "|   |   *";
 			tablero += "\n";
-			tablero += "$ *          A    B    C    D    E    F          *\n";
-			tablero += "$ *                                              *\n";
-			tablero += "$ ************************************************";
+			tablero += "*          A    B    C    D    E    F          *\n";
+			tablero += "*                                              *\n";
+			tablero += "************************************************";
 		return tablero;		
 	}
 

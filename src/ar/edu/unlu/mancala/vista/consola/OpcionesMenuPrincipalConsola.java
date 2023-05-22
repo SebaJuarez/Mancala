@@ -23,7 +23,7 @@ public enum OpcionesMenuPrincipalConsola implements Banner {
     	menu = LOGO + "\n";
     	menu = menu + "#   *                           *         *                *  # \n";
     	menu = menu + "#      *            "+valueOf(1)+"                # \n";
-    	menu = menu + "#   *          *    "+valueOf(2)+"     *                  # \n";
+    	menu = menu + "#   *          *    "+valueOf(2)+"     *                   # \n";
     	menu = menu + "#            *      "+valueOf(3)+"                          # \n";
     	menu = menu + "#     *             "+valueOf(4)+"                     *          * # \n";
     	menu = menu + "#   *               *          *    *              *          # \n";
