@@ -6,6 +6,8 @@ import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.observer.Observer;
 import ar.edu.unlu.mancala.vista.Ivista;
+import ar.edu.unlu.mancala.vista.JugadorLectura;
+import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.mancala.vista.consola.VistaConsola;
 
 public class MancalaController implements Observer {
@@ -27,7 +29,7 @@ public class MancalaController implements Observer {
 			    if (mancalaPartida.getJugadores().size() == 1 && ultimoJugador == jugador) {
 			    	vista.mostrarSalaDeEspera();
 			    } else if (mancalaPartida.getJugadores().size() != 2 && ultimoJugador != jugador){
-			    	vista.informar(ultimoJugador, "se creo una partida, en sala de espera está: ");
+			    	vista.informar((JugadorLectura)ultimoJugador, "se creo una partida, en sala de espera está: ");
 			    }
 				break;
 			case USUARIO_DESCONECTADO:
@@ -42,13 +44,13 @@ public class MancalaController implements Observer {
 				}
 				break;
 			case COMENZANDO_PARTIDA:
-				vista.mostrarPartida(mancalaPartida.getTablero(),jugadorMueve);
+				vista.mostrarPartida((TableroLectura)mancalaPartida.getTablero(),jugadorMueve);
 				break;
 			case PARTIDA_TERMINADA:
-				vista.mostrarGanador(mancalaPartida.obtenerGanador());
+				vista.mostrarGanador((JugadorLectura)mancalaPartida.obtenerGanador());
 				break;
 			case PARTIDA_EN_PROGRESO:
-				vista.mostrarPartida(mancalaPartida.getTablero(),jugadorMueve);
+				vista.mostrarPartida((TableroLectura)mancalaPartida.getTablero(),jugadorMueve);
 				break;
 			default:
 				break;

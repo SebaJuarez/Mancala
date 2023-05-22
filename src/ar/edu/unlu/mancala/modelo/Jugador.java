@@ -1,6 +1,8 @@
 package ar.edu.unlu.mancala.modelo;
 
-public class Jugador {
+import ar.edu.unlu.mancala.vista.JugadorLectura;
+
+public class Jugador implements JugadorLectura{
 	
 	private String nombre;
 

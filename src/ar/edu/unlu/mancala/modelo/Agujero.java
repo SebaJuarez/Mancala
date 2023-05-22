@@ -1,6 +1,6 @@
 package ar.edu.unlu.mancala.modelo;
 
-public abstract class Agujero {
+public abstract class Agujero{
 	
 	protected int habas;
 	protected int indice;

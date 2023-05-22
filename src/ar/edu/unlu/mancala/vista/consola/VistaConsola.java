@@ -18,8 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.Jugador;
-import ar.edu.unlu.mancala.modelo.Tablero;
 import ar.edu.unlu.mancala.vista.Ivista;
+import ar.edu.unlu.mancala.vista.JugadorLectura;
+import ar.edu.unlu.mancala.vista.TableroLectura;
 
 public class VistaConsola extends JFrame implements Ivista {
 
@@ -206,7 +207,7 @@ public class VistaConsola extends JFrame implements Ivista {
 	}
 
 	@Override
-	public void mostrarPartida(Tablero tablero, Jugador jugador) {
+	public void mostrarPartida(TableroLectura tablero, Jugador jugador) {
 		if(this.estadoFlujo != EstadosFlujo.MOVIMIENTOS) {
 			this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;
 			clearScreen();
@@ -218,8 +219,8 @@ public class VistaConsola extends JFrame implements Ivista {
 	}
 
 	@Override
-	public void informar(Jugador modelo, String string) {
-		informar(string + modelo.getNombre());
+	public void informar(JugadorLectura jugador, String string) {
+		informar(string + jugador.getNombre());
 	}
 	
 	@Override
@@ -229,7 +230,7 @@ public class VistaConsola extends JFrame implements Ivista {
 
 	
 	@Override
-	public void mostrarGanador(Jugador obtenerGanador) {
+	public void mostrarGanador(JugadorLectura ganador) {
 		
 	}
 	

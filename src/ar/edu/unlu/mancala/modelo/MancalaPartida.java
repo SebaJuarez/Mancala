@@ -8,6 +8,7 @@ import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.observer.Observado;
 import ar.edu.unlu.mancala.observer.Observer;
+import ar.edu.unlu.mancala.vista.TableroLectura;
 
 public class MancalaPartida implements Observado{
 
@@ -110,7 +111,7 @@ public class MancalaPartida implements Observado{
 	}
 	
 	// getters y setters
-	public Tablero getTablero() {
+	public TableroLectura getTablero() {
 		return tablero;
 	}
 
