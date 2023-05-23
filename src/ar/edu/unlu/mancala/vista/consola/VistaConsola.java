@@ -207,7 +207,7 @@ public class VistaConsola extends JFrame implements Ivista {
 	}
 
 	@Override
-	public void mostrarPartida(TableroLectura tablero, Jugador jugador) {
+	public void mostrarPartida(TableroLectura tablero, JugadorLectura jugador) {
 		if(this.estadoFlujo != EstadosFlujo.MOVIMIENTOS) {
 			this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;
 			clearScreen();

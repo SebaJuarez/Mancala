@@ -8,7 +8,6 @@ import ar.edu.unlu.mancala.observer.Observer;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
-import ar.edu.unlu.mancala.vista.consola.VistaConsola;
 
 public class MancalaController implements Observer {
 
@@ -44,13 +43,13 @@ public class MancalaController implements Observer {
 				}
 				break;
 			case COMENZANDO_PARTIDA:
-				vista.mostrarPartida((TableroLectura)mancalaPartida.getTablero(),jugadorMueve);
+				vista.mostrarPartida((TableroLectura)mancalaPartida.getTablero(),(JugadorLectura)jugadorMueve);
+				break;
+			case PARTIDA_EN_PROGRESO:
+				vista.mostrarPartida((TableroLectura)mancalaPartida.getTablero(),(JugadorLectura)jugadorMueve);
 				break;
 			case PARTIDA_TERMINADA:
 				vista.mostrarGanador((JugadorLectura)mancalaPartida.obtenerGanador());
-				break;
-			case PARTIDA_EN_PROGRESO:
-				vista.mostrarPartida((TableroLectura)mancalaPartida.getTablero(),jugadorMueve);
 				break;
 			default:
 				break;
@@ -104,7 +103,6 @@ public class MancalaController implements Observer {
 		}
 	}
 	
-
 	public void mover(int indice) {
 		mancalaPartida.mover(indice, this.jugador);
 	}
