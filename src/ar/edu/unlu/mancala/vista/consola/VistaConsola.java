@@ -110,7 +110,6 @@ public class VistaConsola extends JFrame implements Ivista {
         this.addWindowListener((WindowListener) new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                // Coloca aquí el código que quieras ejecutar antes de cerrar el JFrame
                 System.out.println("Cerrando ventana...");
             }});
         
