@@ -5,6 +5,7 @@ import ar.edu.unlu.mancala.vista.JugadorLectura;
 public class Jugador implements JugadorLectura{
 	
 	private String nombre;
+	private String contrasenia;
 	private int ganadas;
 	private int perdidas;
 	private int empatadas;
@@ -40,6 +41,14 @@ public class Jugador implements JugadorLectura{
 
 	public void setGanadas(int ganadas) {
 		this.ganadas = ganadas;
+	}
+
+	public String getContrasenia() {
+		return contrasenia;
+	}
+
+	public void setContrasenia(String contrasenia) {
+		this.contrasenia = contrasenia;
 	}
 	
 }
