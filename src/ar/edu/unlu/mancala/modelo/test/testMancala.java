@@ -2,6 +2,7 @@ package ar.edu.unlu.mancala.modelo.test;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.MancalaPartida;
+import ar.edu.unlu.mancala.serializacion.services.JugadorServiceImpl;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.consola.VistaConsola;
 
@@ -11,7 +12,8 @@ public class testMancala {
 
 		Ivista vista1 = new VistaConsola();
 		Ivista vista2 = new VistaConsola();
-		MancalaPartida mancalaModel = new MancalaPartida();
+		JugadorServiceImpl service = new JugadorServiceImpl();
+		MancalaPartida mancalaModel = new MancalaPartida(service);
 		MancalaController controlador1 = new MancalaController();
 		MancalaController controlador2 = new MancalaController();
 		controlador1.setModel(mancalaModel);

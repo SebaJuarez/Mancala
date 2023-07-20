@@ -15,19 +15,18 @@ public class MancalaController implements Observer {
 	private Jugador jugador;
 	private Ivista vista ;
 	
-	
 	@Override
 	public void update(Object modelo, Object evento) {
 		// el jugador le tocaría mover.
-		Jugador jugadorMueve = mancalaPartida.getJugadores().get(mancalaPartida.getTurnoActual());
+		Jugador jugadorMueve = mancalaPartida.getJugadoresEnJuego().get(mancalaPartida.getTurnoActual());
 		
 		if (evento instanceof EstadoPartida){
 			switch((EstadoPartida) evento) {
 			case USUARIO_CONECTADO:
-			    Jugador ultimoJugador = mancalaPartida.getJugadores().get(mancalaPartida.getJugadores().size());
-			    if (mancalaPartida.getJugadores().size() == 1 && ultimoJugador == jugador) {
+			    Jugador ultimoJugador = mancalaPartida.getJugadoresEnJuego().get(mancalaPartida.getJugadoresEnJuego().size());
+			    if (mancalaPartida.getJugadoresEnJuego().size() == 1 && ultimoJugador == jugador) {
 			    	vista.mostrarSalaDeEspera();
-			    } else if (mancalaPartida.getJugadores().size() != 2 && ultimoJugador != jugador){
+			    } else if (mancalaPartida.getJugadoresEnJuego().size() != 2 && ultimoJugador != jugador){
 			    	vista.informar((JugadorLectura)ultimoJugador, "se creo una partida, en sala de espera está: ");
 			    }
 				break;

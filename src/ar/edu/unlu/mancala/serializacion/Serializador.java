@@ -1,4 +1,4 @@
-package ar.edu.unlu.mancala.serializacion.services;
+package ar.edu.unlu.mancala.serializacion;
 
 import java.io.EOFException;
 import java.io.FileInputStream;
