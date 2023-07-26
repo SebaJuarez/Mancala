@@ -108,7 +108,10 @@ public class MancalaController implements Observer {
 	
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
-		mancalaPartida.conectarJugador(jugador);
+	}
+	
+	public void jugar() {
+		mancalaPartida.conectarJugador(this.jugador);
 	}
 	
 	public void setModel(MancalaPartida mancalaModel) {

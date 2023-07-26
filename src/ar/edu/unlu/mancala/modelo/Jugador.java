@@ -1,8 +1,12 @@
 package ar.edu.unlu.mancala.modelo;
 
+import java.io.Serializable;
+
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 
-public class Jugador implements JugadorLectura{
+public class Jugador implements JugadorLectura, Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
 	private String nombre;
 	private String contrasenia;

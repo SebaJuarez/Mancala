@@ -6,6 +6,7 @@ import java.util.Comparator;
 
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.MancalaPartida;
+import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 
 public class JugadorController {
@@ -16,8 +17,8 @@ public class JugadorController {
 		this.modelo = modelo;
 	}
 
-	public void agregarJugador(String nombre, String contrasenia) {
-        modelo.agregarJugador(nombre, contrasenia);
+	public EstadoPersistencia agregarJugador(String nombre, String contrasenia) {
+        return modelo.agregarJugador(nombre, contrasenia);
     }
 	
     public Jugador iniciarSesion(String nombre, String contrasenia) {

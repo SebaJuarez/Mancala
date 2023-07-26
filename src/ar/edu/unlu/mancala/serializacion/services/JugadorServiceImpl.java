@@ -12,6 +12,7 @@ public class JugadorServiceImpl implements JugadorService {
 	public final static File jugadoresPath = new File("jugadores.dat");
 	private Serializador serializadorJugadores = new Serializador(jugadoresPath.getAbsolutePath());
 	
+	
 	@Override
 	public boolean existeJugadoresFile() {
 		return jugadoresPath.exists();
@@ -38,6 +39,14 @@ public class JugadorServiceImpl implements JugadorService {
 			jugadores.add((Jugador)jugador);
 		}
 		return jugadores;
+	}
+
+	@Override
+	public Jugador obtenerJugadorPorNombre(String nombre) {
+		return obtenerJugadores().stream()
+				.filter(jugador -> jugador.getNombre().equals(nombre))
+				.findFirst()
+				.orElse(null);
 	}
 
 }

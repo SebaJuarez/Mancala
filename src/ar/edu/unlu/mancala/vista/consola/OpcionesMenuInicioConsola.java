@@ -7,7 +7,7 @@ public enum OpcionesMenuInicioConsola implements Banner{
 
 	public final String label;
 
-	OpcionesMenuInicioConsola(String label) {
+	private OpcionesMenuInicioConsola(String label) {
 		this.label = label;
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
+import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.observer.Observado;
 import ar.edu.unlu.mancala.observer.Observer;
@@ -29,7 +30,9 @@ public class MancalaPartida implements Observado{
 		this.service = service;
 		if(service.existeJugadoresFile()){
 			this.jugadores = service.obtenerJugadores();
-		} 
+		} else {
+			// crear el archivo de jugadores
+		}
 		this.jugadoresEnJuego = new HashMap<Integer, Jugador>(2);
 	}
 
@@ -44,6 +47,7 @@ public class MancalaPartida implements Observado{
 			notificarObservers(EstadoPartida.USUARIO_CONECTADO);
 			iniciarPartida();
 		}
+		jugadoresEnJuego.entrySet().stream().forEach(entry -> System.out.println(entry.getValue().getNombre()));
 	}
 
 	public void iniciarPartida() {
@@ -150,7 +154,10 @@ public class MancalaPartida implements Observado{
                 .orElse(null);
 	}
 	
-	public void agregarJugador(String nombre, String contrasenia) {
+	public EstadoPersistencia agregarJugador(String nombre, String contrasenia) {
+		if(service.obtenerJugadorPorNombre(nombre) != null) {
+			return EstadoPersistencia.NOMBRE_EXISTENTE;
+		}
         Jugador jugador = new Jugador();
         jugador.setNombre(nombre);
         jugador.setContrasenia(Encriptador.encriptarContrasenia(contrasenia));
@@ -158,6 +165,7 @@ public class MancalaPartida implements Observado{
         jugador.setGanadas(0);
         jugador.setPerdidas(0);
         service.guardar(List.of(jugador));
+        return EstadoPersistencia.GUARDADO_EXITOSO;
     }
 
 	public void actualizarJugadores(Jugador jugador1, Jugador jugador2) {
