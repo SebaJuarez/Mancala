@@ -25,6 +25,9 @@ public class MancalaPartida implements Observado{
 	private LinkedList<Observer> observadores = new LinkedList<Observer>();
 	private List<Jugador> jugadores;
 	private final JugadorService service;
+	
+	//-----
+	private List<Jugador> jugadoresConectados  = new LinkedList<Jugador>();
 
 	public MancalaPartida(JugadorService service) {
 		this.service = service;
@@ -47,7 +50,6 @@ public class MancalaPartida implements Observado{
 			notificarObservers(EstadoPartida.USUARIO_CONECTADO);
 			iniciarPartida();
 		}
-		jugadoresEnJuego.entrySet().stream().forEach(entry -> System.out.println(entry.getValue().getNombre()));
 	}
 
 	public void iniciarPartida() {
@@ -148,10 +150,18 @@ public class MancalaPartida implements Observado{
 	// metodos de persistencia de jugadores
 	
 	public Jugador verificarCredenciales(String nombre, String contrasenia) {
-		return getJugadores().stream()
+		Jugador jugadorConectado =  getJugadores().stream()
                 .filter(jugador -> jugador.getNombre().equals(nombre) && Encriptador.verificarContrasenia(contrasenia, jugador.getContrasenia()))
                 .findFirst()
                 .orElse(null);
+		
+		// si el jugador ingreso bien la contraseña y username, ademas no este conectada otra persona desde su cuenta
+		if(jugadorConectado != null && !jugadoresConectados.stream().anyMatch(jugador -> jugador.getNombre().equals(jugadorConectado.getNombre()))){
+			// lo guardo en jugadores conectados
+			jugadoresConectados.add(jugadorConectado);
+		}
+		System.out.println(jugadorConectado);
+		return jugadorConectado;
 	}
 	
 	public EstadoPersistencia agregarJugador(String nombre, String contrasenia) {
