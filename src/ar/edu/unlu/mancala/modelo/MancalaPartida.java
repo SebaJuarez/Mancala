@@ -137,35 +137,42 @@ public class MancalaPartida implements Observado{
 
 	// metodos de persistencia de jugadores
 	
-	public Jugador verificarCredenciales(String nombre, String contrasenia) {
-	    return getJugadores().stream()
+	public void verificarCredenciales(String nombre, String contrasenia) {
+	    Jugador jugadorConectado = getJugadores().stream()
 	            .filter(jugador -> jugador.getNombre().equals(nombre) && Encriptador.verificarContrasenia(contrasenia, jugador.getContrasenia()))
 	            .findFirst()
-	            .map(jugadorConectado -> {
-	                // Si el jugador ingresó bien la contraseña y username, y no está conectada otra persona desde su cuenta,
-	                if (!jugadoresConectados.stream().anyMatch(jugador -> jugador.getNombre().equals(jugadorConectado.getNombre()))) {
-	                	// lo guardamos en jugadores conectados y lo devolvemos; de lo contrario, devolvemos null.
-	                    jugadoresConectados.add(jugadorConectado);
-	                    return jugadorConectado;
-	                } else {
-	                    return null;
-	                }
-	            })
-	            .orElse(null); 
+	            .orElse(null);
+	    
+	    if(jugadorConectado == null) {
+	    	notificarObservers(EstadoPersistencia.CREDENCIALES_INVALIDAS);
+	    } else {
+	    	// Si el jugador ingresó bien la contraseña y username, y no está conectada otra persona desde su cuenta,
+	    	if (!jugadoresConectados.stream().anyMatch(jugador -> jugador.getNombre().equals(jugadorConectado.getNombre()))) {
+	    		// lo guardamos en jugadores conectados y notificamos
+	    		jugadoresConectados.add(jugadorConectado);
+	    		notificarObservers(EstadoPersistencia.LOGEADO);
+	    	} else {
+	    		// notificamos intento de acceso concurrente
+	    		notificarObservers(EstadoPersistencia.USUARIO_YA_CONECTADO);
+	    	}	    	
+	    }
+	    
 	}
 	
-	public EstadoPersistencia agregarJugador(String nombre, String contrasenia) {
+	public void agregarJugador(String nombre, String contrasenia) {
 		if(service.obtenerJugadorPorNombre(nombre) != null) {
-			return EstadoPersistencia.NOMBRE_EXISTENTE;
+			notificarObservers(EstadoPersistencia.NOMBRE_EXISTENTE);
+		} else {
+			Jugador jugador = new Jugador();
+			jugador.setNombre(nombre);
+			jugador.setContrasenia(Encriptador.encriptarContrasenia(contrasenia));
+			jugador.setEmpatadas(0);
+			jugador.setGanadas(0);
+			jugador.setPerdidas(0);
+			service.guardar(jugador);
+			jugadoresConectados.add(jugador);
+			notificarObservers(EstadoPersistencia.GUARDADO_EXITOSO);			
 		}
-        Jugador jugador = new Jugador();
-        jugador.setNombre(nombre);
-        jugador.setContrasenia(Encriptador.encriptarContrasenia(contrasenia));
-        jugador.setEmpatadas(0);
-        jugador.setGanadas(0);
-        jugador.setPerdidas(0);
-        service.guardar(jugador);
-        return EstadoPersistencia.GUARDADO_EXITOSO;
     }
 
 	public void actualizarJugadores(Jugador jugador1, Jugador jugador2) {
@@ -180,6 +187,10 @@ public class MancalaPartida implements Observado{
 	
 	public List<Jugador> getJugadores() {
 		return this.jugadores;
+	}
+	
+	public List<Jugador> getJugadoresConectados(){
+		return this.jugadoresConectados;
 	}
 	
 	// metodos del observer

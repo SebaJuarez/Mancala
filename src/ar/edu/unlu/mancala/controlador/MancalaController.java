@@ -1,8 +1,13 @@
 package ar.edu.unlu.mancala.controlador;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.MancalaPartida;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
+import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.observer.Observer;
 import ar.edu.unlu.mancala.vista.Ivista;
@@ -14,6 +19,7 @@ public class MancalaController implements Observer {
 	private MancalaPartida mancalaPartida;
 	private Jugador jugador;
 	private Ivista vista ;
+	private String nombreIntento = "";
 	
 	@Override
 	public void update(Object modelo, Object evento) {
@@ -100,6 +106,43 @@ public class MancalaController implements Observer {
 				break;
 			}
 		}
+		if (evento instanceof EstadoPersistencia){
+			switch((EstadoPersistencia) evento) {
+			case LOGEADO:
+				if(this.nombreIntento.equals(vista.getNombreIntento())) {
+					vista.informar("logeado con exito!!");
+					setJugador(mancalaPartida.getJugadoresConectados().get(mancalaPartida.getJugadoresConectados().size()-1));
+					vista.mostrarMenuPrincipal();					
+				}
+				this.nombreIntento = "";
+				break;
+			case NOMBRE_EXISTENTE:
+				if(this.nombreIntento.equals(vista.getNombreIntento())) 
+					vista.informar("el nombre de usuario ya existe!!, ingrese otro.");
+				this.nombreIntento = "";
+				break;
+			case GUARDADO_EXITOSO:
+				if(this.nombreIntento.equals(vista.getNombreIntento())) {
+					vista.informar("se creo la cuenta con exito!! No olvide sus credenciales.");
+					setJugador(mancalaPartida.getJugadoresConectados().get(mancalaPartida.getJugadoresConectados().size()-1));
+					vista.mostrarMenuPrincipal();	
+				}
+				this.nombreIntento = "";
+				break;
+			case USUARIO_YA_CONECTADO:
+				if(this.nombreIntento.equals(vista.getNombreIntento())) 
+					vista.informar("La cuenta esta online, no se permite acceso concurrente");
+				this.nombreIntento = "";
+				break;
+			case CREDENCIALES_INVALIDAS:
+				if(this.nombreIntento.equals(vista.getNombreIntento())) 
+					vista.informar("Nombre o contrasenia incorrectos, ingrese los datos de nuevo");
+				this.nombreIntento = "";
+				break;
+			default:
+				break;
+			}
+		}
 	}
 	
 	public void mover(int indice) {
@@ -121,5 +164,23 @@ public class MancalaController implements Observer {
 
 	public void setVista(Ivista vista) {
 		this.vista = vista;
+	}
+	
+	public void agregarJugador(String nombre, String contrasenia) {
+		this.nombreIntento = nombre;
+         mancalaPartida.agregarJugador(nombre, contrasenia);
+    }
+	
+    public void iniciarSesion(String nombre, String contrasenia) {
+    	this.nombreIntento = nombre;
+         mancalaPartida.verificarCredenciales(nombre,contrasenia);
+    }
+	
+	// recuperado jugadores para el top
+	public List<JugadorLectura> getJugadoresTop() {
+		return mancalaPartida.getJugadores().stream()
+				.map(j -> (JugadorLectura)j)
+				.sorted(Comparator.comparing(JugadorLectura::getGanadas).reversed())
+				.collect(Collectors.toList());
 	}
 }

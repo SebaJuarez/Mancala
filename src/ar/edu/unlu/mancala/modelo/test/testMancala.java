@@ -1,6 +1,5 @@
 package ar.edu.unlu.mancala.modelo.test;
 
-import ar.edu.unlu.mancala.controlador.JugadorController;
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.MancalaPartida;
 import ar.edu.unlu.mancala.serializacion.services.JugadorServiceImpl;
@@ -17,14 +16,10 @@ public class testMancala {
 		MancalaPartida mancalaModel = new MancalaPartida(service);
 		MancalaController controlador1 = new MancalaController();
 		MancalaController controlador2 = new MancalaController();
-		JugadorController controladorJ1 = new JugadorController(mancalaModel);
-		JugadorController controladorJ2 = new JugadorController(mancalaModel);
 		controlador1.setModel(mancalaModel);
 		controlador2.setModel(mancalaModel);
 		vista1.setControlador(controlador1);
 		vista2.setControlador(controlador2);
-		vista1.setControladorJugador(controladorJ1);
-		vista2.setControladorJugador(controladorJ2);
 		controlador1.setVista(vista1);
 		controlador2.setVista(vista2);
 		mancalaModel.agregarObservador(controlador1);

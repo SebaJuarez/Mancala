@@ -1,6 +1,5 @@
 package ar.edu.unlu.mancala.vista;
 
-import ar.edu.unlu.mancala.controlador.JugadorController;
 import ar.edu.unlu.mancala.controlador.MancalaController;
 
 public interface Ivista {
@@ -11,7 +10,7 @@ public interface Ivista {
 
 	void setControlador(MancalaController controlador);
 	
-	void menuInicioSesion();
+	void mostrarMenuInicioSesion();
 
 	void mostrarPartida(TableroLectura tablero, JugadorLectura jugadorMueve);
 
@@ -22,7 +21,8 @@ public interface Ivista {
 	void mostrarGanador(JugadorLectura obtenerGanador);
 
 	void mostrarSalaDeEspera();
+	
+	void mostrarMenuPrincipal();
 
-	void setControladorJugador(JugadorController controladorJugador);
-
+	String getNombreIntento();
 }

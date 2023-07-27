@@ -17,10 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-import ar.edu.unlu.mancala.controlador.JugadorController;
 import ar.edu.unlu.mancala.controlador.MancalaController;
-import ar.edu.unlu.mancala.modelo.Jugador;
-import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
@@ -31,10 +28,10 @@ public class VistaConsola extends JFrame implements Ivista {
     private JTextField campoTexto;
     private JTextArea pantalla;
     private MancalaController controlador;
-    private JugadorController controladorJugador;
     private EstadosFlujo estadoFlujo = EstadosFlujo.LOG_IN;
     private JPanel panelComandos;
     private boolean esperandoTecla = false;
+    private String nombreIntento;
 
 	public VistaConsola() {
         // Configuración de la ventana principal
@@ -80,16 +77,10 @@ public class VistaConsola extends JFrame implements Ivista {
             		if(!esperandoTecla) {
         				opcionesPrincipal(entrada);        			
             		} else {
-            			menuPrincipal();
+            			mostrarMenuPrincipal();
             			esperandoTecla = false;
             		}
             		break;
-            	/*case LOGIN :
-            		Jugador jugador = new Jugador();
-            		jugador.setNombre(entrada);
-            		controlador.setJugador(jugador);
-            		estadoFlujo = EstadosFlujo.MOVIMIENTOS;
-            		break; */
             	case MOVIMIENTOS :
             		mover(entrada);
             		break;
@@ -153,19 +144,11 @@ public class VistaConsola extends JFrame implements Ivista {
 	
 	private void formularioUsuario(String entry) {
 		String[] entryFiltrada = entry.trim().split(" ");
-		if(entryFiltrada.length == 2) {
+		if (entryFiltrada.length == 2) {
 			String nombre = entryFiltrada[0];
 			String contrasenia = entryFiltrada[1];
-			Jugador jugadorMain = controladorJugador.iniciarSesion(nombre, contrasenia);
-			System.out.println(jugadorMain);
-			if(jugadorMain != null) {
-				controlador.setJugador(jugadorMain);	
-				println("ingrese cualquier tecla para volver al menu");
-				estadoFlujo = EstadosFlujo.MENU_PRINCIPAL;
-				esperandoTecla = true;
-			} else {
-				informar("nombre o contraseña incorrectos !!");
-			}
+			nombreIntento = nombre;
+			controlador.iniciarSesion(nombre, contrasenia);
 		} else {
 			informar("ingreso mal los parametros de entrada!!");
 		}
@@ -176,28 +159,17 @@ public class VistaConsola extends JFrame implements Ivista {
 		if(entryFiltrada.length == 2) {
 			String nombre = entryFiltrada[0];
 			String contrasenia = entryFiltrada[1];
-			if (controladorJugador.agregarJugador(nombre, contrasenia) == EstadoPersistencia.GUARDADO_EXITOSO) {
-				Jugador jugadorMain = controladorJugador.iniciarSesion(nombre, contrasenia);
-				controlador.setJugador(jugadorMain);	
-				informar("creacion de usuario exitosa!");
-				estadoFlujo = EstadosFlujo.MENU_PRINCIPAL;
-				esperandoTecla = true;
-			} else { 
-				informar("nombre de usuario existente, ingrese otro");
-			}
+			nombreIntento = nombre;
+			controlador.agregarJugador(nombre, contrasenia);
+			//controlador.iniciarSesion(nombre, contrasenia);	
 		} else {
-			informar("ingreso mal los parametros de entrada!!");
+			informar("ingreso mal las credenciales, intente de nuevo");
 		}
 	}
 	
 	//----------------------------------------------------------------------------
 	
 	// mwnu principal ------------------------------------------------------------
-	
-	private void menuPrincipal() {
-    	clearScreen();
-    	println(OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal());
-	}
 	
 	private void opcionesPrincipal(String entrada) {
 		switch(entrada) {
@@ -206,7 +178,7 @@ public class VistaConsola extends JFrame implements Ivista {
 			estadoFlujo = EstadosFlujo.MOVIMIENTOS;
 			break;
 		case "2" :
-			
+			controlador.getJugadoresTop();
 			break;
 		case "3" :
 			break;
@@ -248,11 +220,11 @@ public class VistaConsola extends JFrame implements Ivista {
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
-		menuInicioSesion();
+		mostrarMenuInicioSesion();
 	}
 	
 	@Override
-    public void menuInicioSesion() {
+    public void mostrarMenuInicioSesion() {
     	clearScreen();
     	println(OpcionesInicioSesion.mostrarOpcionesInicioSesion());
 	}
@@ -263,8 +235,7 @@ public class VistaConsola extends JFrame implements Ivista {
 			this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;
 			clearScreen();
 			informar("¡¡Comienza la partida!!");
-		} 
-		
+		} 	
 		pantalla.append(tablero.toString() + "\n");
 		informar(jugador, "Le toca al jugador: ");
 	}
@@ -291,6 +262,17 @@ public class VistaConsola extends JFrame implements Ivista {
 		estadoFlujo = EstadosFlujo.ESPERA;
 		println(Banner.esperandoJugador);
 	}
+	
+	
+	public void mostrarMenuPrincipal() {
+    	clearScreen();
+    	println(OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal());
+	}
+	
+	@Override
+	public String getNombreIntento() {
+		return this.nombreIntento;
+	}
 	//---------------------------------------------------------------------------
 
 	// Setters y Getters --------------------------------------------------------
@@ -302,11 +284,6 @@ public class VistaConsola extends JFrame implements Ivista {
 	@Override
 	public void setControlador(MancalaController controlador) {
 		this.controlador = controlador;
-	}
-	
-	@Override
-	public void setControladorJugador(JugadorController controladorJugador) {
-		this.controladorJugador = controladorJugador;
 	}
 	//---------------------------------------------------------------------------
 
