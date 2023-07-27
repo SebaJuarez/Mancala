@@ -19,15 +19,14 @@ public class JugadorServiceImpl implements JugadorService {
 	}
 	
 	@Override
-	public void guardar(List<Jugador> jugadores) {
+	public void guardar(Jugador jugador) {
+		List<Jugador> jugadores = obtenerJugadores();
+		jugadores.add(jugador);
 		if(jugadores.size() >= 1) {
 			serializadorJugadores.writeOneObject(jugadores.get(0));
-			jugadores.forEach((jugador) -> {
-				//estaba un getFirst
-				if(jugadores.get(0) != jugador){
-					serializadorJugadores.addOneObject(jugador);					
-				}
-			});
+			for(int i = 1; i < jugadores.size(); i++) {
+				serializadorJugadores.addOneObject(jugador);									
+			}
 		}
 	}
 	
@@ -35,8 +34,10 @@ public class JugadorServiceImpl implements JugadorService {
 	public List<Jugador> obtenerJugadores(){
 		LinkedList<Jugador> jugadores = new LinkedList<Jugador>();
 		Object[] recuperado = serializadorJugadores.readObjects();
-		for(Object jugador : recuperado) {
-			jugadores.add((Jugador)jugador);
+		if(recuperado.length > 0) {
+			for(Object jugador : recuperado) {
+				jugadores.add((Jugador)jugador);
+			}			
 		}
 		return jugadores;
 	}

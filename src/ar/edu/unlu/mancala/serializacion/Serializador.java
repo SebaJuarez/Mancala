@@ -1,6 +1,7 @@
 package ar.edu.unlu.mancala.serializacion;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,6 +13,20 @@ import java.util.ArrayList;
 public class Serializador {
 	private String fileName;
 
+	static {
+		try {
+	        File New_File = new File("jugadores.dat");
+	        if (New_File.createNewFile()){
+	            System.out.println("creando archivo..");
+	        }
+	        else{
+	            System.out.println("el archivo existe.");
+	        }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	}
+	
 	public Serializador(String fileName) {
 		super();
 		this.fileName = fileName;
@@ -73,7 +88,7 @@ public class Serializador {
 	}
 	
 	public Object[] readObjects() {
-		Object[] respuesta;
+		Object[] respuesta = {};
 		ArrayList<Object> listOfObject = new ArrayList<Object>();
 		try {
 			ObjectInputStream ois = new ObjectInputStream(
@@ -104,7 +119,7 @@ public class Serializador {
 			for(Object o : listOfObject)
 				respuesta[count ++] = o;
 		} else {
-			respuesta = null;
+			//respuesta ;
 		}
 		return respuesta;
 	}

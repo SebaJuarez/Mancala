@@ -134,34 +134,24 @@ public class MancalaPartida implements Observado{
 			   notificarObservers(EstadoPartida.PARTIDA_EN_PROGRESO);
 			}
 	}
-	
-	
-	// metodos del observer
-	@Override
-	public void agregarObservador(Observer observer) {
-		this.observadores.add(observer);
-	}
-	
-	@Override
-	public void notificarObservers(Object informe) {
-		this.observadores.forEach((observer) -> observer.update(this,informe));		
-	}
 
 	// metodos de persistencia de jugadores
 	
 	public Jugador verificarCredenciales(String nombre, String contrasenia) {
-		Jugador jugadorConectado =  getJugadores().stream()
-                .filter(jugador -> jugador.getNombre().equals(nombre) && Encriptador.verificarContrasenia(contrasenia, jugador.getContrasenia()))
-                .findFirst()
-                .orElse(null);
-		
-		// si el jugador ingreso bien la contraseña y username, ademas no este conectada otra persona desde su cuenta
-		if(jugadorConectado != null && !jugadoresConectados.stream().anyMatch(jugador -> jugador.getNombre().equals(jugadorConectado.getNombre()))){
-			// lo guardo en jugadores conectados
-			jugadoresConectados.add(jugadorConectado);
-		}
-		System.out.println(jugadorConectado);
-		return jugadorConectado;
+	    return getJugadores().stream()
+	            .filter(jugador -> jugador.getNombre().equals(nombre) && Encriptador.verificarContrasenia(contrasenia, jugador.getContrasenia()))
+	            .findFirst()
+	            .map(jugadorConectado -> {
+	                // Si el jugador ingresó bien la contraseña y username, y no está conectada otra persona desde su cuenta,
+	                if (!jugadoresConectados.stream().anyMatch(jugador -> jugador.getNombre().equals(jugadorConectado.getNombre()))) {
+	                	// lo guardamos en jugadores conectados y lo devolvemos; de lo contrario, devolvemos null.
+	                    jugadoresConectados.add(jugadorConectado);
+	                    return jugadorConectado;
+	                } else {
+	                    return null;
+	                }
+	            })
+	            .orElse(null); 
 	}
 	
 	public EstadoPersistencia agregarJugador(String nombre, String contrasenia) {
@@ -174,7 +164,7 @@ public class MancalaPartida implements Observado{
         jugador.setEmpatadas(0);
         jugador.setGanadas(0);
         jugador.setPerdidas(0);
-        service.guardar(List.of(jugador));
+        service.guardar(jugador);
         return EstadoPersistencia.GUARDADO_EXITOSO;
     }
 
@@ -190,6 +180,17 @@ public class MancalaPartida implements Observado{
 	
 	public List<Jugador> getJugadores() {
 		return this.jugadores;
+	}
+	
+	// metodos del observer
+	@Override
+	public void agregarObservador(Observer observer) {
+		this.observadores.add(observer);
+	}
+	
+	@Override
+	public void notificarObservers(Object informe) {
+		this.observadores.forEach((observer) -> observer.update(this,informe));		
 	}
 	
 	// getters y setters

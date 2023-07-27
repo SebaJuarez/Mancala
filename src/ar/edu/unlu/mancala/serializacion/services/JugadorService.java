@@ -8,10 +8,12 @@ public interface JugadorService {
 
 	boolean existeJugadoresFile();
 
-	void guardar(List<Jugador> jugadores);
+	//void guardar(List<Jugador> jugadores);
 
 	List<Jugador> obtenerJugadores();
 	
 	Jugador obtenerJugadorPorNombre(String nombre);
+
+	void guardar(Jugador jugador);
 
 }

@@ -18,7 +18,8 @@ public class testLogIn {
 	  jugador.setContrasenia(Encriptador.encriptarContrasenia("juarez"));
 	  jugador2.setNombre("admin");
 	  jugador2.setContrasenia(Encriptador.encriptarContrasenia("admin"));
-	  service.guardar(List.of(jugador, jugador2));
+	  service.guardar(jugador);
+	  service.guardar(jugador2);
 	}
 	
 }
