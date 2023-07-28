@@ -1,9 +1,11 @@
 package ar.edu.unlu.mancala.modelo;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
@@ -12,6 +14,7 @@ import ar.edu.unlu.mancala.observer.Observado;
 import ar.edu.unlu.mancala.observer.Observer;
 import ar.edu.unlu.mancala.security.Encriptador;
 import ar.edu.unlu.mancala.serializacion.services.JugadorService;
+import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
 
 public class MancalaPartida implements Observado{
@@ -258,6 +261,14 @@ public class MancalaPartida implements Observado{
 		}
 
 		public void desconectar(Jugador jugador) {
-			this.jugadoresConectados.remove(this.jugadoresConectados.indexOf(jugador));
+			this.jugadoresConectados.remove(jugador);
+		}
+
+		public List<JugadorLectura> getTop(int limite) {
+			return this.jugadores.stream()
+					.map(j -> (JugadorLectura)j)
+					.sorted(Comparator.comparing(JugadorLectura::getGanadas).reversed())
+					.limit(limite)
+					.collect(Collectors.toList());
 		}
 }

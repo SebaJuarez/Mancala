@@ -1,9 +1,6 @@
 package ar.edu.unlu.mancala.controlador;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.MancalaPartida;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
@@ -184,13 +181,9 @@ public class MancalaController implements Observer {
          mancalaPartida.verificarCredenciales(nombre,contrasenia);
     }
 	
-	// recuperado jugadores para el top
+	// recuperado jugadores para el top 10
 	public List<JugadorLectura> getJugadoresTop() {
-		return mancalaPartida.getJugadores().stream()
-				.map(j -> (JugadorLectura)j)
-				.sorted(Comparator.comparing(JugadorLectura::getGanadas).reversed())
-				.limit(10)
-				.collect(Collectors.toList());
+		return mancalaPartida.getTop(10);
 	}
 
 	public void desconectar() {

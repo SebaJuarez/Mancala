@@ -211,27 +211,6 @@ public class VistaConsola extends JFrame implements Ivista {
 			break;
 		}
 	}
-	@Override
-	public void mostrarEstadisticas() {
-		clearScreen();
-		println(Banner.ESTADISTICA);
-		JugadorLectura jugador = controlador.getJugador();
-		int ganadas = jugador.getGanadas();
-		int empatadas = jugador.getEmpatadas();
-		int perdidas = jugador.getPerdidas();
-		int jugadas = ganadas+perdidas+empatadas;
-		double winRate = (ganadas > 0) ? ((ganadas / jugadas) * 100) : 0;
-		double loseRate = (perdidas > 0) ? ((perdidas / jugadas) * 100) : 0;
-		double drawRate = (empatadas > 0) ? ((empatadas / jugadas) * 100) : 0;
-		println("Ganadas : " + jugador.getGanadas() + "  <<");
-		println("");
-		println("Perdidas : " + jugador.getPerdidas() + "  <<");
-		println("");
-		println("Empatadas : " + jugador.getEmpatadas() + "  <<");
-		println("");
-		println("Win Rate : " + winRate + "     Lose Rate : " + loseRate + "     Draw Rate : " + drawRate);
-		println("");
-	}
 
 	private void cerrarJuego() {
 		controlador.desconectar();
@@ -374,6 +353,28 @@ public class VistaConsola extends JFrame implements Ivista {
 	public void mostrarReglas() {
 		clearScreen();
 		println(Reglamento.mostrarReglas());
+	}
+	
+	@Override
+	public void mostrarEstadisticas() {
+		clearScreen();
+		println(Banner.ESTADISTICA);
+		JugadorLectura jugador = controlador.getJugador();
+		int ganadas = jugador.getGanadas();
+		int empatadas = jugador.getEmpatadas();
+		int perdidas = jugador.getPerdidas();
+		int jugadas = ganadas+perdidas+empatadas;
+		double winRate = (ganadas > 0) ? ((ganadas / jugadas) * 100) : 0;
+		double loseRate = (perdidas > 0) ? ((perdidas / jugadas) * 100) : 0;
+		double drawRate = (empatadas > 0) ? ((empatadas / jugadas) * 100) : 0;
+		println("Ganadas : " + jugador.getGanadas() + "  <<");
+		println("");
+		println("Perdidas : " + jugador.getPerdidas() + "  <<");
+		println("");
+		println("Empatadas : " + jugador.getEmpatadas() + "  <<");
+		println("");
+		println("Win Rate : " + winRate + "     Lose Rate : " + loseRate + "     Draw Rate : " + drawRate);
+		println("");
 	}
 	//---------------------------------------------------------------------------
 
