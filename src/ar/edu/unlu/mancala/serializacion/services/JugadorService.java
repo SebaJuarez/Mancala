@@ -15,5 +15,7 @@ public interface JugadorService {
 	Jugador obtenerJugadorPorNombre(String nombre);
 
 	void guardar(Jugador jugador);
+	
+	void guardar(List<Jugador> jugadores);
 
 }

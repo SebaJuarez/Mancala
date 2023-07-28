@@ -16,12 +16,7 @@ public class Serializador {
 	static {
 		try {
 	        File New_File = new File("jugadores.dat");
-	        if (New_File.createNewFile()){
-	            System.out.println("creando archivo..");
-	        }
-	        else{
-	            System.out.println("el archivo existe.");
-	        }
+	        New_File.createNewFile();
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }

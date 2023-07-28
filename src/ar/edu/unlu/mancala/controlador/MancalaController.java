@@ -14,6 +14,7 @@ import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
 
+
 public class MancalaController implements Observer {
 
 	private MancalaPartida mancalaPartida;
@@ -24,9 +25,9 @@ public class MancalaController implements Observer {
 	@Override
 	public void update(Object modelo, Object evento) {
 		// el jugador le tocaría mover.
-		Jugador jugadorMueve = mancalaPartida.getJugadoresEnJuego().get(mancalaPartida.getTurnoActual());
 		
 		if (evento instanceof EstadoPartida){
+			Jugador jugadorMueve = mancalaPartida.getJugadoresEnJuego().get(mancalaPartida.getTurnoActual());
 			switch((EstadoPartida) evento) {
 			case USUARIO_CONECTADO:
 			    Jugador ultimoJugador = mancalaPartida.getJugadoresEnJuego().get(mancalaPartida.getJugadoresEnJuego().size());
@@ -54,7 +55,14 @@ public class MancalaController implements Observer {
 				vista.mostrarPartida((TableroLectura)mancalaPartida.getTablero(),(JugadorLectura)jugadorMueve);
 				break;
 			case PARTIDA_TERMINADA:
-				vista.mostrarGanador((JugadorLectura)mancalaPartida.obtenerGanador());
+				vista.mostrarPartida((TableroLectura)mancalaPartida.getTablero(),(JugadorLectura)jugadorMueve);
+				if(this.mancalaPartida.obtenerGanador() == this.jugador) {
+					vista.mostrarGanador((JugadorLectura)this.jugador);
+				} else if (mancalaPartida.obtenerGanador() != null){
+					vista.mostrarPerdedor((JugadorLectura) this.jugador);
+				} else {
+					vista.mostrarEmpate((JugadorLectura) this.jugador);
+				}
 				break;
 			default:
 				break;
@@ -110,9 +118,9 @@ public class MancalaController implements Observer {
 			switch((EstadoPersistencia) evento) {
 			case LOGEADO:
 				if(this.nombreIntento.equals(vista.getNombreIntento())) {
-					vista.informar("logeado con exito!!");
 					setJugador(mancalaPartida.getJugadoresConectados().get(mancalaPartida.getJugadoresConectados().size()-1));
 					vista.mostrarMenuPrincipal();					
+					vista.informar("logeado con exito!!");
 				}
 				this.nombreIntento = "";
 				break;
@@ -123,9 +131,9 @@ public class MancalaController implements Observer {
 				break;
 			case GUARDADO_EXITOSO:
 				if(this.nombreIntento.equals(vista.getNombreIntento())) {
-					vista.informar("se creo la cuenta con exito!! No olvide sus credenciales.");
 					setJugador(mancalaPartida.getJugadoresConectados().get(mancalaPartida.getJugadoresConectados().size()-1));
 					vista.mostrarMenuPrincipal();	
+					vista.informar("se creo la cuenta con exito!! No olvide sus credenciales.");
 				}
 				this.nombreIntento = "";
 				break;
@@ -181,6 +189,15 @@ public class MancalaController implements Observer {
 		return mancalaPartida.getJugadores().stream()
 				.map(j -> (JugadorLectura)j)
 				.sorted(Comparator.comparing(JugadorLectura::getGanadas).reversed())
+				.limit(10)
 				.collect(Collectors.toList());
+	}
+
+	public void desconectar() {
+		mancalaPartida.desconectar(this.jugador);
+	}
+	
+	public JugadorLectura getJugador() {
+		return (JugadorLectura) this.jugador;
 	}
 }

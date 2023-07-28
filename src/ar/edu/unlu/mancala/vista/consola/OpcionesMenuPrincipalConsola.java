@@ -5,7 +5,8 @@ public enum OpcionesMenuPrincipalConsola implements Banner {
     COMENZAR_PARTIDA ("1) Buscar partida"),
     TOP_GANADORES ("2) Top ganadores"),
     REGLAS("3) Mostrar reglas del juego"),
-    SALIR ("4) Salir");
+    ESTADISTICAS("4) Mis estadisticas"),
+    SALIR ("5) Salir");
 	
     public final String label;
 
@@ -25,7 +26,8 @@ public enum OpcionesMenuPrincipalConsola implements Banner {
     	menu = menu + "#   *          *    "+valueOf(1)+"     *                   # \n";
     	menu = menu + "#            *      "+valueOf(2)+"                          # \n";
 		menu = menu + "#      *            "+valueOf(3)+"               # \n";
-    	menu = menu + "#     *             "+valueOf(4)+"                     *          * # \n";
+    	menu = menu + "#     *             "+valueOf(4)+"         *       *     # \n";
+    	menu = menu + "#     *             "+valueOf(5)+"                     *          * # \n";
     	menu = menu + "#   *               *          *    *              *          # \n";
     	menu = menu + "###############################################################";
     	return menu;

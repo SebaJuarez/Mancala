@@ -25,7 +25,7 @@ public class JugadorServiceImpl implements JugadorService {
 		if(jugadores.size() >= 1) {
 			serializadorJugadores.writeOneObject(jugadores.get(0));
 			for(int i = 1; i < jugadores.size(); i++) {
-				serializadorJugadores.addOneObject(jugador);									
+				serializadorJugadores.addOneObject(jugadores.get(i));									
 			}
 		}
 	}
@@ -48,6 +48,16 @@ public class JugadorServiceImpl implements JugadorService {
 				.filter(jugador -> jugador.getNombre().equals(nombre))
 				.findFirst()
 				.orElse(null);
+	}
+
+	@Override
+	public void guardar(List<Jugador> jugadores) {
+		if(jugadores.size() >= 1) {
+			serializadorJugadores.writeOneObject(jugadores.get(0));
+			for(int i = 1; i < jugadores.size(); i++) {
+				serializadorJugadores.addOneObject(jugadores.get(i));									
+			}
+		}
 	}
 
 }

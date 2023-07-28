@@ -16,7 +16,7 @@ import ar.edu.unlu.mancala.vista.TableroLectura;
 
 public class MancalaPartida implements Observado{
 
-	private Map<Integer, Jugador> jugadoresEnJuego;
+	private Map<Integer, Jugador> jugadoresEnJuego =  new HashMap<Integer, Jugador>(2);
 	private Tablero tablero;
 	private MoveValidator moveValidator;
 	private int turnoActual;
@@ -31,15 +31,14 @@ public class MancalaPartida implements Observado{
 
 	public MancalaPartida(JugadorService service) {
 		this.service = service;
-		if(service.existeJugadoresFile()){
-			this.jugadores = service.obtenerJugadores();
-		} else {
-			// crear el archivo de jugadores
-		}
-		this.jugadoresEnJuego = new HashMap<Integer, Jugador>(2);
+		this.jugadores = service.obtenerJugadores();
 	}
 
 	public void conectarJugador(Jugador jugador) {
+		if(partidaTerminada = true && this.jugadoresEnJuego.size() == 2) {
+			this.jugadoresEnJuego = new HashMap<Integer, Jugador>(2);
+		}
+		
 		if (this.jugadoresEnJuego.size() == 2)
 			notificarObservers(EstadoPartida.PARTIDA_LLENA);
 		else if (this.jugadoresEnJuego.isEmpty()) {
@@ -55,6 +54,7 @@ public class MancalaPartida implements Observado{
 	public void iniciarPartida() {
 		this.tablero = new Tablero();
 		this.moveValidator = new MoveValidator();
+		this.partidaTerminada = false;
 		this.setTurnoActual(((int) Math.random() * 2) + 1);
 		notificarObservers(EstadoPartida.COMENZANDO_PARTIDA);
 	}
@@ -112,11 +112,20 @@ public class MancalaPartida implements Observado{
 	public Jugador obtenerGanador() {
 		Agujero casaJ1 = tablero.getAgujeros()[tablero.getPOS_CASAJ1()];
 		Agujero casaJ2 = tablero.getAgujeros()[tablero.getPOS_CASAJ2()];
+		Jugador jugador1 = jugadoresEnJuego.get(1);
+		Jugador jugador2 = jugadoresEnJuego.get(2);
+		actualizarJugadores(jugador1, jugador2);
 		if (casaJ1.getHabas() > casaJ2.getHabas()) {
-		    return jugadoresEnJuego.get(1);
+			jugador1.setGanadas(jugador1.getGanadas() + 1);
+			jugador2.setPerdidas(jugador2.getPerdidas() + 1);
+		    return jugador1;
 		} else if (casaJ1.getHabas() < casaJ2.getHabas()) {
-		    return jugadoresEnJuego.get(2);
+			jugador1.setPerdidas(jugador1.getPerdidas() + 1);
+			jugador2.setGanadas(jugador2.getGanadas() + 1);
+		    return jugador2;
 		} else {
+			jugador1.setEmpatadas(jugador1.getEmpatadas() + 1);
+			jugador2.setEmpatadas(jugador2.getEmpatadas() + 1);
 		    return null;
 		}
 	}
@@ -171,6 +180,7 @@ public class MancalaPartida implements Observado{
 			jugador.setPerdidas(0);
 			service.guardar(jugador);
 			jugadoresConectados.add(jugador);
+			this.jugadores = service.obtenerJugadores();
 			notificarObservers(EstadoPersistencia.GUARDADO_EXITOSO);			
 		}
     }
@@ -183,6 +193,7 @@ public class MancalaPartida implements Observado{
 				this.jugadores.set(jugadores.indexOf(jugador), jugador2);
 			}
 		});
+		this.service.guardar(this.jugadores);
 	}
 	
 	public List<Jugador> getJugadores() {
@@ -244,5 +255,9 @@ public class MancalaPartida implements Observado{
 		
 		public Jugador getUltimoEnMover() {
 			return this.ultimoEnMover;
+		}
+
+		public void desconectar(Jugador jugador) {
+			this.jugadoresConectados.remove(this.jugadoresConectados.indexOf(jugador));
 		}
 }
