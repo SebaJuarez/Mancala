@@ -1,10 +1,13 @@
 package ar.edu.unlu.mancala.modelo;
 
+import java.io.Serializable;
+
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.vista.TableroLectura;
 
-public class Tablero implements TableroLectura {
+public class Tablero implements TableroLectura, Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Agujero[] agujeros;
 	private final int CANTIDAD_HABAS = 4;
 	private final int LONGUITUD_TABLERO = 14;

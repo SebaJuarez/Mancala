@@ -2,6 +2,7 @@ package ar.edu.unlu.mancala.modelo;
 
 public class Hoyo extends Agujero {
 
+	private static final long serialVersionUID = 1L;
 	public Hoyo(int habas, int indice) {
 		super(habas,indice);
 	}

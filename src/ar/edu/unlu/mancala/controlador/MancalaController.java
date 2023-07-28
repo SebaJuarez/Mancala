@@ -1,26 +1,83 @@
 package ar.edu.unlu.mancala.controlador;
 
+import java.rmi.RemoteException;
 import java.util.List;
+
+import ar.edu.unlu.mancala.modelo.IMancalaPartida;
 import ar.edu.unlu.mancala.modelo.Jugador;
-import ar.edu.unlu.mancala.modelo.MancalaPartida;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
-import ar.edu.unlu.mancala.observer.Observer;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
+import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
+import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
 
-public class MancalaController implements Observer {
+public class MancalaController implements IControladorRemoto {
 
-	private MancalaPartida mancalaPartida;
+	private IMancalaPartida mancalaPartida;
 	private Jugador jugador;
 	private Ivista vista ;
 	private String nombreIntento = "";
 	
+	/*
 	@Override
 	public void update(Object modelo, Object evento) {
+	}*/
+	
+	public MancalaController(Ivista vista) {
+		this.vista = vista;
+	}
+	
+	public void mover(int indice) throws RemoteException {
+		mancalaPartida.mover(indice, this.jugador);
+	}
+	
+	public void setJugador(Jugador jugador) {
+		this.jugador = jugador;
+	}
+	
+	public void jugar() throws RemoteException {
+		mancalaPartida.conectarJugador(this.jugador);
+	}
+	
+	/*
+	public void setModel(IMancalaPartida mancalaModel) {
+		this.mancalaPartida = mancalaModel;
+	}*/
+
+
+	public void setVista(Ivista vista) {
+		this.vista = vista;
+	}
+	
+	public void agregarJugador(String nombre, String contrasenia) throws RemoteException {
+		this.nombreIntento = nombre;
+         mancalaPartida.agregarJugador(nombre, contrasenia);
+    }
+	
+    public void iniciarSesion(String nombre, String contrasenia) throws RemoteException {
+    	this.nombreIntento = nombre;
+         mancalaPartida.verificarCredenciales(nombre,contrasenia);
+    }
+	
+	// recuperado jugadores para el top 10
+	public List<JugadorLectura> getJugadoresTop() throws RemoteException {
+		return mancalaPartida.getTop(10);
+	}
+
+	public void desconectar() throws RemoteException {
+		mancalaPartida.desconectar(this.jugador);
+	}
+	
+	public JugadorLectura getJugador() {
+		return (JugadorLectura) this.jugador;
+	}
+
+	@Override
+	public void actualizar(IObservableRemoto modelo, Object evento) throws RemoteException {
 		// el jugador le tocaría mover.
 		
 		if (evento instanceof EstadoPartida){
@@ -149,48 +206,9 @@ public class MancalaController implements Observer {
 			}
 		}
 	}
-	
-	public void mover(int indice) {
-		mancalaPartida.mover(indice, this.jugador);
-	}
-	
-	public void setJugador(Jugador jugador) {
-		this.jugador = jugador;
-	}
-	
-	public void jugar() {
-		mancalaPartida.conectarJugador(this.jugador);
-	}
-	
-	public void setModel(MancalaPartida mancalaModel) {
-		this.mancalaPartida = mancalaModel;
-	}
 
-
-	public void setVista(Ivista vista) {
-		this.vista = vista;
-	}
-	
-	public void agregarJugador(String nombre, String contrasenia) {
-		this.nombreIntento = nombre;
-         mancalaPartida.agregarJugador(nombre, contrasenia);
-    }
-	
-    public void iniciarSesion(String nombre, String contrasenia) {
-    	this.nombreIntento = nombre;
-         mancalaPartida.verificarCredenciales(nombre,contrasenia);
-    }
-	
-	// recuperado jugadores para el top 10
-	public List<JugadorLectura> getJugadoresTop() {
-		return mancalaPartida.getTop(10);
-	}
-
-	public void desconectar() {
-		mancalaPartida.desconectar(this.jugador);
-	}
-	
-	public JugadorLectura getJugador() {
-		return (JugadorLectura) this.jugador;
+	@Override
+	public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
+		this.mancalaPartida = (IMancalaPartida)modeloRemoto;
 	}
 }

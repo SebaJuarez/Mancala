@@ -9,7 +9,7 @@ import ar.edu.unlu.mancala.vista.consola.VistaConsola;
 public class testMancala {
 
 	public static void main(String[] args) {
-
+ /*
 		Ivista vista1 = new VistaConsola();
 		Ivista vista2 = new VistaConsola();
 		JugadorServiceImpl service = new JugadorServiceImpl();
@@ -26,6 +26,7 @@ public class testMancala {
 		mancalaModel.agregarObservador(controlador2);
 		vista1.iniciar();
 		vista2.iniciar();
+		*/
 	}
 
 }

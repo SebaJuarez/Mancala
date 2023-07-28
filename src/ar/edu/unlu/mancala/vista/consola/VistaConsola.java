@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -71,24 +72,49 @@ public class VistaConsola extends JFrame implements Ivista {
             		}
             		break;
             	case LOG_IN_ENTRADA:
-            		formularioUsuario(entrada);
+            		try {
+						formularioUsuario(entrada);
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
             		break;
             	case LOG_IN_CREACION:
-            		formularioCreacionUsuario(entrada);
+            		try {
+						formularioCreacionUsuario(entrada);
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
             	case MENU_PRINCIPAL : 
             		if(!esperandoTecla) {
-        				opcionesPrincipal(entrada);        			
+        				try {
+							opcionesPrincipal(entrada);
+						} catch (RemoteException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}        			
             		} else {
             			mostrarMenuPrincipal();
             			esperandoTecla = false;
             		}
             		break;
             	case MOVIMIENTOS :
-            		mover(entrada);
+            		try {
+						mover(entrada);
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
             		break;
             	case SALIDA:
             		if(esperandoTecla) {
-            			cerrarJuego();
+            			try {
+							cerrarJuego();
+						} catch (RemoteException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
             		}
             		break;
 				default:
@@ -149,7 +175,7 @@ public class VistaConsola extends JFrame implements Ivista {
 		}
 	}
 	
-	private void formularioUsuario(String entry) {
+	private void formularioUsuario(String entry) throws RemoteException {
 		String[] entryFiltrada = entry.trim().split(" ");
 		if (entryFiltrada.length == 2) {
 			String nombre = entryFiltrada[0];
@@ -161,14 +187,13 @@ public class VistaConsola extends JFrame implements Ivista {
 		}
 	}
 	
-	private void formularioCreacionUsuario(String entry) {
+	private void formularioCreacionUsuario(String entry) throws RemoteException {
 		String[] entryFiltrada = entry.trim().split(" ");
 		if(entryFiltrada.length == 2) {
 			String nombre = entryFiltrada[0];
 			String contrasenia = entryFiltrada[1];
 			nombreIntento = nombre;
 			controlador.agregarJugador(nombre, contrasenia);
-			//controlador.iniciarSesion(nombre, contrasenia);	
 		} else {
 			informar("ingreso mal las credenciales, intente de nuevo");
 		}
@@ -178,7 +203,7 @@ public class VistaConsola extends JFrame implements Ivista {
 	
 	// mwnu principal ------------------------------------------------------------
 	
-	private void opcionesPrincipal(String entrada) {
+	private void opcionesPrincipal(String entrada) throws RemoteException {
 		switch(entrada) {
 		case "1":
 			controlador.jugar();
@@ -212,7 +237,7 @@ public class VistaConsola extends JFrame implements Ivista {
 		}
 	}
 
-	private void cerrarJuego() {
+	private void cerrarJuego() throws RemoteException {
 		controlador.desconectar();
 		this.dispose();
 	}
@@ -220,7 +245,7 @@ public class VistaConsola extends JFrame implements Ivista {
 	//----------------------------------------------------------------------------
 
 	// movimiento ---------------------------------------------------------------
-	private void mover(String entrada) {
+	private void mover(String entrada) throws RemoteException {
 		int pos = -1;
 		try {
 			pos = Integer.parseInt(entrada);

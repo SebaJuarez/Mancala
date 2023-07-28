@@ -1,5 +1,6 @@
 package ar.edu.unlu.mancala.modelo;
 
+import java.rmi.RemoteException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,14 +11,13 @@ import java.util.stream.Collectors;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
-import ar.edu.unlu.mancala.observer.Observado;
-import ar.edu.unlu.mancala.observer.Observer;
 import ar.edu.unlu.mancala.security.Encriptador;
 import ar.edu.unlu.mancala.serializacion.services.JugadorService;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
+import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
-public class MancalaPartida implements Observado{
+public class MancalaPartida extends ObservableRemoto implements IMancalaPartida {
 
 	private Map<Integer, Jugador> jugadoresEnJuego =  new HashMap<Integer, Jugador>(2);
 	private Tablero tablero;
@@ -25,66 +25,70 @@ public class MancalaPartida implements Observado{
 	private int turnoActual;
 	private boolean partidaTerminada;
 	private Jugador ultimoEnMover;
-	private LinkedList<Observer> observadores = new LinkedList<Observer>();
+	//private LinkedList<Observer> observadores = new LinkedList<Observer>();
 	private List<Jugador> jugadores;
 	private final JugadorService service;
 	
 	//-----
 	private List<Jugador> jugadoresConectados  = new LinkedList<Jugador>();
 
-	public MancalaPartida(JugadorService service) {
+	public MancalaPartida(JugadorService service) throws RemoteException{
 		this.service = service;
 		this.jugadores = service.obtenerJugadores();
 	}
 
-	public void conectarJugador(Jugador jugador) {
+	@Override
+	public void conectarJugador(Jugador jugador) throws RemoteException {
 		if(partidaTerminada = true && this.jugadoresEnJuego.size() == 2) {
 			this.jugadoresEnJuego = new HashMap<Integer, Jugador>(2);
 		}
 		
 		if (this.jugadoresEnJuego.size() == 2)
-			notificarObservers(EstadoPartida.PARTIDA_LLENA);
+			notificarObservadores(EstadoPartida.PARTIDA_LLENA);
 		else if (this.jugadoresEnJuego.isEmpty()) {
 			jugadoresEnJuego.put(1, jugador);
-			notificarObservers(EstadoPartida.USUARIO_CONECTADO);
+			notificarObservadores(EstadoPartida.USUARIO_CONECTADO);
 		} else {
 			jugadoresEnJuego.put(2, jugador);	
-			notificarObservers(EstadoPartida.USUARIO_CONECTADO);
+			notificarObservadores(EstadoPartida.USUARIO_CONECTADO);
 			iniciarPartida();
 		}
 	}
 
-	public void iniciarPartida() {
+	@Override
+	public void iniciarPartida() throws RemoteException {
 		this.tablero = new Tablero();
 		this.moveValidator = new MoveValidator();
 		this.partidaTerminada = false;
 		this.setTurnoActual(((int) Math.random() * 2) + 1);
-		notificarObservers(EstadoPartida.COMENZANDO_PARTIDA);
+		notificarObservadores(EstadoPartida.COMENZANDO_PARTIDA);
 	}
 
-	public void mover(int indice, Jugador jugador) {
+	@Override
+	public void mover(int indice, Jugador jugador) throws RemoteException {
 		this.ultimoEnMover = jugador;
 		// si no estan todos los jugadores entonces no puedo mover
 		if (this.jugadoresEnJuego.size() != 2) {
-			notificarObservers(EstadoPartida.ESPERANDO_USUARIO);
+			notificarObservadores(EstadoPartida.ESPERANDO_USUARIO);
 		} else {
 			// valido el movimiento 
 			EstadoTablero estado = this.moveValidator.validarMovimiento(tablero, turnoActual, obtenerClaveDeJugador(jugador), indice);
 			// si el movimiento es valido entonces cambio el turno
 			if (estado == EstadoTablero.MOVIMIENTO_VALIDO) {
 				EstadoTablero movimientoEstado = tablero.mover(indice, obtenerClaveDeJugador(jugador));
-				notificarObservers(movimientoEstado);
+				notificarObservadores(movimientoEstado);
 				if( EstadoTablero.MOVIMIENTO_VALIDO_SIGUE != movimientoEstado) {
 					this.cambiarTurno();					
 				}
 				termino();
 			} else {
-				notificarObservers(estado);				
+				notificarObservadores(estado);				
 			}
 		}
 	}
 
-	public void termino() {
+	@Override
+	public void termino() throws RemoteException {
 		boolean ladoVacio = true;
 		for (int i = 1; i < tablero.getPOS_CASAJ1(); i++) {
 			if (this.tablero.getAgujeros()[i].getHabas() != 0) {
@@ -103,7 +107,8 @@ public class MancalaPartida implements Observado{
 		this.setPartidaTerminada(ladoVacio);
 	}
 
-	public int obtenerClaveDeJugador(Jugador jugador) {
+	@Override
+	public int obtenerClaveDeJugador(Jugador jugador) throws RemoteException{
 	    return jugadoresEnJuego.entrySet()
 	        .stream()
 	        .filter(entry -> entry.getValue().equals(jugador))
@@ -112,7 +117,8 @@ public class MancalaPartida implements Observado{
 	        .orElse(-1);
 	}
 	
-	public Jugador obtenerGanador() {
+	@Override
+	public Jugador obtenerGanador() throws RemoteException{
 		Agujero casaJ1 = tablero.getAgujeros()[tablero.getPOS_CASAJ1()];
 		Agujero casaJ2 = tablero.getAgujeros()[tablero.getPOS_CASAJ2()];
 		Jugador jugador1 = jugadoresEnJuego.get(1);
@@ -133,47 +139,51 @@ public class MancalaPartida implements Observado{
 		}
 	}
 	
-	public void cambiarTurno() {
+	@Override
+	public void cambiarTurno() throws RemoteException{
 		this.turnoActual = (this.turnoActual == 1) ? 2 : 1;
 	}
 	
 
-	public void setPartidaTerminada(boolean partidaTerminada) {
+	@Override
+	public void setPartidaTerminada(boolean partidaTerminada) throws RemoteException {
 		this.partidaTerminada = partidaTerminada;
 		if (partidaTerminada) {
-			   notificarObservers(EstadoPartida.PARTIDA_TERMINADA);
+			notificarObservadores(EstadoPartida.PARTIDA_TERMINADA);
 			} else {
-			   notificarObservers(EstadoPartida.PARTIDA_EN_PROGRESO);
+				notificarObservadores(EstadoPartida.PARTIDA_EN_PROGRESO);
 			}
 	}
 
 	// metodos de persistencia de jugadores
 	
-	public void verificarCredenciales(String nombre, String contrasenia) {
+	@Override
+	public void verificarCredenciales(String nombre, String contrasenia) throws RemoteException {
 	    Jugador jugadorConectado = getJugadores().stream()
 	            .filter(jugador -> jugador.getNombre().equals(nombre) && Encriptador.verificarContrasenia(contrasenia, jugador.getContrasenia()))
 	            .findFirst()
 	            .orElse(null);
 	    
 	    if(jugadorConectado == null) {
-	    	notificarObservers(EstadoPersistencia.CREDENCIALES_INVALIDAS);
+	    	notificarObservadores(EstadoPersistencia.CREDENCIALES_INVALIDAS);
 	    } else {
 	    	// Si el jugador ingresó bien la contraseña y username, y no está conectada otra persona desde su cuenta,
 	    	if (!jugadoresConectados.stream().anyMatch(jugador -> jugador.getNombre().equals(jugadorConectado.getNombre()))) {
 	    		// lo guardamos en jugadores conectados y notificamos
 	    		jugadoresConectados.add(jugadorConectado);
-	    		notificarObservers(EstadoPersistencia.LOGEADO);
+	    		notificarObservadores(EstadoPersistencia.LOGEADO);
 	    	} else {
 	    		// notificamos intento de acceso concurrente
-	    		notificarObservers(EstadoPersistencia.USUARIO_YA_CONECTADO);
+	    		notificarObservadores(EstadoPersistencia.USUARIO_YA_CONECTADO);
 	    	}	    	
 	    }
 	    
 	}
 	
-	public void agregarJugador(String nombre, String contrasenia) {
+	@Override
+	public void agregarJugador(String nombre, String contrasenia) throws RemoteException {
 		if(service.obtenerJugadorPorNombre(nombre) != null) {
-			notificarObservers(EstadoPersistencia.NOMBRE_EXISTENTE);
+			notificarObservadores(EstadoPersistencia.NOMBRE_EXISTENTE);
 		} else {
 			Jugador jugador = new Jugador();
 			jugador.setNombre(nombre);
@@ -184,11 +194,12 @@ public class MancalaPartida implements Observado{
 			service.guardar(jugador);
 			jugadoresConectados.add(jugador);
 			this.jugadores = service.obtenerJugadores();
-			notificarObservers(EstadoPersistencia.GUARDADO_EXITOSO);			
+			notificarObservadores(EstadoPersistencia.GUARDADO_EXITOSO);			
 		}
     }
 
-	public void actualizarJugadores(Jugador jugador1, Jugador jugador2) {
+	@Override
+	public void actualizarJugadores(Jugador jugador1, Jugador jugador2) throws RemoteException{
 		this.jugadores.forEach(jugador -> {
 			if (jugador.getNombre().equals(jugador1.getNombre())) {
 				this.jugadores.set(jugadores.indexOf(jugador), jugador1);
@@ -199,72 +210,87 @@ public class MancalaPartida implements Observado{
 		this.service.guardar(this.jugadores);
 	}
 	
-	public List<Jugador> getJugadores() {
+	@Override
+	public List<Jugador> getJugadores() throws RemoteException{
 		return this.jugadores;
 	}
 	
-	public List<Jugador> getJugadoresConectados(){
+	@Override
+	public List<Jugador> getJugadoresConectados()throws RemoteException{
 		return this.jugadoresConectados;
 	}
 	
 	// metodos del observer
+	/*
 	@Override
 	public void agregarObservador(Observer observer) {
 		this.observadores.add(observer);
-	}
+	}*/
 	
-	@Override
+	/*@Override
 	public void notificarObservers(Object informe) {
 		this.observadores.forEach((observer) -> observer.update(this,informe));		
-	}
+	}*/
 	
 	// getters y setters
-		public TableroLectura getTablero() {
+		@Override
+		public TableroLectura getTablero() throws RemoteException{
 			return tablero;
 		}
 
-		public void setTablero(Tablero tablero) {
+		@Override
+		public void setTablero(Tablero tablero)throws RemoteException {
 			this.tablero = tablero;
 		}
 
-		public MoveValidator getMoveValidator() {
+		@Override
+		public MoveValidator getMoveValidator()throws RemoteException {
 			return moveValidator;
 		}
 
-		public void setMoveValidator(MoveValidator movValidator) {
+		@Override
+		public void setMoveValidator(MoveValidator movValidator)throws RemoteException {
 			this.moveValidator = movValidator;
 		}
 
-		public Map<Integer, Jugador> getJugadoresEnJuego() {
+		@Override
+		public Map<Integer, Jugador> getJugadoresEnJuego()throws RemoteException {
 			return jugadoresEnJuego;
 		}
 
-		public void setJugadoresEnJuego(Map<Integer, Jugador> jugadores) {
+		@Override
+		public void setJugadoresEnJuego(Map<Integer, Jugador> jugadores) throws RemoteException{
 			this.jugadoresEnJuego = jugadores;
 		}
 
-		public int getTurnoActual() {
+		@Override
+		public int getTurnoActual() throws RemoteException{
 			return turnoActual;
 		}
 
-		public void setTurnoActual(int turnoActual) {
+		@Override
+		public void setTurnoActual(int turnoActual) throws RemoteException{
 			this.turnoActual = turnoActual;
 		}
 
 
-		public boolean isPartidaTerminada() {
+		@Override
+		public boolean isPartidaTerminada() throws RemoteException{
 			return partidaTerminada;
 		}
 		
-		public Jugador getUltimoEnMover() {
+		@Override
+		public Jugador getUltimoEnMover() throws RemoteException{
 			return this.ultimoEnMover;
 		}
 
-		public void desconectar(Jugador jugador) {
+		@Override
+		public void desconectar(Jugador jugador) throws RemoteException {
 			this.jugadoresConectados.remove(jugador);
 		}
 
-		public List<JugadorLectura> getTop(int limite) {
+		@Override
+		public List<JugadorLectura> getTop(int limite) throws RemoteException{
 			return this.jugadores.stream()
 					.map(j -> (JugadorLectura)j)
 					.sorted(Comparator.comparing(JugadorLectura::getGanadas).reversed())

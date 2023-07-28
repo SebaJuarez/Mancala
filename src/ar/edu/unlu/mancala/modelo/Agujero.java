@@ -1,7 +1,10 @@
 package ar.edu.unlu.mancala.modelo;
 
-public abstract class Agujero{
+import java.io.Serializable;
+
+public abstract class Agujero implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	protected int habas;
 	protected int indice;
 	protected int jugador;
