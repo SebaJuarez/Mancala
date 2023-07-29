@@ -6,6 +6,7 @@ import java.util.Map;
 
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
+import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
 public interface IMancalaPartida extends IObservableRemoto{
@@ -36,7 +37,6 @@ public interface IMancalaPartida extends IObservableRemoto{
 
 	List<Jugador> getJugadoresConectados() throws RemoteException;
 
-	// getters y setters
 	TableroLectura getTablero() throws RemoteException;
 
 	void setTablero(Tablero tablero) throws RemoteException;
@@ -57,8 +57,10 @@ public interface IMancalaPartida extends IObservableRemoto{
 
 	Jugador getUltimoEnMover() throws RemoteException;
 
-	void desconectar(Jugador jugador) throws RemoteException;
+	void desconectar(Jugador jugador, IControladorRemoto controlador) throws RemoteException;
 
 	List<JugadorLectura> getTop(int limite) throws RemoteException;
+	
+	Jugador getJugador(Jugador jugador) throws RemoteException;
 
 }

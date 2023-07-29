@@ -142,7 +142,11 @@ public class VistaConsola extends JFrame implements Ivista {
         this.addWindowListener((WindowListener) new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                System.out.println("Cerrando ventana...");
+            	try {
+					cerrarJuego();
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}
             }});
         
         // Creación del panel para el campo de texto y el botón
@@ -207,7 +211,6 @@ public class VistaConsola extends JFrame implements Ivista {
 		switch(entrada) {
 		case "1":
 			controlador.jugar();
-			estadoFlujo = EstadosFlujo.ESPERA;
 			break;
 		case "2" :
 			mostrarTop(controlador.getJugadoresTop());
@@ -388,10 +391,10 @@ public class VistaConsola extends JFrame implements Ivista {
 		int ganadas = jugador.getGanadas();
 		int empatadas = jugador.getEmpatadas();
 		int perdidas = jugador.getPerdidas();
-		int jugadas = ganadas+perdidas+empatadas;
-		double winRate = (ganadas > 0) ? ((ganadas / jugadas) * 100) : 0;
-		double loseRate = (perdidas > 0) ? ((perdidas / jugadas) * 100) : 0;
-		double drawRate = (empatadas > 0) ? ((empatadas / jugadas) * 100) : 0;
+		int jugadas = ganadas + perdidas + empatadas;
+		double winRate = (ganadas > 0) ? ((double) ganadas / jugadas * 100) : 0;
+		double loseRate = (perdidas > 0) ? ((double) perdidas / jugadas * 100) : 0;
+		double drawRate = (empatadas > 0) ? ((double) empatadas / jugadas * 100) : 0;
 		println("Ganadas : " + jugador.getGanadas() + "  <<");
 		println("");
 		println("Perdidas : " + jugador.getPerdidas() + "  <<");
@@ -400,6 +403,7 @@ public class VistaConsola extends JFrame implements Ivista {
 		println("");
 		println("Win Rate : " + winRate + "     Lose Rate : " + loseRate + "     Draw Rate : " + drawRate);
 		println("");
+
 	}
 	//---------------------------------------------------------------------------
 

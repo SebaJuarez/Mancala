@@ -1,6 +1,7 @@
 package ar.edu.unlu.mancala.modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 
@@ -11,6 +12,8 @@ public class Jugador implements JugadorLectura, Serializable{
 	private String nombre;
 	private String contrasenia;
 	private int ganadas;
+
+
 	private int perdidas;
 	private int empatadas;
 	
@@ -55,4 +58,15 @@ public class Jugador implements JugadorLectura, Serializable{
 		this.contrasenia = contrasenia;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Jugador other = (Jugador) obj;
+		return Objects.equals(nombre, other.nombre);
+	}
 }
