@@ -37,6 +37,7 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 
 	@Override
 	public void conectarJugador(Jugador jugador) throws RemoteException {
+
 		if (partidaTerminada == true && this.jugadoresEnJuego.size() == 2) {
 			this.jugadoresEnJuego = new HashMap<Integer, Jugador>(2);
 		}
@@ -314,6 +315,4 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 	public Jugador getJugador(Jugador jugador) throws RemoteException {
 		return service.obtenerJugadorPorNombre(jugador.getNombre());
 	}
-	
-	
 }

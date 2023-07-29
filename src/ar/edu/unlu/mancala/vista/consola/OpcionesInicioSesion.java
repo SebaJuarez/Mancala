@@ -4,7 +4,8 @@ public enum OpcionesInicioSesion implements Banner{
 	
 	NULO(""),
 	INICIAR_SESION("1) Iniciar sesion"),
-	CREAR_CUENTA("2) Crear cuenta");
+	CREAR_CUENTA("2) Crear cuenta"),
+	SALIR("3) Salir");
 	
 	public final String label;
 
@@ -22,6 +23,7 @@ public enum OpcionesInicioSesion implements Banner{
 		menu = menu + "#   *                           *         *                *  # \n";
 		menu = menu + "#      *           " + valueOf(1) + "         *   *     *      # \n";
 		menu = menu + "#   *          *   " + valueOf(2) + "     *                 *    # \n";
+		menu = menu + "#     *            " + valueOf(3) + "                     *          *  #\n";
 		menu = menu + "#   *               *          *    *              *          # \n";
 		menu = menu + "############################################################### \n";
 		return menu;

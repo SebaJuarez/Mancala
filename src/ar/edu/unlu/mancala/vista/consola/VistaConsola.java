@@ -31,7 +31,7 @@ public class VistaConsola extends JFrame implements Ivista {
     private JTextField campoTexto;
     private JTextArea pantalla;
     private MancalaController controlador;
-    private EstadosFlujo estadoFlujo = EstadosFlujo.LOG_IN;
+    private EstadosFlujo estadoFlujo;
     private JPanel panelComandos;
     private boolean esperandoTecla = false;
     private String nombreIntento;
@@ -72,18 +72,22 @@ public class VistaConsola extends JFrame implements Ivista {
             		}
             		break;
             	case LOG_IN_ENTRADA:
+            		if(entrada.toLowerCase().equals("q")) {
+            			mostrarMenuInicioSesion();
+            		}
             		try {
 						formularioUsuario(entrada);
 					} catch (RemoteException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
             		break;
             	case LOG_IN_CREACION:
+            		if(entrada.toLowerCase().equals("q")) {
+            			mostrarMenuInicioSesion();
+            		}
             		try {
 						formularioCreacionUsuario(entrada);
 					} catch (RemoteException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
             	case MENU_PRINCIPAL : 
@@ -91,7 +95,6 @@ public class VistaConsola extends JFrame implements Ivista {
         				try {
 							opcionesPrincipal(entrada);
 						} catch (RemoteException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}        			
             		} else {
@@ -103,7 +106,6 @@ public class VistaConsola extends JFrame implements Ivista {
             		try {
 						mover(entrada);
 					} catch (RemoteException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
             		break;
@@ -112,7 +114,6 @@ public class VistaConsola extends JFrame implements Ivista {
             			try {
 							cerrarJuego();
 						} catch (RemoteException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
             		}
@@ -122,21 +123,6 @@ public class VistaConsola extends JFrame implements Ivista {
             	}
             }
         });
-        
-        /*
-        // Creación del botón para enviar los comandos
-        JButton botonEnviar = new JButton("Enviar");
-        botonEnviar.setFont(new Font("Consolas", Font.PLAIN, 12));
-        botonEnviar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Cuando se presiona el botón, se agrega el comando a la pantalla
-                String entrada = campoTexto.getText();
-                pantalla.append("$ " + entrada + "\n");
-                campoTexto.setText("");
-            }
-        });
-        */
         
         // accion que sucede cuando se cierra una ventana (una vista)
         this.addWindowListener((WindowListener) new WindowAdapter() {
@@ -166,12 +152,19 @@ public class VistaConsola extends JFrame implements Ivista {
 		case "1" :
 			clearScreen();
 			estadoFlujo = EstadosFlujo.LOG_IN_ENTRADA;
-			println("ingrese su nombre de usuario y separado la contraseña");
+			println("ingrese su nombre de usuario y separado la contraseña. Q para volver");
 			break;
 		case "2" : 
 			clearScreen();
 			estadoFlujo = EstadosFlujo.LOG_IN_CREACION; 
-			println("ingrese su nombre de usuario y separado la contraseña");
+			println("ingrese su nombre de usuario y separado la contraseña. Q para volver");
+			break;
+		case "3":
+			clearScreen();
+			println(Banner.DESPEDIDA);
+			this.estadoFlujo = EstadosFlujo.SALIDA;
+			println("Ingrese cualquier tecla para cerrar el juego.");
+			esperandoTecla = true;
 			break;
 		default :
 			println("ingrese una opcion correcta !");    
@@ -284,6 +277,7 @@ public class VistaConsola extends JFrame implements Ivista {
 	@Override
     public void mostrarMenuInicioSesion() {
     	clearScreen();
+    	this.estadoFlujo = EstadosFlujo.LOG_IN;
     	println(OpcionesInicioSesion.mostrarOpcionesInicioSesion());
 	}
 
