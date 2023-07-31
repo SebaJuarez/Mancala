@@ -8,6 +8,7 @@ import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.mancala.vista.consola.EstadosFlujo;
+import ar.edu.unlu.mancala.vista.grafica.listener.FinPartidaListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuInicioSesionListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuPrincipalListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.TableroPartidaListener;
@@ -15,7 +16,7 @@ import ar.edu.unlu.mancala.vista.grafica.listener.TableroPartidaListener;
 import java.rmi.RemoteException;
 
 
-public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrincipalListener , TableroPartidaListener {
+public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrincipalListener , TableroPartidaListener, FinPartidaListener {
 
 	private MancalaController controlador;
     private String nombreIntento;
@@ -25,6 +26,9 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	private MenuPrincipal menuPrincipal = new MenuPrincipal();
 	private TableroPartida tablero = new TableroPartida();
 	private SalaDeEspera salaDeEspera = new SalaDeEspera();
+	private CartelGanador cartelGanador = new CartelGanador();
+	private CartelPerdedor cartelPerdedor = new CartelPerdedor();
+	private CartelEmpate cartelEmpate = new CartelEmpate();
 
 
 	@Override
@@ -64,11 +68,6 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	@Override
 	public void informar(JugadorLectura jugador, String string) {
 		tablero.informar(string + jugador.getNombre());
-	}
-
-	@Override
-	public void mostrarGanador(JugadorLectura obtenerGanador) {
-		
 	}
 
 	@Override
@@ -125,13 +124,27 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	}
 
 	@Override
+	public void mostrarGanador(JugadorLectura obtenerGanador) {
+		tablero.setVisible(false);
+		cartelGanador.setListener(this);
+		cartelGanador.setVisible(true);
+		cartelGanador.mostrarJugador(obtenerGanador);
+	}
+	
+	@Override
 	public void mostrarPerdedor(JugadorLectura jugador) {
-		
+		tablero.setVisible(false);
+		cartelPerdedor.setListener(this);
+		cartelPerdedor.setVisible(true);
+		cartelPerdedor.mostrarJugador(jugador);
 	}
 
 	@Override
 	public void mostrarEmpate(JugadorLectura jugador) {
-		
+		tablero.setVisible(false);
+		cartelEmpate.setListener(this);
+		cartelEmpate.setVisible(true);
+		cartelEmpate.mostrarJugador(jugador);
 	}
 
 	@Override
@@ -142,14 +155,12 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	// listener de otros JFrame ----------------------------------------------
 	@Override
 	public void onCloseWindow() {
-		// si se cierra la ventana antes de menu principal, entonces se cerraron todas las ventanas
-		if(flujoActual != EstadosFlujo.MENU_PRINCIPAL) {
-			try {
-				controlador.desconectar();
-			} catch (RemoteException e1) {
-				e1.printStackTrace();
-			}			
-		}
+		try {
+			controlador.desconectar();
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}		
+		
 	}
 
 	@Override
@@ -221,8 +232,21 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 		try {
 			this.tablero.setJugadores(controlador.obtenerJugadoresEnPartida());
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onVolverButtonClick() {
+		if(cartelGanador.isVisible()) {
+			cartelGanador.setVisible(false);
+		}
+		if(cartelPerdedor.isVisible()) {
+			cartelGanador.setVisible(false);
+		}
+		if(cartelEmpate.isVisible()) {
+			cartelGanador.setVisible(false);
+		}
+		menuPrincipal.setVisible(true);
 	}
 }

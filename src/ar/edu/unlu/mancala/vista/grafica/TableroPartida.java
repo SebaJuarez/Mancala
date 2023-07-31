@@ -20,6 +20,8 @@ import javax.swing.JTextArea;
 import java.awt.Cursor;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class TableroPartida extends JFrame {
@@ -51,7 +53,7 @@ public class TableroPartida extends JFrame {
 		contentPane.add(lblJ2Name);
 		
 		lblJ1Name = new JLabel("");
-		lblJ1Name.setBounds(631, 54, 114, 13);
+		lblJ1Name.setBounds(638, 54, 114, 13);
 		lblJ1Name.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblJ1Name.setHorizontalAlignment(SwingConstants.CENTER);
 		lblJ1Name.setForeground(Color.WHITE);
@@ -226,6 +228,13 @@ public class TableroPartida extends JFrame {
 		lblTableroFondo.setBounds(0, 0, 790, 470);
 		lblTableroFondo.setIcon(new ImageIcon(getClass().getResource("/tablero_mancala_partida.png")));
 		contentPane.add(lblTableroFondo);
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				listener.onCloseWindow();
+			}	
+		});
 	}
 	
 	public void informar(String texto) {

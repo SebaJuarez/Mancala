@@ -10,6 +10,8 @@ import ar.edu.unlu.mancala.vista.grafica.listener.MenuPrincipalListener;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -123,6 +125,14 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 			});
 		});
 		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				listener.onCloseWindow();
+			}
+		
+		});
+		
 	}
 
 
@@ -151,5 +161,9 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 
 	public void informar(String string) {
 		lblInforme.setText(string);
+	}
+	
+	public void mostrarGanador() {
+		
 	}
 }
