@@ -267,7 +267,6 @@ public class VistaConsola extends JFrame implements Ivista {
 	// metodos de la interfaz Ivista ---------------------------------------------
 	@Override
 	public void iniciar() {
-		// Mostramos la ventana
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);

@@ -1,7 +1,10 @@
 package ar.edu.unlu.mancala.controlador;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import ar.edu.unlu.mancala.modelo.IMancalaPartida;
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
@@ -215,5 +218,9 @@ public class MancalaController implements IControladorRemoto {
 	@Override
 	public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
 		this.mancalaPartida = (IMancalaPartida)modeloRemoto;
+	}
+	
+	public List<JugadorLectura> obtenerJugadoresEnPartida() throws RemoteException {
+	    return new ArrayList<>(this.mancalaPartida.getJugadoresEnJuego().values());
 	}
 }

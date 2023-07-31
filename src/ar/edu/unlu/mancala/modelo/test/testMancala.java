@@ -27,6 +27,9 @@ public class testMancala {
 		vista1.iniciar();
 		vista2.iniciar();
 		*/
+		
+		String hoyo = "CasaJ2";
+		System.out.println(hoyo.substring(4));
 	}
 
 }

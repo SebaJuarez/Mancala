@@ -2,7 +2,9 @@ package ar.edu.unlu.mancala.modelo;
 
 import java.io.Serializable;
 
-public abstract class Agujero implements Serializable{
+import ar.edu.unlu.mancala.vista.AgujeroLectura;
+
+public abstract class Agujero implements Serializable , AgujeroLectura{
 	
 	private static final long serialVersionUID = 1L;
 	protected int habas;

@@ -11,6 +11,7 @@ import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.security.Encriptador;
 import ar.edu.unlu.mancala.serializacion.services.JugadorService;
+import ar.edu.unlu.mancala.vista.AgujeroLectura;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
@@ -114,8 +115,8 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 
 	@Override
 	public Jugador obtenerGanador() throws RemoteException {
-		Agujero casaJ1 = tablero.getAgujeros()[tablero.getPOS_CASAJ1()];
-		Agujero casaJ2 = tablero.getAgujeros()[tablero.getPOS_CASAJ2()];
+		AgujeroLectura casaJ1 = (AgujeroLectura) tablero.getAgujeros()[tablero.getPOS_CASAJ1()];
+		AgujeroLectura casaJ2 = (AgujeroLectura) tablero.getAgujeros()[tablero.getPOS_CASAJ2()];
 		Jugador jugador1 = jugadoresEnJuego.get(1);
 		Jugador jugador2 = jugadoresEnJuego.get(2);
 		actualizarJugadores(jugador1, jugador2);

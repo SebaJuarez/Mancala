@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.consola.VistaConsola;
+import ar.edu.unlu.mancala.vista.grafica.VistaGrafica;
 import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.Util;
 import ar.edu.unlu.rmimvc.cliente.Cliente;
@@ -48,7 +49,8 @@ public class AppCliente {
 				null,
 				8888
 		);
-		Ivista vista = new VistaConsola();
+		//Ivista vista = new VistaConsola();
+		Ivista vista = new VistaGrafica();
 		MancalaController controlador = new MancalaController(vista);
 		vista.setControlador(controlador);
 		Cliente c = new Cliente(ip, Integer.parseInt(port), ipServidor, Integer.parseInt(portServidor));
