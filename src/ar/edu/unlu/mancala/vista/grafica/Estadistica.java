@@ -38,6 +38,7 @@ public class Estadistica extends JFrame {
 		setBounds(100, 100, 800, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.setResizable(false);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

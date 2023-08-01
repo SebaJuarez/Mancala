@@ -31,6 +31,7 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	private CartelEmpate cartelEmpate = new CartelEmpate();
 	private Estadistica estadistica = new Estadistica();
 	private TopJugadores topJugadores = new TopJugadores();
+	private Reglas reglas = new Reglas();
 
 
 	@Override
@@ -58,7 +59,9 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 			((FormularioCreacionUsuario)menuInicioSesion.getFormularioCreacionUsuario()).mostrarAviso(string);
 			break;
 		case MOVIMIENTOS :
-			tablero.informar(string);
+			if(!string.equals("no se admiten mas participantes")) {
+				tablero.informar(string);				
+			}
 			break;
 		case MENU_PRINCIPAL : 
 			menuPrincipal.informar(string);
@@ -69,7 +72,7 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void informar(JugadorLectura jugador, String string) {
-		tablero.informar(string + jugador.getNombre());
+		informar(string + " " + jugador.getNombre());
 	}
 
 	@Override
@@ -89,18 +92,17 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void mostrarPartida(TableroLectura tablero, JugadorLectura jugadorMueve) {
-		
+
 		if(flujoActual == EstadosFlujo.ESPERA) {
 			salaDeEspera.setVisible(false);
 		}
-		
+		flujoActual = EstadosFlujo.MOVIMIENTOS;		
 		if(!this.tablero.isVisible()) {
 			this.tablero.setListener(this);
 			this.tablero.setVisible(true);
 			this.menuPrincipal.setVisible(false);
 		}
 		this.tablero.actualizarTablero((AgujeroLectura[])tablero.getAgujeros());
-		flujoActual = EstadosFlujo.MOVIMIENTOS;
 		informar(jugadorMueve, "Le toca al jugador: ");
 	}
 
@@ -113,6 +115,7 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void mostrarMenuPrincipal() {
+		flujoActual = EstadosFlujo.MENU_PRINCIPAL;
 		this.menuInicioSesion.terminar();
 		this.menuPrincipal.setListener(this);
 		this.menuPrincipal.setVisible(true);
@@ -120,7 +123,9 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void mostrarReglas() {
-		menuPrincipal.mostrarReglas();
+		this.menuPrincipal.setVisible(false);
+		this.reglas.setListener(this);
+		this.reglas.setVisible(true);
 	}
 
 	@Override
@@ -248,20 +253,24 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void onVolverButtonClick() {
+		
 		if(cartelGanador.isVisible()) {
 			cartelGanador.setVisible(false);
 		}
 		if(cartelPerdedor.isVisible()) {
-			cartelGanador.setVisible(false);
+			cartelPerdedor.setVisible(false);
 		}
 		if(cartelEmpate.isVisible()) {
-			cartelGanador.setVisible(false);
+			cartelEmpate.setVisible(false);
 		}
 		if(estadistica.isVisible()) {
 			estadistica.setVisible(false);
 		}
 		if(topJugadores.isVisible()) {
 			topJugadores.setVisible(false);
+		}
+		if(reglas.isVisible()) {
+			reglas.setVisible(false);
 		}
 		menuPrincipal.setVisible(true);
 	}

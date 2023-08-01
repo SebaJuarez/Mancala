@@ -4,10 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import ar.edu.unlu.mancala.vista.grafica.listener.Cerrable;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuPrincipalListener;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -22,13 +19,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-public class MenuPrincipal extends JFrame implements Cerrable{
+public class MenuPrincipal extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private MenuPrincipalListener listener;
 	private List<JButton> botones;
-	private Reglas reglas = new Reglas();
 	private JLabel lblInforme;
 	
 	
@@ -37,6 +33,7 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		setBounds(100, 100, 800, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setResizable(false);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -64,6 +61,7 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		JButton btnReglasDelJuego = new JButton("REGLAMENTO");
 		btnReglasDelJuego.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				informar("");	
 				listener.onReglamentoButtonClick();
 			}
 		});
@@ -78,6 +76,7 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		JButton btnMisEstadisticas = new JButton("MIS ESTADISTICAS");
 		btnMisEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				informar("");	
 				listener.onMisEstadisticasClick();
 			}
 		});
@@ -92,6 +91,7 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		JButton btnTopGanadores = new JButton("TOP GANADORES");
 		btnTopGanadores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				informar("");	
 				listener.onTopGanadoresButtonClick();
 			}
 		});
@@ -106,6 +106,7 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		JButton btnBuscarPartida = new JButton("BUSCAR PARTIDA");
 		btnBuscarPartida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				informar("");	
 				listener.onBuscarPartidaButtonClick();
 			}
 		});
@@ -150,14 +151,6 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		
 	}
 
-
-	public void mostrarReglas() {
-		botones.forEach(b -> b.setEnabled(false));
-		reglas.setListener(this);
-		reglas.setVisible(true);
-	}
-
-
 	public MenuPrincipalListener getListener() {
 		return listener;
 	}
@@ -167,18 +160,7 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		this.listener = listener;
 	}
 
-
-	@Override
-	public void onCloseWindow() {
-		botones.forEach(b -> b.setEnabled(true));
-	}
-
-
 	public void informar(String string) {
 		lblInforme.setText(string);
-	}
-	
-	public void mostrarGanador() {
-		
 	}
 }

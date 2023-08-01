@@ -33,6 +33,7 @@ public class TopJugadores extends JFrame {
 		setBounds(100, 100, 800, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.setResizable(false);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -165,7 +166,7 @@ public class TopJugadores extends JFrame {
 				+ "    Perdidas : " + topTen.get(0).getPerdidas() + "    Empatadas : " +  topTen.get(0).getEmpatadas() );
 		
 		for(int i = 1; i < topTen.size(); i++) {
-			labels.get(i).setText(i + ") " + topTen.get(i).getNombre() + "    Ganadas : " + topTen.get(i).getGanadas() 
+			labels.get(i).setText((i + 1) + ") " + topTen.get(i).getNombre() + "    Ganadas : " + topTen.get(i).getGanadas() 
 			+ "    Perdidas : " + topTen.get(i).getPerdidas() + "    Empatadas : " +  topTen.get(i).getEmpatadas() );
 		}
 	}
