@@ -1,9 +1,13 @@
 package ar.edu.unlu.mancala.modelo;
 
+import java.io.Serializable;
+
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
+import ar.edu.unlu.mancala.vista.TableroLectura;
 
-public class Tablero {
+public class Tablero implements TableroLectura, Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Agujero[] agujeros;
 	private final int CANTIDAD_HABAS = 4;
 	private final int LONGUITUD_TABLERO = 14;
@@ -37,21 +41,20 @@ public class Tablero {
 		}
 		Agujero agujeroUltimo = this.agujeros[indice];
 		// devuelvo el estado del movimiento realizado
-		// si puedo realizar camptura devuelvo que se ah hecho
+		// si puedo realizar camptura devuelvo que se ha hecho
 		if (agujeroUltimo.getJugador() == jugador && agujeroUltimo.getHabas() == 1 && agujeroUltimo instanceof Hoyo) {
 			this.capturarHabas(agujeroUltimo.getIndice());
 			return EstadoTablero.CAPTURA_REALIZADA;
-		} else
-			return EstadoTablero.MOVIMIENTO_REALIZADO;
+		} else if (agujeroUltimo.getJugador() == jugador && agujeroUltimo instanceof Casa) {
+			return EstadoTablero.MOVIMIENTO_VALIDO_SIGUE;
+		} else {
+			return EstadoTablero.MOVIMIENTO_REALIZADO;			
+		}
 	}
 
 	private void capturarHabas(int indice) {
 		((Casa) this.agujeros[this.agujeros[indice].getJugador() == 1 ? POS_CASAJ1 : POS_CASAJ2])
 				.ponerHaba(((Hoyo) this.agujeros[(LONGUITUD_TABLERO - indice) % LONGUITUD_TABLERO]).tomarHabas());
-	}
-
-	public Agujero[] getAgujeros() {
-		return agujeros;
 	}
 
 	public int getCANTIDAD_HABAS() {
@@ -68,14 +71,44 @@ public class Tablero {
 
 	public int getPOS_CASAJ2() {
 		return POS_CASAJ2;
+	}	
+
+	// metodos interfaz de lectura
+	@Override
+	public Agujero[] getAgujeros() {
+		return agujeros;
 	}
-	
-	public String toString() {
-		
-		return null;
+	@Override
+	public String toString() {	
+		String tablero ="************************************************\n";
+		tablero += "*              <<   TABLERO   >>               *\n";
+		tablero += "*                                              *\n";
+		tablero +=  "*          L    K    J    I    H    G          *\n";
+		tablero +=  "*   |   |";
+		tablero += "| " + agujeros[13].getHabas() + " |";
+		tablero += "| " + agujeros[12].getHabas() + " |";
+		tablero += "| " + agujeros[11].getHabas() + " |";
+		tablero += "| " + agujeros[10].getHabas() + " |";
+		tablero += "| " + agujeros[9].getHabas() + " |";
+		tablero += "| " + agujeros[8].getHabas() + " |";
+		tablero += "|   |   *";
+		tablero += "\n";
+		tablero += "*   | " + agujeros[0].getHabas() + " ||";
+		tablero += "----------------------------";
+		tablero += "|| " + agujeros[7].getHabas() + " |   *";
+		tablero += "\n";
+		tablero += "*   |   |";
+		tablero += "| " + agujeros[1].getHabas() + " |";
+		tablero += "| " + agujeros[2].getHabas() + " |";
+		tablero += "| " + agujeros[3].getHabas() + " |";
+		tablero += "| " + agujeros[4].getHabas() + " |";
+		tablero += "| " + agujeros[5].getHabas() + " |";
+		tablero += "| " + agujeros[6].getHabas() + " |";
+		tablero += "|   |   *";
+		tablero += "\n";
+		tablero += "*          A    B    C    D    E    F          *\n";
+		tablero += "*                                              *\n";
+		tablero += "************************************************";
+		return tablero;		
 	}
-
-
-	
-
 }
