@@ -37,17 +37,8 @@ public class TestTablero {
 		mostrar(tablero);
 		*/
 		
-		String entry = "sebatian juarez";
-		
-		String[] entryFiltrada = entry.trim().split(" ");
-		if(entryFiltrada.length == 2) {
-			String nombre = entryFiltrada[0];
-			String contrasenia = entryFiltrada[1];
-			System.out.println(nombre + contrasenia);
-		} else {
-			System.out.println(entry);
-		}
-		System.out.println(entryFiltrada.length);
+		Tablero tablero = new Tablero();
+		System.out.println(tablero.toString());
 		
 	}
 

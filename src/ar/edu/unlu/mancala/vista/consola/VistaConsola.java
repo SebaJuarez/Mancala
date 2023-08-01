@@ -284,7 +284,7 @@ public class VistaConsola extends JFrame implements Ivista {
 	// reemplazo el println -----------------------------------------------------
 	private void println(String texto) {
     	pantalla.append("" + texto + "\n");
-    	pantalla.setCaretPosition(pantalla.getDocument().getLength());
+        pantalla.setCaretPosition(pantalla.getDocument().getLength()); // Mueve el caret al final del texto
     }
 	
 	private void clearScreen() {
@@ -314,7 +314,11 @@ public class VistaConsola extends JFrame implements Ivista {
 			clearScreen();
 			informar("comienza la partida!!");
 		} 	
-		pantalla.append(tablero.toString() + "\n");
+		try {
+			pantalla.append(tablero.toString(controlador.obtenerJugadoresEnPartida()) + "\n");
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		informar(jugador, "Le toca al jugador: ");
 		this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;
 	}
