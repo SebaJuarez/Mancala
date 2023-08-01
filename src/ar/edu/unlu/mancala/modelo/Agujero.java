@@ -36,10 +36,6 @@ public abstract class Agujero implements Serializable , AgujeroLectura{
 	    public int getIndice() {
 	    	return this.indice;
 	    }
-
-	    public abstract boolean esCasa();
-
-	    public abstract boolean esHoyo();
 	    
 	    public abstract int siguienteAgujero(int jugadorActual, int longuitudTablero);
 

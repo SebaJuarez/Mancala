@@ -49,8 +49,8 @@ public class AppCliente {
 				null,
 				8888
 		);
-		//Ivista vista = new VistaConsola();
-		Ivista vista = new VistaGrafica();
+		Ivista vista = new VistaConsola();
+		//Ivista vista = new VistaGrafica();
 		MancalaController controlador = new MancalaController(vista);
 		vista.setControlador(controlador);
 		Cliente c = new Cliente(ip, Integer.parseInt(port), ipServidor, Integer.parseInt(portServidor));
