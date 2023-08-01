@@ -38,7 +38,6 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 			public void windowClosing(WindowEvent e) {
 				listener.onCloseWindow();
 			}
-		
 		});
 
 		setResizable(false);

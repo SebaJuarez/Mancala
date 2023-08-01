@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,13 +18,18 @@ import javax.swing.SwingConstants;
 import ar.edu.unlu.mancala.vista.grafica.listener.FormularioCreacionUsuarioListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.InputVerifier;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-
+import javax.swing.*;
+import javax.swing.text.*;
+import java.awt.*;
+import java.awt.event.*;
 public class FormularioCreacionUsuario extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -100,9 +106,23 @@ public class FormularioCreacionUsuario extends JFrame {
 				aviso.setText("");
 				String usuario = textFieldUsuario.getText();
 				String contrasenia = textFieldContrasenia.getText();
-				if (listener != null) {
-					listener.onCrearButtonClick(usuario, contrasenia);
-				}
+		        // Usuario no puede estar vacío y debe tener menos de 8 caracteres
+		        if (usuario.isEmpty() || usuario.length() > 8 || usuario.length() < 4) {
+		            aviso.setText("El usuario debe tener entre 4 y 8 caracteres.");
+		            return;
+		        }
+		        // Contraseña no puede estar vacía y debe tener menos de 15 caracteres
+		        if (contrasenia.isEmpty() || contrasenia.length() > 15 || contrasenia.length() < 5) {
+		            aviso.setText("La contraseña debe tener entre 5 y 15 caracteres.");
+		            return;
+		        }
+		        // Usuario y contraseña no pueden contener espacios
+		        if (usuario.contains(" ") || contrasenia.contains(" ")) {
+		            aviso.setText("El usuario y la contraseña no pueden contener espacios.");
+		            return;
+		        }
+		        listener.onCrearButtonClick(usuario, contrasenia);
+		        
 			}
 		});
 
@@ -138,6 +158,9 @@ public class FormularioCreacionUsuario extends JFrame {
 				aviso.setText("");
 			}
 		});
+		
+		
+		
 	}
 
 	public void setFormularioInicioSesionListener(FormularioCreacionUsuarioListener listener) {

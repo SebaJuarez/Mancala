@@ -146,7 +146,6 @@ public class MenuPrincipal extends JFrame{
 			public void windowClosing(WindowEvent e) {
 				listener.onCloseWindow();
 			}
-		
 		});
 		
 	}

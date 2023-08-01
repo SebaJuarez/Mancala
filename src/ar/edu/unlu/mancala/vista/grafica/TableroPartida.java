@@ -281,6 +281,7 @@ public class TableroPartida extends JFrame {
 	}
 
 	public void setJugadores(List<JugadorLectura>jugadoresEnPartida) {
+		this.textController.setText("");
 		this.lblJ1Name.setText(jugadoresEnPartida.get(0).getNombre());
 		this.lblJ2Name.setText(jugadoresEnPartida.get(1).getNombre());
 		this.lblJ2Zona.setText("ZONA DE : " + jugadoresEnPartida.get(1).getNombre());

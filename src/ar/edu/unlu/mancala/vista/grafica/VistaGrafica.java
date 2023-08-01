@@ -110,6 +110,7 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	public void mostrarSalaDeEspera() {
 		flujoActual = EstadosFlujo.ESPERA;
 		menuPrincipal.setVisible(false);
+		salaDeEspera.setListener(this);
 		salaDeEspera.setVisible(true);
 	}
 
@@ -170,8 +171,8 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	public void onCloseWindow() {
 		try {
 			controlador.desconectar();
-			if(menuPrincipal.isVisible()) {
-				menuPrincipal.dispose();
+			if(menuPrincipal.isActive()) {
+				menuPrincipal.dispose();				
 			}
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
