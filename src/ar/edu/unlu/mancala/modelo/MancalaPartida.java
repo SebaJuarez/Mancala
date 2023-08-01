@@ -272,7 +272,7 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 	public void desconectar(Jugador desconectado, IControladorRemoto controlador) throws RemoteException {
 		this.jugadoresConectados.remove(desconectado);
 		removerObservador(controlador);
-		if(this.jugadoresEnJuego.containsValue(desconectado) && !isPartidaTerminada()) {
+		if(this.jugadoresEnJuego.containsValue(desconectado) && !isPartidaTerminada() && this.jugadoresEnJuego.size() == 2) {
 			this.partidaTerminada = true;
 			Jugador conectado = jugadoresEnJuego.values().stream()
 					.filter(j -> !j.equals(desconectado))
