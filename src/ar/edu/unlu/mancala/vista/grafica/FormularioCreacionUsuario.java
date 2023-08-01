@@ -8,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,17 +17,12 @@ import javax.swing.SwingConstants;
 import ar.edu.unlu.mancala.vista.grafica.listener.FormularioCreacionUsuarioListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.InputVerifier;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import javax.swing.*;
-import javax.swing.text.*;
-import java.awt.*;
 import java.awt.event.*;
 public class FormularioCreacionUsuario extends JFrame {
 
@@ -61,7 +55,16 @@ public class FormularioCreacionUsuario extends JFrame {
 		panelFormulario.add(aviso);
 
 		JTextField textFieldUsuario = new JTextField();
-
+		textFieldUsuario.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			    if(textFieldUsuario.getText().length() >= 20)
+			    {
+			        e.consume();
+			    }
+			}
+		});
+		
 		textFieldUsuario.setBounds(50, 100, 167, 19);
 		panelFormulario.add(textFieldUsuario);
 		textFieldUsuario.setCaretColor(new Color(255, 255, 255));
@@ -69,6 +72,7 @@ public class FormularioCreacionUsuario extends JFrame {
 		textFieldUsuario.setForeground(Color.WHITE);
 		textFieldUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldUsuario.setColumns(10);
+		
 
 		JLabel lblUsuario = new JLabel("USUARIO");
 		lblUsuario.setBounds(102, 77, 86, 13);
@@ -100,6 +104,16 @@ public class FormularioCreacionUsuario extends JFrame {
 		textFieldContrasenia.setHorizontalAlignment(SwingConstants.CENTER); // Alinea el texto al centro
 		textFieldContrasenia.setCaretColor(Color.WHITE);
 		textFieldContrasenia.setForeground(Color.WHITE);
+		
+		textFieldContrasenia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			    if(textFieldContrasenia.getText().length() >= 20)
+			    {
+			        e.consume();
+			    }
+			}
+		});
 
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
