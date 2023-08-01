@@ -15,14 +15,14 @@ import ar.edu.unlu.mancala.vista.grafica.listener.TableroPartidaListener;
 
 import java.rmi.RemoteException;
 
-
-public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrincipalListener , TableroPartidaListener, VolverListener {
+public class VistaGrafica
+		implements Ivista, MenuInicioSesionListener, MenuPrincipalListener, TableroPartidaListener, VolverListener {
 
 	private MancalaController controlador;
-    private String nombreIntento;
-    private EstadosFlujo flujoActual = EstadosFlujo.LOG_IN; 
-    // Jframes --------------------------------------------------------
-    private MenuInicioSesion menuInicioSesion = new MenuInicioSesion();
+	private String nombreIntento;
+	private EstadosFlujo flujoActual = EstadosFlujo.LOG_IN;
+	// Jframes --------------------------------------------------------
+	private MenuInicioSesion menuInicioSesion = new MenuInicioSesion();
 	private MenuPrincipal menuPrincipal = new MenuPrincipal();
 	private TableroPartida tablero = new TableroPartida();
 	private SalaDeEspera salaDeEspera = new SalaDeEspera();
@@ -32,7 +32,6 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	private Estadistica estadistica = new Estadistica();
 	private TopJugadores topJugadores = new TopJugadores();
 	private Reglas reglas = new Reglas();
-
 
 	@Override
 	public void iniciar() {
@@ -51,19 +50,19 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void informar(String string) {
-		switch(flujoActual) {
-		case LOG_IN_ENTRADA :
-			((FormularioInicioSesion)menuInicioSesion.getFormularioInicioSesion()).mostrarAviso(string);
+		switch (flujoActual) {
+		case LOG_IN_ENTRADA:
+			((FormularioInicioSesion) menuInicioSesion.getFormularioInicioSesion()).mostrarAviso(string);
 			break;
-		case LOG_IN_CREACION :
-			((FormularioCreacionUsuario)menuInicioSesion.getFormularioCreacionUsuario()).mostrarAviso(string);
+		case LOG_IN_CREACION:
+			((FormularioCreacionUsuario) menuInicioSesion.getFormularioCreacionUsuario()).mostrarAviso(string);
 			break;
-		case MOVIMIENTOS :
-			if(!string.equals("no se admiten mas participantes")) {
-				tablero.informar(string);				
+		case MOVIMIENTOS:
+			if (!string.equals("no se admiten mas participantes")) {
+				tablero.informar(string);
 			}
 			break;
-		case MENU_PRINCIPAL : 
+		case MENU_PRINCIPAL:
 			menuPrincipal.informar(string);
 		default:
 			break;
@@ -93,16 +92,16 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	@Override
 	public void mostrarPartida(TableroLectura tablero, JugadorLectura jugadorMueve) {
 
-		if(flujoActual == EstadosFlujo.ESPERA) {
+		if (flujoActual == EstadosFlujo.ESPERA) {
 			salaDeEspera.setVisible(false);
 		}
-		flujoActual = EstadosFlujo.MOVIMIENTOS;		
-		if(!this.tablero.isVisible()) {
+		flujoActual = EstadosFlujo.MOVIMIENTOS;
+		if (!this.tablero.isVisible()) {
 			this.tablero.setListener(this);
 			this.tablero.setVisible(true);
 			this.menuPrincipal.setVisible(false);
 		}
-		this.tablero.actualizarTablero((AgujeroLectura[])tablero.getAgujeros());
+		this.tablero.actualizarTablero((AgujeroLectura[]) tablero.getAgujeros());
 		informar(jugadorMueve, "Le toca al jugador: ");
 	}
 
@@ -144,7 +143,7 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 		cartelGanador.setVisible(true);
 		cartelGanador.mostrarJugador(obtenerGanador);
 	}
-	
+
 	@Override
 	public void mostrarPerdedor(JugadorLectura jugador) {
 		tablero.setVisible(false);
@@ -169,13 +168,13 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	// listener de otros JFrame ----------------------------------------------
 	@Override
 	public void onCloseWindow() {
-		if(menuInicioSesion.isVisible()) {
+		if (menuInicioSesion.isVisible()) {
 			menuInicioSesion.dispose();
 		}
 		try {
 			controlador.desconectar();
-			if(menuPrincipal.isActive()) {
-				menuPrincipal.dispose();				
+			if (menuPrincipal.isActive()) {
+				menuPrincipal.dispose();
 			}
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
@@ -201,7 +200,7 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 			controlador.iniciarSesion(usuario, contrasenia);
 		} catch (RemoteException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	@Override
@@ -257,22 +256,22 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void onVolverButtonClick() {
-		if(cartelGanador.isVisible()) {
+		if (cartelGanador.isVisible()) {
 			cartelGanador.setVisible(false);
 		}
-		if(cartelPerdedor.isVisible()) {
+		if (cartelPerdedor.isVisible()) {
 			cartelPerdedor.setVisible(false);
 		}
-		if(cartelEmpate.isVisible()) {
+		if (cartelEmpate.isVisible()) {
 			cartelEmpate.setVisible(false);
 		}
-		if(estadistica.isVisible()) {
+		if (estadistica.isVisible()) {
 			estadistica.setVisible(false);
 		}
-		if(topJugadores.isVisible()) {
+		if (topJugadores.isVisible()) {
 			topJugadores.setVisible(false);
 		}
-		if(reglas.isVisible()) {
+		if (reglas.isVisible()) {
 			reglas.setVisible(false);
 		}
 		menuPrincipal.setVisible(true);
