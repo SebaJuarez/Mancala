@@ -8,7 +8,7 @@ import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.mancala.vista.consola.EstadosFlujo;
-import ar.edu.unlu.mancala.vista.grafica.listener.FinPartidaListener;
+import ar.edu.unlu.mancala.vista.grafica.listener.VolverListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuInicioSesionListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuPrincipalListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.TableroPartidaListener;
@@ -16,7 +16,7 @@ import ar.edu.unlu.mancala.vista.grafica.listener.TableroPartidaListener;
 import java.rmi.RemoteException;
 
 
-public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrincipalListener , TableroPartidaListener, FinPartidaListener {
+public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrincipalListener , TableroPartidaListener, VolverListener {
 
 	private MancalaController controlador;
     private String nombreIntento;
@@ -29,6 +29,8 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	private CartelGanador cartelGanador = new CartelGanador();
 	private CartelPerdedor cartelPerdedor = new CartelPerdedor();
 	private CartelEmpate cartelEmpate = new CartelEmpate();
+	private Estadistica estadistica = new Estadistica();
+	private TopJugadores topJugadores = new TopJugadores();
 
 
 	@Override
@@ -79,7 +81,10 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void mostrarEstadisticas() {
-		
+		menuPrincipal.setVisible(false);
+		estadistica.mostrarEstadisticas(controlador.getJugador());
+		estadistica.setListener(this);
+		estadistica.setVisible(true);
 	}
 
 	@Override
@@ -120,7 +125,10 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void mostrarTop(List<JugadorLectura> topTen) {
-		
+		menuPrincipal.setVisible(false);
+		topJugadores.setListener(this);
+		topJugadores.mostrarJugadores(topTen);
+		topJugadores.setVisible(true);
 	}
 
 	@Override
@@ -157,10 +165,12 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	public void onCloseWindow() {
 		try {
 			controlador.desconectar();
+			if(menuPrincipal.isVisible()) {
+				menuPrincipal.dispose();
+			}
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
-		}		
-		
+		}
 	}
 
 	@Override
@@ -246,6 +256,12 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 		}
 		if(cartelEmpate.isVisible()) {
 			cartelGanador.setVisible(false);
+		}
+		if(estadistica.isVisible()) {
+			estadistica.setVisible(false);
+		}
+		if(topJugadores.isVisible()) {
+			topJugadores.setVisible(false);
 		}
 		menuPrincipal.setVisible(true);
 	}

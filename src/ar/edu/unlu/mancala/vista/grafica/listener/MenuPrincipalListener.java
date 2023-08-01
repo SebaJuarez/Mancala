@@ -6,5 +6,4 @@ public interface MenuPrincipalListener extends Cerrable {
 	void onSalirButtonClick();
 	void onMisEstadisticasClick();
 	void onTopGanadoresButtonClick();
-
 }

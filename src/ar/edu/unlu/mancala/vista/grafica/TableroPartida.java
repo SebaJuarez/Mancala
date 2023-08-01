@@ -34,6 +34,8 @@ public class TableroPartida extends JFrame {
 	private JTextArea textController;
 	private JLabel lblJ2Name;
 	private JLabel lblJ1Name;
+	private JLabel lblJ2Zona;
+	private JLabel lblJ1Zona;
 
 	public TableroPartida() {
 		setResizable(false);
@@ -44,6 +46,22 @@ public class TableroPartida extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		lblJ2Zona = new JLabel("");
+		lblJ2Zona.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblJ2Zona.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblJ2Zona.setHorizontalAlignment(SwingConstants.CENTER);
+		lblJ2Zona.setForeground(new Color(128, 0, 0));
+		lblJ2Zona.setBounds(218, 170, 381, 23);
+		contentPane.add(lblJ2Zona);
+		
+		lblJ1Zona = new JLabel("");
+		lblJ1Zona.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblJ1Zona.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblJ1Zona.setHorizontalAlignment(SwingConstants.CENTER);
+		lblJ1Zona.setForeground(new Color(128, 0, 0));
+		lblJ1Zona.setBounds(238, 406, 361, 23);
+		contentPane.add(lblJ1Zona);
 		
 		lblJ2Name = new JLabel("");
 		lblJ2Name.setBounds(50, 54, 114, 13);
@@ -265,5 +283,7 @@ public class TableroPartida extends JFrame {
 	public void setJugadores(List<JugadorLectura>jugadoresEnPartida) {
 		this.lblJ1Name.setText(jugadoresEnPartida.get(0).getNombre());
 		this.lblJ2Name.setText(jugadoresEnPartida.get(1).getNombre());
+		this.lblJ2Zona.setText("ZONA DE : " + jugadoresEnPartida.get(1).getNombre());
+		this.lblJ1Zona.setText("ZONA DE : " + jugadoresEnPartida.get(0).getNombre());
 	}
 }

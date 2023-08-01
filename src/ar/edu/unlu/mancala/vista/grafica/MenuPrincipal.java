@@ -48,6 +48,11 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		contentPane.add(lblInforme);
 		
 		JButton btnSalir = new JButton("SALIR");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				listener.onSalirButtonClick();
+			}
+		});
 		btnSalir.setOpaque(false);
 		btnSalir.setForeground(Color.RED);
 		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -71,6 +76,11 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		contentPane.add(btnReglasDelJuego);
 		
 		JButton btnMisEstadisticas = new JButton("MIS ESTADISTICAS");
+		btnMisEstadisticas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				listener.onMisEstadisticasClick();
+			}
+		});
 		btnMisEstadisticas.setOpaque(false);
 		btnMisEstadisticas.setForeground(Color.WHITE);
 		btnMisEstadisticas.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -80,6 +90,11 @@ public class MenuPrincipal extends JFrame implements Cerrable{
 		contentPane.add(btnMisEstadisticas);
 		
 		JButton btnTopGanadores = new JButton("TOP GANADORES");
+		btnTopGanadores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				listener.onTopGanadoresButtonClick();
+			}
+		});
 		btnTopGanadores.setOpaque(false);
 		btnTopGanadores.setForeground(Color.WHITE);
 		btnTopGanadores.setFont(new Font("Tahoma", Font.PLAIN, 20));

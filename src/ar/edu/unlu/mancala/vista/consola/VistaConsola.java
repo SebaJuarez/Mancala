@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -379,6 +380,7 @@ public class VistaConsola extends JFrame implements Ivista {
 	@Override
 	public void mostrarEstadisticas() {
 		clearScreen();
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
 		println(Banner.ESTADISTICA);
 		JugadorLectura jugador = controlador.getJugador();
 		int ganadas = jugador.getGanadas();
@@ -394,7 +396,7 @@ public class VistaConsola extends JFrame implements Ivista {
 		println("");
 		println("Empatadas : " + jugador.getEmpatadas() + "  <<");
 		println("");
-		println("Win Rate : " + winRate + "     Lose Rate : " + loseRate + "     Draw Rate : " + drawRate);
+		println("Win Rate : " + decimalFormat.format(winRate) + "     Lose Rate : " + decimalFormat.format(loseRate) + "     Draw Rate : " + decimalFormat.format(drawRate));
 		println("");
 
 	}

@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unlu.mancala.vista.JugadorLectura;
-import ar.edu.unlu.mancala.vista.grafica.listener.FinPartidaListener;
+import ar.edu.unlu.mancala.vista.grafica.listener.VolverListener;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -23,7 +23,7 @@ public class CartelGanador extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private FinPartidaListener listener;
+	private VolverListener listener;
 	private JLabel lblPerdidas;
 	private JLabel lblEmpatadas;
 	private JLabel lblGanadas;
@@ -90,11 +90,11 @@ public class CartelGanador extends JFrame {
 		});
 	}
 
-	public FinPartidaListener getListener() {
+	public VolverListener getListener() {
 		return listener;
 	}
 
-	public void setListener(FinPartidaListener listener) {
+	public void setListener(VolverListener listener) {
 		this.listener = listener;
 	}
 	

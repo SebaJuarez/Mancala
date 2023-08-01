@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unlu.mancala.vista.JugadorLectura;
-import ar.edu.unlu.mancala.vista.grafica.listener.FinPartidaListener;
+import ar.edu.unlu.mancala.vista.grafica.listener.VolverListener;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
@@ -22,7 +22,7 @@ public class CartelPerdedor extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private FinPartidaListener listener;
+	private VolverListener listener;
 	private JLabel lblPerdidas;
 	private JLabel lblEmpatadas;
 	private JLabel lblGanadas;
@@ -90,11 +90,11 @@ public class CartelPerdedor extends JFrame {
 		});
 	}
 
-	public FinPartidaListener getListener() {
+	public VolverListener getListener() {
 		return listener;
 	}
 
-	public void setListener(FinPartidaListener listener) {
+	public void setListener(VolverListener listener) {
 		this.listener = listener;
 	}
 	

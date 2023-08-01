@@ -1,5 +1,5 @@
 package ar.edu.unlu.mancala.vista.grafica.listener;
 
-public interface FinPartidaListener extends Cerrable {
+public interface VolverListener extends Cerrable {
 	void onVolverButtonClick();
 }
