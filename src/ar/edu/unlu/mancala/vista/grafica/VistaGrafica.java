@@ -169,6 +169,9 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 	// listener de otros JFrame ----------------------------------------------
 	@Override
 	public void onCloseWindow() {
+		if(menuInicioSesion.isVisible()) {
+			menuInicioSesion.dispose();
+		}
 		try {
 			controlador.desconectar();
 			if(menuPrincipal.isActive()) {
@@ -254,7 +257,6 @@ public class VistaGrafica implements Ivista, MenuInicioSesionListener, MenuPrinc
 
 	@Override
 	public void onVolverButtonClick() {
-		
 		if(cartelGanador.isVisible()) {
 			cartelGanador.setVisible(false);
 		}
