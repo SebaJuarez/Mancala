@@ -10,6 +10,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,6 +32,7 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 	private MenuInicioSesionListener listener;
 	private FormularioInicioSesion formularioInicioSesion = new FormularioInicioSesion();
 	private FormularioCreacionUsuario formularioCreacionUsuario = new FormularioCreacionUsuario();
+	private JButton btnSalir;
 
 	public MenuInicioSesion() {
 		
@@ -57,7 +60,7 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 		JPanel panelOpcionesInicioSesion = new JPanel();
 		panelOpcionesInicioSesion.setBackground(SystemColor.inactiveCaptionBorder);
 		panelOpcionesInicioSesion.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		panelOpcionesInicioSesion.setBounds(193, 174, 387, 165);
+		panelOpcionesInicioSesion.setBounds(193, 174, 387, 217);
 		panelOpcionesInicioSesion.setOpaque(false);
 		panelInicioFondo.add(panelOpcionesInicioSesion);
 		panelOpcionesInicioSesion.setLayout(null);
@@ -76,23 +79,12 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 		btnCrearCuenta.setOpaque(false);
 		btnCrearCuenta.setContentAreaFilled(false);
 		btnCrearCuenta.setBorderPainted(false);
-		btnCrearCuenta.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnCrearCuenta.setSize(btnCrearCuenta.getWidth() + 10, btnCrearCuenta.getHeight() + 10);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnCrearCuenta.setSize(btnCrearCuenta.getWidth() - 10, btnCrearCuenta.getHeight() - 10);
-			}
-		});
 		btnCrearCuenta.setForeground(Color.WHITE);
 		btnCrearCuenta.setFont(new Font("Tahoma", Font.PLAIN, 34));
 		btnCrearCuenta.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCrearCuenta.setContentAreaFilled(false);
 		btnCrearCuenta.setBorderPainted(false);
-		btnCrearCuenta.setBounds(50, 98, 287, 57);
+		btnCrearCuenta.setBounds(50, 77, 287, 57);
 		panelOpcionesInicioSesion.add(btnCrearCuenta);
 
 		// boton inicio sesion
@@ -109,24 +101,42 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 		btnInicioSesion.setOpaque(false);
 		btnInicioSesion.setContentAreaFilled(false);
 		btnInicioSesion.setBorderPainted(false);
-		btnInicioSesion.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// Cambia el tamaño del botón al pasar el mouse por encima
-				btnInicioSesion.setSize(btnInicioSesion.getWidth() + 10, btnInicioSesion.getHeight() + 10);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// Restaura el tamaño original del botón al salir el mouse
-				btnInicioSesion.setSize(btnInicioSesion.getWidth() - 10, btnInicioSesion.getHeight() - 10);
-			}
-		});
 		btnInicioSesion.setForeground(SystemColor.text);
 		btnInicioSesion.setFont(new Font("Tahoma", Font.PLAIN, 34));
 		btnInicioSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnInicioSesion.setBounds(50, 24, 287, 57);
+		btnInicioSesion.setBounds(50, 10, 287, 57);
 		panelOpcionesInicioSesion.add(btnInicioSesion);
+		
+		btnSalir = new JButton("SALIR");
+		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				listener.onCloseWindow();
+			}
+		});
+		btnSalir.setOpaque(false);
+		btnSalir.setForeground(Color.RED);
+		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 34));
+		btnSalir.setContentAreaFilled(false);
+		btnSalir.setBorderPainted(false);
+		btnSalir.setBounds(50, 149, 287, 49);
+		panelOpcionesInicioSesion.add(btnSalir);
+		
+		List<JButton> botones = List.of(btnSalir,btnCrearCuenta,btnInicioSesion);
+		
+		botones.forEach(b -> {
+			b.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					b.setSize(b.getWidth() + 10, b.getHeight() + 10);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					b.setSize(b.getWidth() - 10, b.getHeight() - 10);
+				}
+			});
+		});
 
 		JLabel lblFondoPantalla = new JLabel("");
 		lblFondoPantalla.setBounds(0, 0, 790, 470);

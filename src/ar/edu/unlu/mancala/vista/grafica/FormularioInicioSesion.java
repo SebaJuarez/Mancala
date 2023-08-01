@@ -23,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class FormularioInicioSesion extends JFrame {
 
@@ -137,6 +139,26 @@ public class FormularioInicioSesion extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 				aviso.setText("");
+			}
+		});
+		
+		textFieldContrasenia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			    if(textFieldContrasenia.getText().length() >= 20)
+			    {
+			        e.consume();
+			    }
+			}
+		});
+		
+		textFieldUsuario.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			    if(textFieldUsuario.getText().length() >= 20)
+			    {
+			        e.consume();
+			    }
 			}
 		});
 	}

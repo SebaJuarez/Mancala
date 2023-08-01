@@ -15,18 +15,8 @@ public class Casa extends Agujero{
 	}
 
 	@Override
-	public boolean esCasa() {
-		return true;
-	}
-
-	@Override
-	public boolean esHoyo() {
-		return false;
-	}
-
-	@Override
 	public int siguienteAgujero(int jugadorActual, int longuitudTablero) {
-		return (jugador != this.getJugador() ? this.getIndice() + 2 : this.getIndice() + 1) % longuitudTablero;
+		return (this.getIndice() + 1) % longuitudTablero;
 	}
 
 }

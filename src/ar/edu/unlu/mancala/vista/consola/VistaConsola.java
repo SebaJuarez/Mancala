@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -57,6 +59,16 @@ public class VistaConsola extends JFrame implements Ivista {
         campoTexto.setToolTipText("");
         campoTexto.hasFocus();
         campoTexto.setFont(new Font("Consolas", Font.PLAIN, 12));
+        
+        campoTexto.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			    if(campoTexto.getText().length() >= 20){
+			        e.consume();
+			    }
+			}
+		});
+        
         campoTexto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -191,6 +203,21 @@ public class VistaConsola extends JFrame implements Ivista {
 			String nombre = entryFiltrada[0];
 			String contrasenia = entryFiltrada[1];
 			nombreIntento = nombre;
+			 // Usuario no puede estar vacío y debe tener menos de 8 caracteres
+	        if (nombre.isEmpty() || nombre.length() > 8 || nombre.length() < 4) {
+	            informar("El usuario debe tener entre 4 y 8 caracteres.");
+	            return;
+	        }
+	        // Contraseña no puede estar vacía y debe tener menos de 15 caracteres
+	        if (contrasenia.isEmpty() || contrasenia.length() > 15 || contrasenia.length() < 5) {
+	            informar("La contraseña debe tener entre 5 y 15 caracteres.");
+	            return;
+	        }
+	        // Usuario y contraseña no pueden contener espacios
+	        if (nombre.contains(" ") || contrasenia.contains(" ")) {
+	            informar("El usuario y la contraseña no pueden contener espacios.");
+	            return;
+	        }
 			controlador.agregarJugador(nombre, contrasenia);
 		} else {
 			informar("ingreso mal las credenciales, intente de nuevo");
@@ -257,7 +284,7 @@ public class VistaConsola extends JFrame implements Ivista {
 	// reemplazo el println -----------------------------------------------------
 	private void println(String texto) {
     	pantalla.append("" + texto + "\n");
-    	pantalla.setCaretPosition(pantalla.getDocument().getLength());
+        pantalla.setCaretPosition(pantalla.getDocument().getLength()); // Mueve el caret al final del texto
     }
 	
 	private void clearScreen() {
@@ -287,7 +314,11 @@ public class VistaConsola extends JFrame implements Ivista {
 			clearScreen();
 			informar("comienza la partida!!");
 		} 	
-		pantalla.append(tablero.toString() + "\n");
+		try {
+			pantalla.append(tablero.toString(controlador.obtenerJugadoresEnPartida()) + "\n");
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		informar(jugador, "Le toca al jugador: ");
 		this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;
 	}

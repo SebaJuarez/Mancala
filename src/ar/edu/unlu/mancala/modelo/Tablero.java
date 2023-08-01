@@ -1,8 +1,10 @@
 package ar.edu.unlu.mancala.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
+import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
 
 public class Tablero implements TableroLectura, Serializable{
@@ -20,11 +22,15 @@ public class Tablero implements TableroLectura, Serializable{
 	}
 
 	private void inicializar() {
-		for (int indice = 0; indice < LONGUITUD_TABLERO; indice++)
-			if (indice == POS_CASAJ1 || indice == POS_CASAJ2)
+		for (int indice = 0; indice < LONGUITUD_TABLERO; indice++) {
+			if (indice == POS_CASAJ1 || indice == POS_CASAJ2) {
 				this.agujeros[indice] = new Casa(indice);
-			else
-				this.agujeros[indice] = new Hoyo(CANTIDAD_HABAS, indice);
+				} else {
+					this.agujeros[indice] = new Hoyo(CANTIDAD_HABAS, indice);									
+			}
+		}
+		((Hoyo)agujeros[LONGUITUD_TABLERO-1]).setAntesDeCasa(true);
+		((Hoyo)agujeros[POS_CASAJ1-1]).setAntesDeCasa(true);
 	}
 
 	public EstadoTablero mover(int indice, int jugador) {
@@ -42,21 +48,37 @@ public class Tablero implements TableroLectura, Serializable{
 		Agujero agujeroUltimo = this.agujeros[indice];
 		// devuelvo el estado del movimiento realizado
 		// si puedo realizar camptura devuelvo que se ha hecho
-		if (agujeroUltimo.getJugador() == jugador && agujeroUltimo.getHabas() == 1 && agujeroUltimo instanceof Hoyo) {
+		if (puedoTomarHabas(jugador, agujeroUltimo)) {
 			this.capturarHabas(agujeroUltimo.getIndice());
 			return EstadoTablero.CAPTURA_REALIZADA;
-		} else if (agujeroUltimo.getJugador() == jugador && agujeroUltimo instanceof Casa) {
+		} else if (sigueMoviendo(jugador, agujeroUltimo)) {
 			return EstadoTablero.MOVIMIENTO_VALIDO_SIGUE;
 		} else {
 			return EstadoTablero.MOVIMIENTO_REALIZADO;			
 		}
 	}
 
-	private void capturarHabas(int indice) {
-		((Casa) this.agujeros[this.agujeros[indice].getJugador() == 1 ? POS_CASAJ1 : POS_CASAJ2])
-				.ponerHaba(((Hoyo) this.agujeros[(LONGUITUD_TABLERO - indice) % LONGUITUD_TABLERO]).tomarHabas());
+	private boolean sigueMoviendo(int jugador, Agujero agujeroUltimo) {
+		return agujeroUltimo.getJugador() == jugador && agujeroUltimo instanceof Casa;
 	}
 
+	private boolean puedoTomarHabas(int jugador, Agujero agujeroUltimo) {
+		return agujeroUltimo.getJugador() == jugador && agujeroUltimo.getHabas() == 1 && agujeroUltimo instanceof Hoyo && existenHabasOpuestas(agujeroUltimo.getIndice());
+	}
+
+	private int tomarHabasOpuestas(int indice) {
+		return ((Hoyo) this.agujeros[(LONGUITUD_TABLERO - indice) % LONGUITUD_TABLERO]).tomarHabas();
+	}
+	
+	private void capturarHabas(int indice) {
+		((Casa) this.agujeros[this.agujeros[indice].getJugador() == 1 ? POS_CASAJ1 : POS_CASAJ2])
+				.ponerHaba(tomarHabasOpuestas(indice));
+	}
+
+	private boolean existenHabasOpuestas(int indice) {
+		return ((Hoyo) this.agujeros[(LONGUITUD_TABLERO - indice) % LONGUITUD_TABLERO]).getHabas() > 0? true : false;
+	}
+	
 	public int getCANTIDAD_HABAS() {
 		return CANTIDAD_HABAS;
 	}
@@ -79,11 +101,11 @@ public class Tablero implements TableroLectura, Serializable{
 		return agujeros;
 	}
 	@Override
-	public String toString() {	
+	public String toString(List<JugadorLectura> jugadores) {	
 		String tablero ="************************************************\n";
 		tablero += "*              <<   TABLERO   >>               *\n";
-		tablero += "*                                              *\n";
-		tablero +=  "*          L    K    J    I    H    G          *\n";
+		tablero += "*          ZONA DE : " + jugadores.get(1).getNombre() + "\n";
+		tablero +=  "*         13   12   11   10    9    8          *\n";
 		tablero +=  "*   |   |";
 		tablero += "| " + agujeros[13].getHabas() + " |";
 		tablero += "| " + agujeros[12].getHabas() + " |";
@@ -106,8 +128,8 @@ public class Tablero implements TableroLectura, Serializable{
 		tablero += "| " + agujeros[6].getHabas() + " |";
 		tablero += "|   |   *";
 		tablero += "\n";
-		tablero += "*          A    B    C    D    E    F          *\n";
-		tablero += "*                                              *\n";
+		tablero += "*          1    2    3    4    5    6          *\n";
+		tablero += "*          ZONA DE : " + jugadores.get(0).getNombre() + "\n";
 		tablero += "************************************************";
 		return tablero;		
 	}
