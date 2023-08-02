@@ -141,24 +141,22 @@ public class FormularioInicioSesion extends JFrame {
 				aviso.setText("");
 			}
 		});
-		
+
 		textFieldContrasenia.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-			    if(textFieldContrasenia.getText().length() >= 20)
-			    {
-			        e.consume();
-			    }
+				if (textFieldContrasenia.getText().length() >= 20) {
+					e.consume();
+				}
 			}
 		});
-		
+
 		textFieldUsuario.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-			    if(textFieldUsuario.getText().length() >= 20)
-			    {
-			        e.consume();
-			    }
+				if (textFieldUsuario.getText().length() >= 20) {
+					e.consume();
+				}
 			}
 		});
 	}

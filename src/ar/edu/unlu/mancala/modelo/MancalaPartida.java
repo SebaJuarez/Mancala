@@ -72,7 +72,8 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 			notificarObservadores(EstadoPartida.ESPERANDO_USUARIO);
 		} else {
 			// valido el movimiento
-			EstadoTablero estado = this.moveValidator.validarMovimiento(tablero, turnoActual, obtenerClaveDeJugador(jugador), indice);
+			EstadoTablero estado = this.moveValidator.validarMovimiento(tablero, turnoActual,
+					obtenerClaveDeJugador(jugador), indice);
 			// si el movimiento es valido entonces cambio el turno
 			if (estado == EstadoTablero.MOVIMIENTO_VALIDO) {
 				EstadoTablero movimientoEstado = tablero.mover(indice, obtenerClaveDeJugador(jugador));
@@ -272,44 +273,41 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 	public void desconectar(Jugador desconectado, IControladorRemoto controlador) throws RemoteException {
 		this.jugadoresConectados.remove(desconectado);
 		removerObservador(controlador);
-		if(this.jugadoresEnJuego.containsValue(desconectado) && !isPartidaTerminada() && this.jugadoresEnJuego.size() == 2) {
+		if (this.jugadoresEnJuego.containsValue(desconectado) && !isPartidaTerminada()
+				&& this.jugadoresEnJuego.size() == 2) {
 			this.partidaTerminada = true;
-			Jugador conectado = jugadoresEnJuego.values().stream()
-					.filter(j -> !j.equals(desconectado))
-					.findFirst()
+			Jugador conectado = jugadoresEnJuego.values().stream().filter(j -> !j.equals(desconectado)).findFirst()
 					.orElse(null);
 			conectado.setGanadas((conectado.getGanadas() + 1));
 			desconectado.setPerdidas((desconectado.getPerdidas() + 1));
 			actualizarJugadores(desconectado, conectado);
-			notificarObservadores(EstadoPartida.USUARIO_DESCONECTADO);			
+			notificarObservadores(EstadoPartida.USUARIO_DESCONECTADO);
 		}
 	}
 
 	@Override
 	public List<JugadorLectura> getTop(int limite) throws RemoteException {
 		this.jugadores = this.service.obtenerJugadores();
-	    return this.jugadores.stream()
-	            .map(j -> (JugadorLectura) j)
-	            .sorted((j1, j2) -> {
-	            	// comparo por ganadas de manera descendente
-	                int comparacionPorGanadas = Integer.compare(j2.getGanadas(), j1.getGanadas());
-	                if (comparacionPorGanadas != 0) {
-	                    // Si el numero de ganadas es diferente, retorna la comparacion por ganadas
-	                    return comparacionPorGanadas;
-	                } else {
-	                    // Si el numero de ganadas es igual, compara por partidas perdidas de manera descendente 
-	                    int comparacionPorPerdidas = Integer.compare(j1.getPerdidas(), j2.getPerdidas());
-	                    if (comparacionPorPerdidas != 0) {
-	                        // Si el número de perdidas es diferente, retorna la comparación por perdidas
-	                        return comparacionPorPerdidas;
-	                    } else {
-	                        // Si el número de perdidas también es igual, compara por partidas empatadas descendente
-	                        return Integer.compare(j1.getEmpatadas(), j2.getEmpatadas());
-	                    }
-	                }
-	            })
-	            .limit(limite)
-	            .collect(Collectors.toList());
+		return this.jugadores.stream().map(j -> (JugadorLectura) j).sorted((j1, j2) -> {
+			// comparo por ganadas de manera descendente
+			int comparacionPorGanadas = Integer.compare(j2.getGanadas(), j1.getGanadas());
+			if (comparacionPorGanadas != 0) {
+				// Si el numero de ganadas es diferente, retorna la comparacion por ganadas
+				return comparacionPorGanadas;
+			} else {
+				// Si el numero de ganadas es igual, compara por partidas perdidas de manera
+				// descendente
+				int comparacionPorPerdidas = Integer.compare(j1.getPerdidas(), j2.getPerdidas());
+				if (comparacionPorPerdidas != 0) {
+					// Si el número de perdidas es diferente, retorna la comparación por perdidas
+					return comparacionPorPerdidas;
+				} else {
+					// Si el número de perdidas también es igual, compara por partidas empatadas
+					// descendente
+					return Integer.compare(j1.getEmpatadas(), j2.getEmpatadas());
+				}
+			}
+		}).limit(limite).collect(Collectors.toList());
 	}
 
 	@Override

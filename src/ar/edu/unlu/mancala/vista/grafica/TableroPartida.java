@@ -46,7 +46,7 @@ public class TableroPartida extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		lblJ2Zona = new JLabel("");
 		lblJ2Zona.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblJ2Zona.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -54,7 +54,7 @@ public class TableroPartida extends JFrame {
 		lblJ2Zona.setForeground(new Color(128, 0, 0));
 		lblJ2Zona.setBounds(218, 170, 381, 23);
 		contentPane.add(lblJ2Zona);
-		
+
 		lblJ1Zona = new JLabel("");
 		lblJ1Zona.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblJ1Zona.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -62,29 +62,29 @@ public class TableroPartida extends JFrame {
 		lblJ1Zona.setForeground(new Color(128, 0, 0));
 		lblJ1Zona.setBounds(238, 406, 361, 23);
 		contentPane.add(lblJ1Zona);
-		
+
 		lblJ2Name = new JLabel("");
 		lblJ2Name.setBounds(50, 54, 114, 13);
 		lblJ2Name.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblJ2Name.setHorizontalAlignment(SwingConstants.CENTER);
 		lblJ2Name.setForeground(Color.WHITE);
 		contentPane.add(lblJ2Name);
-		
+
 		lblJ1Name = new JLabel("");
 		lblJ1Name.setBounds(638, 54, 114, 13);
 		lblJ1Name.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblJ1Name.setHorizontalAlignment(SwingConstants.CENTER);
 		lblJ1Name.setForeground(Color.WHITE);
 		contentPane.add(lblJ1Name);
-		
+
 		textController = new JTextArea();
 		textController.setAlignmentY(1.0f);
 		textController.setBorder(null);
 		textController.setBounds(1, 1, 379, 43);
-        textController.setEditable(false);
-        textController.setForeground(Color.BLACK);
-        contentPane.add(textController);
-		
+		textController.setEditable(false);
+		textController.setForeground(Color.BLACK);
+		contentPane.add(textController);
+
 		JButton casaJ2 = new JButton("0");
 		casaJ2.setBounds(68, 255, 78, 79);
 		casaJ2.setOpaque(false);
@@ -93,7 +93,7 @@ public class TableroPartida extends JFrame {
 		casaJ2.setContentAreaFilled(false);
 		casaJ2.setBorderPainted(false);
 		contentPane.add(casaJ2);
-		
+
 		JButton casaJ1 = new JButton("0");
 		casaJ1.setBounds(654, 255, 78, 79);
 		casaJ1.setOpaque(false);
@@ -102,7 +102,7 @@ public class TableroPartida extends JFrame {
 		casaJ1.setContentAreaFilled(false);
 		casaJ1.setBorderPainted(false);
 		contentPane.add(casaJ1);
-		
+
 		JButton hoyo12 = new JButton("4");
 		hoyo12.setBounds(155, 198, 78, 79);
 		hoyo12.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -112,7 +112,7 @@ public class TableroPartida extends JFrame {
 		hoyo12.setContentAreaFilled(false);
 		hoyo12.setBorderPainted(false);
 		contentPane.add(hoyo12);
-		
+
 		JButton hoyo8 = new JButton("4");
 		hoyo8.setBounds(485, 198, 78, 79);
 		hoyo8.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -122,7 +122,7 @@ public class TableroPartida extends JFrame {
 		hoyo8.setContentAreaFilled(false);
 		hoyo8.setBorderPainted(false);
 		contentPane.add(hoyo8);
-		
+
 		JButton hoyo11 = new JButton("4");
 		hoyo11.setBounds(238, 198, 78, 79);
 		hoyo11.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -132,7 +132,7 @@ public class TableroPartida extends JFrame {
 		hoyo11.setContentAreaFilled(false);
 		hoyo11.setBorderPainted(false);
 		contentPane.add(hoyo11);
-		
+
 		JButton hoyo7 = new JButton("4");
 		hoyo7.setBounds(566, 198, 78, 79);
 		hoyo7.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -142,7 +142,7 @@ public class TableroPartida extends JFrame {
 		hoyo7.setContentAreaFilled(false);
 		hoyo7.setBorderPainted(false);
 		contentPane.add(hoyo7);
-		
+
 		JButton hoyo9 = new JButton("4");
 		hoyo9.setBounds(402, 198, 78, 79);
 		hoyo9.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -152,7 +152,7 @@ public class TableroPartida extends JFrame {
 		hoyo9.setContentAreaFilled(false);
 		hoyo9.setBorderPainted(false);
 		contentPane.add(hoyo9);
-		
+
 		JButton hoyo10 = new JButton("4");
 		hoyo10.setBounds(319, 198, 78, 79);
 		hoyo10.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -162,7 +162,7 @@ public class TableroPartida extends JFrame {
 		hoyo10.setContentAreaFilled(false);
 		hoyo10.setBorderPainted(false);
 		contentPane.add(hoyo10);
-		
+
 		JButton hoyo6 = new JButton("4");
 		hoyo6.setBounds(566, 317, 78, 79);
 		hoyo6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -172,7 +172,7 @@ public class TableroPartida extends JFrame {
 		hoyo6.setContentAreaFilled(false);
 		hoyo6.setBorderPainted(false);
 		contentPane.add(hoyo6);
-		
+
 		JButton hoyo4 = new JButton("4");
 		hoyo4.setBounds(402, 317, 78, 79);
 		hoyo4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -182,7 +182,7 @@ public class TableroPartida extends JFrame {
 		hoyo4.setContentAreaFilled(false);
 		hoyo4.setBorderPainted(false);
 		contentPane.add(hoyo4);
-		
+
 		JButton hoyo5 = new JButton("4");
 		hoyo5.setBounds(485, 317, 78, 79);
 		hoyo5.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -192,7 +192,7 @@ public class TableroPartida extends JFrame {
 		hoyo5.setContentAreaFilled(false);
 		hoyo5.setBorderPainted(false);
 		contentPane.add(hoyo5);
-		
+
 		JButton hoyo3 = new JButton("4");
 		hoyo3.setBounds(319, 317, 78, 79);
 		hoyo3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -202,7 +202,7 @@ public class TableroPartida extends JFrame {
 		hoyo3.setContentAreaFilled(false);
 		hoyo3.setBorderPainted(false);
 		contentPane.add(hoyo3);
-		
+
 		JButton hoyo2 = new JButton("4");
 		hoyo2.setBounds(238, 317, 78, 79);
 		hoyo2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -212,7 +212,7 @@ public class TableroPartida extends JFrame {
 		hoyo2.setContentAreaFilled(false);
 		hoyo2.setBorderPainted(false);
 		contentPane.add(hoyo2);
-		
+
 		JButton hoyo1 = new JButton("4");
 		hoyo1.setBounds(155, 317, 78, 79);
 		hoyo1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -222,18 +222,19 @@ public class TableroPartida extends JFrame {
 		hoyo1.setContentAreaFilled(false);
 		hoyo1.setBorderPainted(false);
 		contentPane.add(hoyo1);
-		
-		 JScrollPane scrollPane = new JScrollPane(textController);
-		 scrollPane.setAlignmentY(1.0f);
-		 scrollPane.setBounds(218, 90, 381, 45);
-	        contentPane.add(scrollPane);
-		
-		hoyos = List.of(casaJ2,hoyo1, hoyo2, hoyo3, hoyo4, hoyo5, hoyo6, casaJ1, hoyo7, hoyo8, hoyo9, hoyo10, hoyo11, hoyo12);
-		
-	    for (int i = 0; i < hoyos.size(); i++) {
-	        hoyos.get(i).setName(Integer.toString(i));
-	    }
-		
+
+		JScrollPane scrollPane = new JScrollPane(textController);
+		scrollPane.setAlignmentY(1.0f);
+		scrollPane.setBounds(218, 90, 381, 45);
+		contentPane.add(scrollPane);
+
+		hoyos = List.of(casaJ2, hoyo1, hoyo2, hoyo3, hoyo4, hoyo5, hoyo6, casaJ1, hoyo7, hoyo8, hoyo9, hoyo10, hoyo11,
+				hoyo12);
+
+		for (int i = 0; i < hoyos.size(); i++) {
+			hoyos.get(i).setName(Integer.toString(i));
+		}
+
 		hoyos.forEach(boton -> {
 			boton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -241,37 +242,37 @@ public class TableroPartida extends JFrame {
 				}
 			});
 		});
-		
+
 		JLabel lblTableroFondo = new JLabel("");
 		lblTableroFondo.setBounds(0, 0, 790, 470);
 		lblTableroFondo.setIcon(new ImageIcon(getClass().getResource("/tablero_mancala_partida.png")));
 		contentPane.add(lblTableroFondo);
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				listener.onCloseWindow();
-			}	
+			}
 		});
 	}
-	
+
 	public void informar(String texto) {
-        this.textController.append(texto + "\n");
-        int posicionFinal = this.textController.getDocument().getLength();
-        int desplazamiento = 1;
-        int posicionVisible = Math.max(0, posicionFinal - desplazamiento);
-        this.textController.setCaretPosition(posicionVisible);
+		this.textController.append(texto + "\n");
+		int posicionFinal = this.textController.getDocument().getLength();
+		int desplazamiento = 1;
+		int posicionVisible = Math.max(0, posicionFinal - desplazamiento);
+		this.textController.setCaretPosition(posicionVisible);
 	}
-	
+
 	public void actualizarTablero(AgujeroLectura[] agujeroLecturas) {
-		if(this.lblJ1Name.getText().isEmpty()) {
+		if (this.lblJ1Name.getText().isEmpty()) {
 			listener.solicitarJugadores();
 		}
-		for(int i = 0; i < agujeroLecturas.length; i++) {
+		for (int i = 0; i < agujeroLecturas.length; i++) {
 			hoyos.get(i).setText(Integer.toString(agujeroLecturas[i].getHabas()));
 		}
 	}
-	
+
 	public TableroPartidaListener getListener() {
 		return listener;
 	}
@@ -280,7 +281,7 @@ public class TableroPartida extends JFrame {
 		this.listener = listener;
 	}
 
-	public void setJugadores(List<JugadorLectura>jugadoresEnPartida) {
+	public void setJugadores(List<JugadorLectura> jugadoresEnPartida) {
 		this.textController.setText("");
 		this.lblJ1Name.setText(jugadoresEnPartida.get(0).getNombre());
 		this.lblJ2Name.setText(jugadoresEnPartida.get(1).getNombre());

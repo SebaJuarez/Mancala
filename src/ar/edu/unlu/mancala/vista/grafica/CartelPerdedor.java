@@ -35,7 +35,7 @@ public class CartelPerdedor extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		lblGanadas = new JLabel("");
 		lblGanadas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblGanadas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -43,7 +43,7 @@ public class CartelPerdedor extends JFrame {
 		lblGanadas.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblGanadas.setBounds(287, 159, 150, 27);
 		contentPane.add(lblGanadas);
-		
+
 		lblEmpatadas = new JLabel("");
 		lblEmpatadas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblEmpatadas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -51,7 +51,7 @@ public class CartelPerdedor extends JFrame {
 		lblEmpatadas.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblEmpatadas.setBounds(287, 325, 150, 27);
 		contentPane.add(lblEmpatadas);
-		
+
 		lblPerdidas = new JLabel("");
 		lblPerdidas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblPerdidas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -59,7 +59,7 @@ public class CartelPerdedor extends JFrame {
 		lblPerdidas.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblPerdidas.setBounds(287, 240, 150, 27);
 		contentPane.add(lblPerdidas);
-		
+
 		JButton btnSalir = new JButton("VOLVER");
 		btnSalir.setOpaque(false);
 		btnSalir.setForeground(Color.RED);
@@ -68,25 +68,25 @@ public class CartelPerdedor extends JFrame {
 		btnSalir.setBorderPainted(false);
 		btnSalir.setBounds(614, 10, 162, 33);
 		contentPane.add(btnSalir);
-		
+
 		JLabel lblFondoPerdedor = new JLabel("");
 		lblFondoPerdedor.setBounds(0, 0, 790, 470);
 		contentPane.add(lblFondoPerdedor);
-		
+
 		lblFondoPerdedor.setIcon(new ImageIcon(getClass().getResource("/fondo_perdedor.png")));
-		
+
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				listener.onVolverButtonClick();
 			}
 		});
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				listener.onCloseWindow();
 			}
-		
+
 		});
 	}
 
@@ -97,7 +97,7 @@ public class CartelPerdedor extends JFrame {
 	public void setListener(VolverListener listener) {
 		this.listener = listener;
 	}
-	
+
 	public void mostrarJugador(JugadorLectura jugador) {
 		this.lblEmpatadas.setText("EMPATADAS : " + Integer.toString(jugador.getEmpatadas()));
 		this.lblPerdidas.setText("PERDIDAS : " + Integer.toString(jugador.getPerdidas()));

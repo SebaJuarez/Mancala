@@ -7,5 +7,6 @@ import ar.edu.unlu.mancala.modelo.Agujero;
 public interface TableroLectura {
 
 	String toString(List<JugadorLectura> jugadores);
-    Agujero[] getAgujeros();
+
+	Agujero[] getAgujeros();
 }

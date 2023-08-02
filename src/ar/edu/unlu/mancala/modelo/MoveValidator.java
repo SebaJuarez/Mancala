@@ -3,25 +3,25 @@ package ar.edu.unlu.mancala.modelo;
 import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 
 public class MoveValidator {
-	
-	public EstadoTablero validarMovimiento(Tablero tablero, int turnoActual, int jugador, int indice ) {
-		
-		if (! enTurno(turnoActual,jugador)) {
+
+	public EstadoTablero validarMovimiento(Tablero tablero, int turnoActual, int jugador, int indice) {
+
+		if (!enTurno(turnoActual, jugador)) {
 			return EstadoTablero.TURNO_INVALIDO;
 		}
-		
-		if( !enRango(indice,tablero)) {
+
+		if (!enRango(indice, tablero)) {
 			return EstadoTablero.MOVIMIENTO_INVALIDO_RANGO;
 		}
-		
-		if(!enPosicion(tablero,jugador,indice)) {
+
+		if (!enPosicion(tablero, jugador, indice)) {
 			return EstadoTablero.MOVIMIENTO_INVALIDO_POSICION;
 		}
-		
-		if(!hayHabas(tablero,indice)) {
+
+		if (!hayHabas(tablero, indice)) {
 			return EstadoTablero.MOVIMIENTO_INVALIDO_HABAS;
 		}
-		
+
 		return EstadoTablero.MOVIMIENTO_VALIDO;
 	}
 
@@ -30,8 +30,7 @@ public class MoveValidator {
 	}
 
 	private boolean enPosicion(Tablero tablero, int jugador, int indice) {
-		return (tablero.getAgujeros()[indice].getJugador() == jugador &&
-				tablero.getAgujeros()[indice] instanceof Hoyo);
+		return (tablero.getAgujeros()[indice].getJugador() == jugador && tablero.getAgujeros()[indice] instanceof Hoyo);
 	}
 
 	private boolean enRango(int indice, Tablero tablero) {
@@ -41,5 +40,5 @@ public class MoveValidator {
 	private boolean enTurno(int turno, int jugador) {
 		return (turno == jugador);
 	}
-	
+
 }

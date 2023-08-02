@@ -9,7 +9,7 @@ import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
-public interface IMancalaPartida extends IObservableRemoto{
+public interface IMancalaPartida extends IObservableRemoto {
 
 	void conectarJugador(Jugador jugador) throws RemoteException;
 
@@ -60,7 +60,7 @@ public interface IMancalaPartida extends IObservableRemoto{
 	void desconectar(Jugador jugador, IControladorRemoto controlador) throws RemoteException;
 
 	List<JugadorLectura> getTop(int limite) throws RemoteException;
-	
+
 	Jugador getJugador(Jugador jugador) throws RemoteException;
 
 }

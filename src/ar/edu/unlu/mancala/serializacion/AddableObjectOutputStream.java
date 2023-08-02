@@ -19,5 +19,5 @@ public class AddableObjectOutputStream extends ObjectOutputStream {
 	/** Redefinicion del metodo de escribir la cabecera para que no haga nada. */
 	protected void writeStreamHeader() throws IOException {
 	}
-	
+
 }

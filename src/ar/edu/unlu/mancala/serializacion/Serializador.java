@@ -15,18 +15,18 @@ public class Serializador {
 
 	static {
 		try {
-	        File New_File = new File("jugadores.dat");
-	        New_File.createNewFile();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+			File New_File = new File("jugadores.dat");
+			New_File.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	public Serializador(String fileName) {
 		super();
 		this.fileName = fileName;
 	}
-	
+
 	public boolean writeOneObject(Object obj) {
 		boolean respuesta = false;
 		try {
@@ -36,85 +36,81 @@ public class Serializador {
 			respuesta = true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return respuesta;
 	}
-	
+
 	public boolean addOneObject(Object obj) {
 		boolean respuesta = false;
 		try {
-			AddableObjectOutputStream oos = new AddableObjectOutputStream (new FileOutputStream(fileName,true));
+			AddableObjectOutputStream oos = new AddableObjectOutputStream(new FileOutputStream(fileName, true));
 			oos.writeObject(obj);
 			oos.close();
 			respuesta = true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return respuesta;
 	}
-	
-	
+
 	public Object readFirstObject() {
 		Object respuesta = null;
 		try {
-			ObjectInputStream ois = new ObjectInputStream(
-                    new FileInputStream(fileName));
-			
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+
 			respuesta = ois.readObject();
-			
+
 			ois.close();
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
-			
+
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return respuesta;
 	}
-	
+
 	public Object[] readObjects() {
 		Object[] respuesta = {};
 		ArrayList<Object> listOfObject = new ArrayList<Object>();
 		try {
-			ObjectInputStream ois = new ObjectInputStream(
-                    new FileInputStream(fileName));
-			
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+
 			Object r = ois.readObject();
-			while (r !=null)
-            {
-               listOfObject.add(r);
-               r = ois.readObject();
-            }
-            ois.close();
-			
-		}catch (EOFException e) {
-            
-        }catch (FileNotFoundException e) {
+			while (r != null) {
+				listOfObject.add(r);
+				r = ois.readObject();
+			}
+			ois.close();
+
+		} catch (EOFException e) {
+
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(!listOfObject.isEmpty() ) {
+		if (!listOfObject.isEmpty()) {
 			respuesta = new Object[listOfObject.size()];
 			int count = 0;
-			for(Object o : listOfObject)
-				respuesta[count ++] = o;
+			for (Object o : listOfObject)
+				respuesta[count++] = o;
 		} else {
-			//respuesta ;
+			// respuesta ;
 		}
 		return respuesta;
 	}

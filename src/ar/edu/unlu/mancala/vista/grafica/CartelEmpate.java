@@ -26,8 +26,7 @@ public class CartelEmpate extends JFrame {
 	private JLabel lblGanadas;
 	private JLabel lblPerdidas;
 	private JLabel lblEmpatadas;
-	
-	
+
 	public CartelEmpate() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
@@ -36,7 +35,7 @@ public class CartelEmpate extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JButton btnSalir = new JButton("VOLVER");
 		btnSalir.setOpaque(false);
 		btnSalir.setForeground(Color.RED);
@@ -45,7 +44,7 @@ public class CartelEmpate extends JFrame {
 		btnSalir.setBorderPainted(false);
 		btnSalir.setBounds(614, 10, 162, 33);
 		contentPane.add(btnSalir);
-		
+
 		lblGanadas = new JLabel("");
 		lblGanadas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblGanadas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -53,7 +52,7 @@ public class CartelEmpate extends JFrame {
 		lblGanadas.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblGanadas.setBounds(287, 159, 150, 27);
 		contentPane.add(lblGanadas);
-		
+
 		lblPerdidas = new JLabel("");
 		lblPerdidas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblPerdidas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -61,7 +60,7 @@ public class CartelEmpate extends JFrame {
 		lblPerdidas.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblPerdidas.setBounds(287, 240, 150, 27);
 		contentPane.add(lblPerdidas);
-		
+
 		lblEmpatadas = new JLabel("");
 		lblEmpatadas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblEmpatadas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -69,38 +68,35 @@ public class CartelEmpate extends JFrame {
 		lblEmpatadas.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblEmpatadas.setBounds(287, 325, 150, 27);
 		contentPane.add(lblEmpatadas);
-		
+
 		JLabel lblFondoEmpate = new JLabel("");
 		lblFondoEmpate.setBounds(0, 0, 790, 470);
 		contentPane.add(lblFondoEmpate);
-		
+
 		lblFondoEmpate.setIcon(new ImageIcon(getClass().getResource("/fondo_empate.png")));
-		
+
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				listener.onVolverButtonClick();
 			}
 		});
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				listener.onCloseWindow();
 			}
-		
+
 		});
 	}
-
 
 	public VolverListener getListener() {
 		return listener;
 	}
 
-
 	public void setListener(VolverListener listener) {
 		this.listener = listener;
 	}
-
 
 	public void mostrarJugador(JugadorLectura jugador) {
 		this.lblEmpatadas.setText("EMPATADAS : " + Integer.toString(jugador.getEmpatadas()));

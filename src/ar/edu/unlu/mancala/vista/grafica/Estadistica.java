@@ -42,7 +42,7 @@ public class Estadistica extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		btnSalir = new JButton("VOLVER");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -56,7 +56,7 @@ public class Estadistica extends JFrame {
 		btnSalir.setBorderPainted(false);
 		btnSalir.setBounds(614, 10, 162, 33);
 		contentPane.add(btnSalir);
-		
+
 		lblEmpatadasRate = new JLabel("0");
 		lblEmpatadasRate.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblEmpatadasRate.setHorizontalAlignment(SwingConstants.CENTER);
@@ -64,7 +64,7 @@ public class Estadistica extends JFrame {
 		lblEmpatadasRate.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblEmpatadasRate.setBounds(532, 323, 139, 47);
 		contentPane.add(lblEmpatadasRate);
-		
+
 		lblPerdidasRate = new JLabel("0");
 		lblPerdidasRate.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblPerdidasRate.setHorizontalAlignment(SwingConstants.CENTER);
@@ -72,7 +72,7 @@ public class Estadistica extends JFrame {
 		lblPerdidasRate.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblPerdidasRate.setBounds(326, 323, 139, 47);
 		contentPane.add(lblPerdidasRate);
-		
+
 		lblGanadasRate = new JLabel("0");
 		lblGanadasRate.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblGanadasRate.setHorizontalAlignment(SwingConstants.CENTER);
@@ -80,7 +80,7 @@ public class Estadistica extends JFrame {
 		lblGanadasRate.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblGanadasRate.setBounds(125, 323, 139, 47);
 		contentPane.add(lblGanadasRate);
-		
+
 		lblGanadasP = new JLabel("0");
 		lblGanadasP.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblGanadasP.setHorizontalAlignment(SwingConstants.CENTER);
@@ -88,7 +88,7 @@ public class Estadistica extends JFrame {
 		lblGanadasP.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblGanadasP.setBounds(125, 179, 139, 47);
 		contentPane.add(lblGanadasP);
-		
+
 		lblPerdidasP = new JLabel("0");
 		lblPerdidasP.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblPerdidasP.setHorizontalAlignment(SwingConstants.CENTER);
@@ -96,7 +96,7 @@ public class Estadistica extends JFrame {
 		lblPerdidasP.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblPerdidasP.setBounds(326, 179, 139, 47);
 		contentPane.add(lblPerdidasP);
-		
+
 		lblEmpatadasP = new JLabel("0");
 		lblEmpatadasP.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblEmpatadasP.setHorizontalAlignment(SwingConstants.CENTER);
@@ -104,7 +104,7 @@ public class Estadistica extends JFrame {
 		lblEmpatadasP.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblEmpatadasP.setBounds(532, 179, 139, 47);
 		contentPane.add(lblEmpatadasP);
-		
+
 		JLabel lblEmpatadas = new JLabel("EMPATADAS");
 		lblEmpatadas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblEmpatadas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -112,7 +112,7 @@ public class Estadistica extends JFrame {
 		lblEmpatadas.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblEmpatadas.setBounds(532, 129, 139, 47);
 		contentPane.add(lblEmpatadas);
-		
+
 		JLabel lblPerdidas = new JLabel("PERDIDAS");
 		lblPerdidas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblPerdidas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -120,7 +120,7 @@ public class Estadistica extends JFrame {
 		lblPerdidas.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblPerdidas.setBounds(326, 129, 139, 47);
 		contentPane.add(lblPerdidas);
-		
+
 		JLabel lblGanadas = new JLabel("GANADAS");
 		lblGanadas.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblGanadas.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -128,19 +128,19 @@ public class Estadistica extends JFrame {
 		lblGanadas.setForeground(Color.WHITE);
 		lblGanadas.setBounds(125, 129, 139, 47);
 		contentPane.add(lblGanadas);
-		
+
 		JLabel lblFondoEstadisticas = new JLabel("");
 		lblFondoEstadisticas.setBounds(0, 0, 790, 470);
 		contentPane.add(lblFondoEstadisticas);
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				listener.onCloseWindow();
 			}
-		
+
 		});
-		
+
 		lblFondoEstadisticas.setIcon(new ImageIcon(getClass().getResource("/fondo_estadisticas.png")));
 
 	}
@@ -161,7 +161,7 @@ public class Estadistica extends JFrame {
 		lblGanadasRate.setText(decimalFormat.format(winRate) + " %");
 		lblPerdidasRate.setText(decimalFormat.format(loseRate) + " %");
 	}
-	
+
 	public VolverListener getListener() {
 		return listener;
 	}
