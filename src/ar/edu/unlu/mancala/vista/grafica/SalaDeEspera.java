@@ -1,20 +1,21 @@
 package ar.edu.unlu.mancala.vista.grafica;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import ar.edu.unlu.mancala.vista.grafica.listener.Cerrable;
-
-import javax.swing.JLabel;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.Color;
-import java.awt.Font;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
+
+import ar.edu.unlu.mancala.vista.grafica.listener.Cerrable;
 
 public class SalaDeEspera extends JFrame {
 

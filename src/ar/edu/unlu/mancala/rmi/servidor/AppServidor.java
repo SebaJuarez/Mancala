@@ -2,6 +2,7 @@ package ar.edu.unlu.mancala.rmi.servidor;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import ar.edu.unlu.mancala.modelo.MancalaPartida;

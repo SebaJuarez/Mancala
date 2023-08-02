@@ -1,7 +1,5 @@
 package ar.edu.unlu.mancala.modelo.test;
 
-import ar.edu.unlu.mancala.modelo.Jugador;
-import ar.edu.unlu.mancala.modelo.MancalaPartida;
 import ar.edu.unlu.mancala.modelo.Tablero;
 
 public class TestTablero {

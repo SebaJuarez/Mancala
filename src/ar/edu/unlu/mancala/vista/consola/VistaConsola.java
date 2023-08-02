@@ -276,7 +276,6 @@ public class VistaConsola extends JFrame implements Ivista {
 		int pos = -1;
 		try {
 			pos = Integer.parseInt(entrada);
-			// clearScreen();
 			controlador.mover(pos);
 		} catch (NumberFormatException e) {
 			println("ingrese un numero!");

@@ -1,5 +1,6 @@
 package ar.edu.unlu.mancala.vista.grafica;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
@@ -8,12 +9,10 @@ import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.mancala.vista.consola.EstadosFlujo;
-import ar.edu.unlu.mancala.vista.grafica.listener.VolverListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuInicioSesionListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuPrincipalListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.TableroPartidaListener;
-
-import java.rmi.RemoteException;
+import ar.edu.unlu.mancala.vista.grafica.listener.VolverListener;
 
 public class VistaGrafica
 		implements Ivista, MenuInicioSesionListener, MenuPrincipalListener, TableroPartidaListener, VolverListener {

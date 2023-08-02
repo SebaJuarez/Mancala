@@ -1,7 +1,5 @@
 package ar.edu.unlu.mancala.modelo.test;
 
-import java.util.List;
-
 import ar.edu.unlu.mancala.modelo.Jugador;
 import ar.edu.unlu.mancala.security.Encriptador;
 import ar.edu.unlu.mancala.serializacion.services.JugadorService;
