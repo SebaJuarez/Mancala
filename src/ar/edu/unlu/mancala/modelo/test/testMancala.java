@@ -1,11 +1,5 @@
 package ar.edu.unlu.mancala.modelo.test;
 
-import ar.edu.unlu.mancala.controlador.MancalaController;
-import ar.edu.unlu.mancala.modelo.MancalaPartida;
-import ar.edu.unlu.mancala.serializacion.services.JugadorServiceImpl;
-import ar.edu.unlu.mancala.vista.Ivista;
-import ar.edu.unlu.mancala.vista.consola.VistaConsola;
-
 public class testMancala {
 
 	public static void main(String[] args) {

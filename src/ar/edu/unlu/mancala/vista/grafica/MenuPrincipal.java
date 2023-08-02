@@ -1,23 +1,24 @@
 package ar.edu.unlu.mancala.vista.grafica;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import ar.edu.unlu.mancala.vista.grafica.listener.MenuPrincipalListener;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.ImageIcon;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import ar.edu.unlu.mancala.vista.grafica.listener.MenuPrincipalListener;
 
 public class MenuPrincipal extends JFrame {
 
