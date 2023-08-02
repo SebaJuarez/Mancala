@@ -64,21 +64,32 @@ comentar la [linea](https://github.com/SebaJuarez/Mancala/blob/4e923770fafec2bad
 2. Ejecutar el  servidor 
     1. Ejecutar la clase AppServidor.java situada en "src/ar/edu/unlu/mancala/rmi/servidor"
     2. Selecciona la ip donde se escucharan las peticiones
+
        ![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935864/imcyz62cvqyejhugfbcg.png)
+       
     3. Presione aceptar, luego seleccione el numero de puerto
+       
        ![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935905/jdunzlpnodidrybhoejp.png)
+       
 3. Ejecutar el cliente
     1. Ejecutar la clase AppCliente.java situada en "src/ar/edu/unlu/mancala/rmi/cliente"
     2. Seleccionar la ip donde se escucharan las peticiones el cliente.
-![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935935/vjgmtuxujufilgxf6okw.png)
+       
+    ![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935935/vjgmtuxujufilgxf6okw.png)
+
     3. Presione aceptar, luego seleccione el numero de puerto en que escuchará el cliente.
-![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935533/cdpn8nhjs80kfptkzt2j.png)
+    
+    ![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935533/cdpn8nhjs80kfptkzt2j.png)
+
     4. Presione aceptar, luego seleccione la Ip en la que corre el servidor.
-![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935691/qnpxvcewjxe61hzrtxma.png)
+    
+    ![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935691/qnpxvcewjxe61hzrtxma.png)
+
     5. Presione aceptar, luego seleccione el numero de puerto que corre el servidor y presione aceptar.
-![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935647/zqkmhzotkod629if2ubr.png)
+    
+    ![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1690935647/zqkmhzotkod629if2ubr.png)
         
-4. Repita este proceso por cada cliente que desee tener en linea.
+4. Repita este ultimo proceso por cada cliente que desee tener en linea.
         
 ## Agradecimientos
 
