@@ -24,6 +24,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.*;
+
 public class FormularioCreacionUsuario extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -58,13 +59,12 @@ public class FormularioCreacionUsuario extends JFrame {
 		textFieldUsuario.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-			    if(textFieldUsuario.getText().length() >= 20)
-			    {
-			        e.consume();
-			    }
+				if (textFieldUsuario.getText().length() >= 20) {
+					e.consume();
+				}
 			}
 		});
-		
+
 		textFieldUsuario.setBounds(50, 100, 167, 19);
 		panelFormulario.add(textFieldUsuario);
 		textFieldUsuario.setCaretColor(new Color(255, 255, 255));
@@ -72,7 +72,6 @@ public class FormularioCreacionUsuario extends JFrame {
 		textFieldUsuario.setForeground(Color.WHITE);
 		textFieldUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldUsuario.setColumns(10);
-		
 
 		JLabel lblUsuario = new JLabel("USUARIO");
 		lblUsuario.setBounds(102, 77, 86, 13);
@@ -104,14 +103,13 @@ public class FormularioCreacionUsuario extends JFrame {
 		textFieldContrasenia.setHorizontalAlignment(SwingConstants.CENTER); // Alinea el texto al centro
 		textFieldContrasenia.setCaretColor(Color.WHITE);
 		textFieldContrasenia.setForeground(Color.WHITE);
-		
+
 		textFieldContrasenia.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-			    if(textFieldContrasenia.getText().length() >= 20)
-			    {
-			        e.consume();
-			    }
+				if (textFieldContrasenia.getText().length() >= 20) {
+					e.consume();
+				}
 			}
 		});
 
@@ -120,23 +118,23 @@ public class FormularioCreacionUsuario extends JFrame {
 				aviso.setText("");
 				String usuario = textFieldUsuario.getText();
 				String contrasenia = textFieldContrasenia.getText();
-		        // Usuario no puede estar vacío y debe tener menos de 8 caracteres
-		        if (usuario.isEmpty() || usuario.length() > 8 || usuario.length() < 4) {
-		            aviso.setText("El usuario debe tener entre 4 y 8 caracteres.");
-		            return;
-		        }
-		        // Contraseña no puede estar vacía y debe tener menos de 15 caracteres
-		        if (contrasenia.isEmpty() || contrasenia.length() > 15 || contrasenia.length() < 5) {
-		            aviso.setText("La contraseña debe tener entre 5 y 15 caracteres.");
-		            return;
-		        }
-		        // Usuario y contraseña no pueden contener espacios
-		        if (usuario.contains(" ") || contrasenia.contains(" ")) {
-		            aviso.setText("El usuario y la contraseña no pueden contener espacios.");
-		            return;
-		        }
-		        listener.onCrearButtonClick(usuario, contrasenia);
-		        
+				// Usuario no puede estar vacío y debe tener menos de 8 caracteres
+				if (usuario.isEmpty() || usuario.length() > 8 || usuario.length() < 4) {
+					aviso.setText("El usuario debe tener entre 4 y 8 caracteres.");
+					return;
+				}
+				// Contraseña no puede estar vacía y debe tener menos de 15 caracteres
+				if (contrasenia.isEmpty() || contrasenia.length() > 15 || contrasenia.length() < 5) {
+					aviso.setText("La contraseña debe tener entre 5 y 15 caracteres.");
+					return;
+				}
+				// Usuario y contraseña no pueden contener espacios
+				if (usuario.contains(" ") || contrasenia.contains(" ")) {
+					aviso.setText("El usuario y la contraseña no pueden contener espacios.");
+					return;
+				}
+				listener.onCrearButtonClick(usuario, contrasenia);
+
 			}
 		});
 
@@ -172,9 +170,7 @@ public class FormularioCreacionUsuario extends JFrame {
 				aviso.setText("");
 			}
 		});
-		
-		
-		
+
 	}
 
 	public void setFormularioInicioSesionListener(FormularioCreacionUsuarioListener listener) {

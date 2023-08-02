@@ -5,18 +5,17 @@ import java.util.Objects;
 
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 
-public class Jugador implements JugadorLectura, Serializable{
+public class Jugador implements JugadorLectura, Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String nombre;
 	private String contrasenia;
 	private int ganadas;
 
-
 	private int perdidas;
 	private int empatadas;
-	
+
 	public int getPerdidas() {
 		return perdidas;
 	}
@@ -32,7 +31,6 @@ public class Jugador implements JugadorLectura, Serializable{
 	public void setEmpatadas(int empatadas) {
 		this.empatadas = empatadas;
 	}
-
 
 	public String getNombre() {
 		return nombre;
@@ -57,7 +55,7 @@ public class Jugador implements JugadorLectura, Serializable{
 	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -22,8 +22,6 @@ public class SalaDeEspera extends JFrame {
 	private JPanel contentPane;
 	private Cerrable listener;
 
-	
-	
 	public SalaDeEspera() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,7 +31,7 @@ public class SalaDeEspera extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblTresPuntitos = new JLabel("");
 		lblTresPuntitos.setFont(new Font("Tahoma", Font.PLAIN, 60));
 		lblTresPuntitos.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -41,48 +39,44 @@ public class SalaDeEspera extends JFrame {
 		lblTresPuntitos.setForeground(Color.WHITE);
 		lblTresPuntitos.setBounds(117, 135, 553, 106);
 		contentPane.add(lblTresPuntitos);
-		
+
 		JLabel lblFondoSalaEspera = new JLabel("");
 		lblFondoSalaEspera.setBounds(0, 0, 790, 470);
 		lblFondoSalaEspera.setIcon(new ImageIcon(getClass().getResource("/fondo_sala_de_espera.png")));
 		contentPane.add(lblFondoSalaEspera);
-		
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Timer timer = new Timer(500, new ActionListener() {
-            int numPuntos = 0;
-            String puntos = "";
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                numPuntos++;
-                if (numPuntos > 3) {
-                    numPuntos = 0;
-                    puntos = "";
-                } else {
-                    puntos += ".";
-                }
-                lblTresPuntitos.setText(puntos);
-            }
-        });
-        timer.start();
-        
+		Timer timer = new Timer(500, new ActionListener() {
+			int numPuntos = 0;
+			String puntos = "";
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numPuntos++;
+				if (numPuntos > 3) {
+					numPuntos = 0;
+					puntos = "";
+				} else {
+					puntos += ".";
+				}
+				lblTresPuntitos.setText(puntos);
+			}
+		});
+		timer.start();
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				listener.onCloseWindow();
 			}
 		});
-        
-    }
 
-
+	}
 
 	public Cerrable getListener() {
 		return listener;
 	}
-
-
 
 	public void setListener(Cerrable listener) {
 		this.listener = listener;

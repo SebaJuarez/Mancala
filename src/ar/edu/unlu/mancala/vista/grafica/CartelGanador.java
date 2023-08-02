@@ -35,7 +35,7 @@ public class CartelGanador extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JButton btnSalir = new JButton("VOLVER");
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSalir.addActionListener(new ActionListener() {
@@ -43,7 +43,7 @@ public class CartelGanador extends JFrame {
 				listener.onVolverButtonClick();
 			}
 		});
-		
+
 		lblPerdidas = new JLabel("");
 		lblPerdidas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblPerdidas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -51,7 +51,7 @@ public class CartelGanador extends JFrame {
 		lblPerdidas.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblPerdidas.setBounds(287, 240, 150, 27);
 		contentPane.add(lblPerdidas);
-		
+
 		lblEmpatadas = new JLabel("");
 		lblEmpatadas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblEmpatadas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -59,7 +59,7 @@ public class CartelGanador extends JFrame {
 		lblEmpatadas.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblEmpatadas.setBounds(287, 325, 150, 27);
 		contentPane.add(lblEmpatadas);
-		
+
 		lblGanadas = new JLabel("");
 		lblGanadas.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblGanadas.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -74,19 +74,19 @@ public class CartelGanador extends JFrame {
 		btnSalir.setBorderPainted(false);
 		btnSalir.setBounds(614, 10, 162, 33);
 		contentPane.add(btnSalir);
-		
+
 		JLabel lblFondoGanador = new JLabel("");
 		lblFondoGanador.setBounds(0, 0, 790, 470);
 		contentPane.add(lblFondoGanador);
-		
+
 		lblFondoGanador.setIcon(new ImageIcon(getClass().getResource("/fondo_ganador.png")));
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				listener.onCloseWindow();
 			}
-		
+
 		});
 	}
 
@@ -97,7 +97,7 @@ public class CartelGanador extends JFrame {
 	public void setListener(VolverListener listener) {
 		this.listener = listener;
 	}
-	
+
 	public void mostrarJugador(JugadorLectura jugador) {
 		this.lblEmpatadas.setText("EMPATADAS : " + Integer.toString(jugador.getEmpatadas()));
 		this.lblPerdidas.setText("PERDIDAS : " + Integer.toString(jugador.getPerdidas()));

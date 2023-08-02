@@ -19,15 +19,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-public class MenuPrincipal extends JFrame{
+public class MenuPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private MenuPrincipalListener listener;
 	private List<JButton> botones;
 	private JLabel lblInforme;
-	
-	
+
 	public MenuPrincipal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
@@ -37,13 +36,13 @@ public class MenuPrincipal extends JFrame{
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		lblInforme = new JLabel("");
 		lblInforme.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInforme.setForeground(Color.ORANGE);
 		lblInforme.setBounds(147, 372, 326, 27);
 		contentPane.add(lblInforme);
-		
+
 		JButton btnSalir = new JButton("SALIR");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -57,11 +56,11 @@ public class MenuPrincipal extends JFrame{
 		btnSalir.setBorderPainted(false);
 		btnSalir.setBounds(229, 338, 348, 33);
 		contentPane.add(btnSalir);
-		
+
 		JButton btnReglasDelJuego = new JButton("REGLAMENTO");
 		btnReglasDelJuego.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				informar("");	
+				informar("");
 				listener.onReglamentoButtonClick();
 			}
 		});
@@ -72,11 +71,11 @@ public class MenuPrincipal extends JFrame{
 		btnReglasDelJuego.setBorderPainted(false);
 		btnReglasDelJuego.setBounds(229, 293, 348, 33);
 		contentPane.add(btnReglasDelJuego);
-		
+
 		JButton btnMisEstadisticas = new JButton("MIS ESTADISTICAS");
 		btnMisEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				informar("");	
+				informar("");
 				listener.onMisEstadisticasClick();
 			}
 		});
@@ -87,11 +86,11 @@ public class MenuPrincipal extends JFrame{
 		btnMisEstadisticas.setBorderPainted(false);
 		btnMisEstadisticas.setBounds(229, 250, 348, 33);
 		contentPane.add(btnMisEstadisticas);
-		
+
 		JButton btnTopGanadores = new JButton("TOP GANADORES");
 		btnTopGanadores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				informar("");	
+				informar("");
 				listener.onTopGanadoresButtonClick();
 			}
 		});
@@ -102,11 +101,11 @@ public class MenuPrincipal extends JFrame{
 		btnTopGanadores.setBorderPainted(false);
 		btnTopGanadores.setBounds(229, 207, 348, 33);
 		contentPane.add(btnTopGanadores);
-		
+
 		JButton btnBuscarPartida = new JButton("BUSCAR PARTIDA");
 		btnBuscarPartida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				informar("");	
+				informar("");
 				listener.onBuscarPartidaButtonClick();
 			}
 		});
@@ -117,15 +116,15 @@ public class MenuPrincipal extends JFrame{
 		btnBuscarPartida.setBorderPainted(false);
 		btnBuscarPartida.setBounds(229, 164, 348, 33);
 		contentPane.add(btnBuscarPartida);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(getClass().getResource("/fondo_menu_inicio_de_sesion.png")));
 		lblNewLabel.setBounds(0, 0, 790, 470);
 		contentPane.add(lblNewLabel);
-		
+
 		botones = List.of(btnBuscarPartida, btnTopGanadores, btnMisEstadisticas, btnReglasDelJuego, btnSalir);
-		
-		botones.forEach(boton ->{
+
+		botones.forEach(boton -> {
 			boton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -140,20 +139,19 @@ public class MenuPrincipal extends JFrame{
 				}
 			});
 		});
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				listener.onCloseWindow();
 			}
 		});
-		
+
 	}
 
 	public MenuPrincipalListener getListener() {
 		return listener;
 	}
-
 
 	public void setListener(MenuPrincipalListener listener) {
 		this.listener = listener;

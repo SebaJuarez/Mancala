@@ -30,146 +30,149 @@ import ar.edu.unlu.mancala.vista.TableroLectura;
 
 public class VistaConsola extends JFrame implements Ivista {
 
-    private static final long serialVersionUID = 1L;
-    private JTextField campoTexto;
-    private JTextArea pantalla;
-    private MancalaController controlador;
-    private EstadosFlujo estadoFlujo;
-    private JPanel panelComandos;
-    private boolean esperandoTecla = false;
-    private String nombreIntento;
+	private static final long serialVersionUID = 1L;
+	private JTextField campoTexto;
+	private JTextArea pantalla;
+	private MancalaController controlador;
+	private EstadosFlujo estadoFlujo;
+	private JPanel panelComandos;
+	private boolean esperandoTecla = false;
+	private String nombreIntento;
 
 	public VistaConsola() {
-        // Configuración de la ventana principal
-        setTitle("Consola");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 600));
-        
-        // Creación de la pantalla de la consola
-        pantalla = new JTextArea();
-        pantalla.setEditable(false);
-        pantalla.setBackground(Color.BLACK);
-        pantalla.setForeground(Color.WHITE);
-        pantalla.setFont(new Font("Consolas", Font.PLAIN, 12));
-        JScrollPane scrollPantalla = new JScrollPane(pantalla);
-        scrollPantalla.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        
-        // Creación del campo de texto para escribir los comandos
-        campoTexto = new JTextField(50);
-        campoTexto.setToolTipText("");
-        campoTexto.hasFocus();
-        campoTexto.setFont(new Font("Consolas", Font.PLAIN, 12));
-        
-        campoTexto.addKeyListener(new KeyAdapter() {
+		// Configuración de la ventana principal
+		setTitle("Consola");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setPreferredSize(new Dimension(800, 600));
+
+		// Creación de la pantalla de la consola
+		pantalla = new JTextArea();
+		pantalla.setEditable(false);
+		pantalla.setBackground(Color.BLACK);
+		pantalla.setForeground(Color.WHITE);
+		pantalla.setFont(new Font("Consolas", Font.PLAIN, 12));
+		JScrollPane scrollPantalla = new JScrollPane(pantalla);
+		scrollPantalla.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+		// Creación del campo de texto para escribir los comandos
+		campoTexto = new JTextField(50);
+		campoTexto.setToolTipText("");
+		campoTexto.hasFocus();
+		campoTexto.setFont(new Font("Consolas", Font.PLAIN, 12));
+
+		campoTexto.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-			    if(campoTexto.getText().length() >= 20){
-			        e.consume();
-			    }
+				if (campoTexto.getText().length() >= 20) {
+					e.consume();
+				}
 			}
 		});
-        
-        campoTexto.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Cuando se presiona ENTER en el campo de texto, se agrega el comando a la pantalla
-                String entrada = campoTexto.getText();
-                println(entrada);
-                campoTexto.setText("");
-            	switch(estadoFlujo) {
-            	case LOG_IN : 
-            		if(!esperandoTecla) {
-        				opcionesMenuInicioSesion(entrada);        			
-            		} else {
-            			esperandoTecla = false;
-            		}
-            		break;
-            	case LOG_IN_ENTRADA:
-            		if(entrada.toLowerCase().equals("q")) {
-            			mostrarMenuInicioSesion();
-            		}
-            		try {
+
+		campoTexto.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Cuando se presiona ENTER en el campo de texto, se agrega el comando a la
+				// pantalla
+				String entrada = campoTexto.getText();
+				println(entrada);
+				campoTexto.setText("");
+				switch (estadoFlujo) {
+				case LOG_IN:
+					if (!esperandoTecla) {
+						opcionesMenuInicioSesion(entrada);
+					} else {
+						esperandoTecla = false;
+					}
+					break;
+				case LOG_IN_ENTRADA:
+					if (entrada.toLowerCase().equals("q")) {
+						mostrarMenuInicioSesion();
+					}
+					try {
 						formularioUsuario(entrada);
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}
-            		break;
-            	case LOG_IN_CREACION:
-            		if(entrada.toLowerCase().equals("q")) {
-            			mostrarMenuInicioSesion();
-            		}
-            		try {
+					break;
+				case LOG_IN_CREACION:
+					if (entrada.toLowerCase().equals("q")) {
+						mostrarMenuInicioSesion();
+					}
+					try {
 						formularioCreacionUsuario(entrada);
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}
-            	case MENU_PRINCIPAL : 
-            		if(!esperandoTecla) {
-        				try {
+				case MENU_PRINCIPAL:
+					if (!esperandoTecla) {
+						try {
 							opcionesPrincipal(entrada);
 						} catch (RemoteException e1) {
 							e1.printStackTrace();
-						}        			
-            		} else {
-            			mostrarMenuPrincipal();
-            			esperandoTecla = false;
-            		}
-            		break;
-            	case MOVIMIENTOS :
-            		try {
+						}
+					} else {
+						mostrarMenuPrincipal();
+						esperandoTecla = false;
+					}
+					break;
+				case MOVIMIENTOS:
+					try {
 						mover(entrada);
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}
-            		break;
-            	case SALIDA:
-            		if(esperandoTecla) {
-            			try {
+					break;
+				case SALIDA:
+					if (esperandoTecla) {
+						try {
 							cerrarJuego();
 						} catch (RemoteException e1) {
 							e1.printStackTrace();
 						}
-            		}
-            		break;
+					}
+					break;
 				default:
 					break;
-            	}
-            }
-        });
-        
-        // accion que sucede cuando se cierra una ventana (una vista)
-        this.addWindowListener((WindowListener) new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-            	try {
+				}
+			}
+		});
+
+		// accion que sucede cuando se cierra una ventana (una vista)
+		this.addWindowListener((WindowListener) new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
 					cerrarJuego();
 				} catch (RemoteException e1) {
 					e1.printStackTrace();
 				}
-            }});
-        
-        // Creación del panel para el campo de texto y el botón
-        panelComandos = new JPanel();
-        panelComandos.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        panelComandos.add(campoTexto);
-        //panelComandos.add(botonEnviar);
-        
-        // Agregamos los componentes a la ventana
-        getContentPane().add(scrollPantalla, BorderLayout.CENTER);
-        getContentPane().add(panelComandos, BorderLayout.SOUTH);
-    }
+			}
+		});
 
-    // menu inicio de sesion ---------------------------------------------------------------
+		// Creación del panel para el campo de texto y el botón
+		panelComandos = new JPanel();
+		panelComandos.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		panelComandos.add(campoTexto);
+		// panelComandos.add(botonEnviar);
+
+		// Agregamos los componentes a la ventana
+		getContentPane().add(scrollPantalla, BorderLayout.CENTER);
+		getContentPane().add(panelComandos, BorderLayout.SOUTH);
+	}
+
+	// menu inicio de sesion
+	// ---------------------------------------------------------------
 	private void opcionesMenuInicioSesion(String entrada) {
-		switch(entrada) {
-		case "1" :
+		switch (entrada) {
+		case "1":
 			clearScreen();
 			estadoFlujo = EstadosFlujo.LOG_IN_ENTRADA;
 			println("ingrese su nombre de usuario y separado la contraseña. Q para volver");
 			break;
-		case "2" : 
+		case "2":
 			clearScreen();
-			estadoFlujo = EstadosFlujo.LOG_IN_CREACION; 
+			estadoFlujo = EstadosFlujo.LOG_IN_CREACION;
 			println("ingrese su nombre de usuario y separado la contraseña. Q para volver");
 			break;
 		case "3":
@@ -179,12 +182,12 @@ public class VistaConsola extends JFrame implements Ivista {
 			println("Ingrese cualquier tecla para cerrar el juego.");
 			esperandoTecla = true;
 			break;
-		default :
-			println("ingrese una opcion correcta !");    
+		default:
+			println("ingrese una opcion correcta !");
 			break;
 		}
 	}
-	
+
 	private void formularioUsuario(String entry) throws RemoteException {
 		String[] entryFiltrada = entry.trim().split(" ");
 		if (entryFiltrada.length == 2) {
@@ -196,67 +199,67 @@ public class VistaConsola extends JFrame implements Ivista {
 			informar("ingreso mal los parametros de entrada!!");
 		}
 	}
-	
+
 	private void formularioCreacionUsuario(String entry) throws RemoteException {
 		String[] entryFiltrada = entry.trim().split(" ");
-		if(entryFiltrada.length == 2) {
+		if (entryFiltrada.length == 2) {
 			String nombre = entryFiltrada[0];
 			String contrasenia = entryFiltrada[1];
 			nombreIntento = nombre;
-			 // Usuario no puede estar vacío y debe tener menos de 8 caracteres
-	        if (nombre.isEmpty() || nombre.length() > 8 || nombre.length() < 4) {
-	            informar("El usuario debe tener entre 4 y 8 caracteres.");
-	            return;
-	        }
-	        // Contraseña no puede estar vacía y debe tener menos de 15 caracteres
-	        if (contrasenia.isEmpty() || contrasenia.length() > 15 || contrasenia.length() < 5) {
-	            informar("La contraseña debe tener entre 5 y 15 caracteres.");
-	            return;
-	        }
-	        // Usuario y contraseña no pueden contener espacios
-	        if (nombre.contains(" ") || contrasenia.contains(" ")) {
-	            informar("El usuario y la contraseña no pueden contener espacios.");
-	            return;
-	        }
+			// Usuario no puede estar vacío y debe tener menos de 8 caracteres
+			if (nombre.isEmpty() || nombre.length() > 8 || nombre.length() < 4) {
+				informar("El usuario debe tener entre 4 y 8 caracteres.");
+				return;
+			}
+			// Contraseña no puede estar vacía y debe tener menos de 15 caracteres
+			if (contrasenia.isEmpty() || contrasenia.length() > 15 || contrasenia.length() < 5) {
+				informar("La contraseña debe tener entre 5 y 15 caracteres.");
+				return;
+			}
+			// Usuario y contraseña no pueden contener espacios
+			if (nombre.contains(" ") || contrasenia.contains(" ")) {
+				informar("El usuario y la contraseña no pueden contener espacios.");
+				return;
+			}
 			controlador.agregarJugador(nombre, contrasenia);
 		} else {
 			informar("ingreso mal las credenciales, intente de nuevo");
 		}
 	}
-	
-	//----------------------------------------------------------------------------
-	
+
+	// ----------------------------------------------------------------------------
+
 	// mwnu principal ------------------------------------------------------------
-	
+
 	private void opcionesPrincipal(String entrada) throws RemoteException {
-		switch(entrada) {
+		switch (entrada) {
 		case "1":
 			controlador.jugar();
 			break;
-		case "2" :
+		case "2":
 			mostrarTop(controlador.getJugadoresTop());
 			println("Ingrese cualquier tecla para volver al menu principal.");
 			esperandoTecla = true;
 			break;
-		case "3" :
+		case "3":
 			mostrarReglas();
 			println("Ingrese cualquier tecla para volver al menu principal.");
 			esperandoTecla = true;
 			break;
-		case "4" :
+		case "4":
 			mostrarEstadisticas();
 			println("Ingrese cualquier tecla para volver al menu principal.");
 			esperandoTecla = true;
 			break;
-		case "5" :
+		case "5":
 			clearScreen();
 			println(Banner.DESPEDIDA);
 			this.estadoFlujo = EstadosFlujo.SALIDA;
 			println("Ingrese cualquier tecla para cerrar el juego.");
 			esperandoTecla = true;
 			break;
-		default :
-			
+		default:
+
 			break;
 		}
 	}
@@ -266,32 +269,32 @@ public class VistaConsola extends JFrame implements Ivista {
 		this.dispose();
 	}
 
-	//----------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------
 
 	// movimiento ---------------------------------------------------------------
 	private void mover(String entrada) throws RemoteException {
 		int pos = -1;
 		try {
 			pos = Integer.parseInt(entrada);
-			//clearScreen();
+			// clearScreen();
 			controlador.mover(pos);
 		} catch (NumberFormatException e) {
 			println("ingrese un numero!");
 		}
 	}
-	//---------------------------------------------------------------------------
-	
+	// ---------------------------------------------------------------------------
+
 	// reemplazo el println -----------------------------------------------------
 	private void println(String texto) {
-    	pantalla.append("" + texto + "\n");
-        pantalla.setCaretPosition(pantalla.getDocument().getLength()); // Mueve el caret al final del texto
-    }
-	
+		pantalla.append("" + texto + "\n");
+		pantalla.setCaretPosition(pantalla.getDocument().getLength()); // Mueve el caret al final del texto
+	}
+
 	private void clearScreen() {
 		pantalla.setText("");
 	}
-	//---------------------------------------------------------------------------
-  
+	// ---------------------------------------------------------------------------
+
 	// metodos de la interfaz Ivista ---------------------------------------------
 	@Override
 	public void iniciar() {
@@ -300,20 +303,20 @@ public class VistaConsola extends JFrame implements Ivista {
 		setVisible(true);
 		mostrarMenuInicioSesion();
 	}
-	
+
 	@Override
-    public void mostrarMenuInicioSesion() {
-    	clearScreen();
-    	this.estadoFlujo = EstadosFlujo.LOG_IN;
-    	println(OpcionesInicioSesion.mostrarOpcionesInicioSesion());
+	public void mostrarMenuInicioSesion() {
+		clearScreen();
+		this.estadoFlujo = EstadosFlujo.LOG_IN;
+		println(OpcionesInicioSesion.mostrarOpcionesInicioSesion());
 	}
 
 	@Override
 	public void mostrarPartida(TableroLectura tablero, JugadorLectura jugador) {
-		if(this.estadoFlujo != EstadosFlujo.MOVIMIENTOS) {
+		if (this.estadoFlujo != EstadosFlujo.MOVIMIENTOS) {
 			clearScreen();
 			informar("comienza la partida!!");
-		} 	
+		}
 		try {
 			pantalla.append(tablero.toString(controlador.obtenerJugadoresEnPartida()) + "\n");
 		} catch (RemoteException e) {
@@ -327,27 +330,25 @@ public class VistaConsola extends JFrame implements Ivista {
 	public void informar(JugadorLectura jugador, String string) {
 		informar(string + jugador.getNombre());
 	}
-	
+
 	@Override
 	public void informar(String string) {
-		pantalla.append("Mancala: "+ string + "\n");
+		pantalla.append("Mancala: " + string + "\n");
 	}
 
-	
 	@Override
 	public void mostrarSalaDeEspera() {
 		clearScreen();
 		estadoFlujo = EstadosFlujo.ESPERA;
 		println(Banner.esperandoJugador);
 	}
-	
+
 	@Override
 	public void mostrarMenuPrincipal() {
-    	clearScreen();
-    	estadoFlujo = EstadosFlujo.MENU_PRINCIPAL;
-    	println(OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal());
+		clearScreen();
+		estadoFlujo = EstadosFlujo.MENU_PRINCIPAL;
+		println(OpcionesMenuPrincipalConsola.mostrarOpcionesMenuPrincipal());
 	}
-	
 
 	@Override
 	public void mostrarPerdedor(JugadorLectura jugador) {
@@ -372,7 +373,7 @@ public class VistaConsola extends JFrame implements Ivista {
 		println("Ingrese cualquier tecla para volver al menu principal.");
 		esperandoTecla = true;
 	}
-	
+
 	@Override
 	public void mostrarGanador(JugadorLectura ganador) {
 		this.estadoFlujo = EstadosFlujo.MENU_PRINCIPAL;
@@ -384,30 +385,31 @@ public class VistaConsola extends JFrame implements Ivista {
 		println("Ingrese cualquier tecla para volver al menu principal.");
 		esperandoTecla = true;
 	}
-	
+
 	@Override
 	public void mostrarTop(List<JugadorLectura> topTen) {
 		clearScreen();
 		println(Banner.TOPTEN);
-		for(int i = 0; i < topTen.size(); i++) {
+		for (int i = 0; i < topTen.size(); i++) {
 			println("");
-			println(">> " + (i+1) + "°) " + topTen.get(i).getNombre() + "    Ganadas : " + topTen.get(i).getGanadas() 
-			+ "    Perdidas : " + topTen.get(i).getPerdidas() + "    Empatadas : " +  topTen.get(i).getEmpatadas() );
+			println(">> " + (i + 1) + "°) " + topTen.get(i).getNombre() + "    Ganadas : " + topTen.get(i).getGanadas()
+					+ "    Perdidas : " + topTen.get(i).getPerdidas() + "    Empatadas : "
+					+ topTen.get(i).getEmpatadas());
 			println("");
 		}
 	}
-	
+
 	@Override
 	public String getNombreIntento() {
 		return this.nombreIntento;
 	}
-	
+
 	@Override
 	public void mostrarReglas() {
 		clearScreen();
 		println(Reglamento.mostrarReglas());
 	}
-	
+
 	@Override
 	public void mostrarEstadisticas() {
 		clearScreen();
@@ -427,25 +429,23 @@ public class VistaConsola extends JFrame implements Ivista {
 		println("");
 		println("Empatadas : " + jugador.getEmpatadas() + "  <<");
 		println("");
-		println("Win Rate : " + decimalFormat.format(winRate) + "     Lose Rate : " + decimalFormat.format(loseRate) + "     Draw Rate : " + decimalFormat.format(drawRate));
+		println("Win Rate : " + decimalFormat.format(winRate) + "     Lose Rate : " + decimalFormat.format(loseRate)
+				+ "     Draw Rate : " + decimalFormat.format(drawRate));
 		println("");
 
 	}
-	//---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
 
 	// Setters y Getters --------------------------------------------------------
 	@Override
 	public MancalaController getControlador() {
 		return controlador;
 	}
-	
+
 	@Override
 	public void setControlador(MancalaController controlador) {
 		this.controlador = controlador;
 	}
-	//---------------------------------------------------------------------------
-
-
+	// ---------------------------------------------------------------------------
 
 }
-

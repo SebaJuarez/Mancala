@@ -23,7 +23,8 @@ import ar.edu.unlu.mancala.vista.grafica.listener.FormularioCreacionUsuarioListe
 import ar.edu.unlu.mancala.vista.grafica.listener.FormularioInicioSesionListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuInicioSesionListener;
 
-public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuarioListener , FormularioInicioSesionListener{
+public class MenuInicioSesion extends JFrame
+		implements FormularioCreacionUsuarioListener, FormularioInicioSesionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel panelInicioFondo;
@@ -35,7 +36,7 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 	private JButton btnSalir;
 
 	public MenuInicioSesion() {
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -106,7 +107,7 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 		btnInicioSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInicioSesion.setBounds(50, 10, 287, 57);
 		panelOpcionesInicioSesion.add(btnInicioSesion);
-		
+
 		btnSalir = new JButton("SALIR");
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSalir.addActionListener(new ActionListener() {
@@ -121,9 +122,9 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 		btnSalir.setBorderPainted(false);
 		btnSalir.setBounds(50, 149, 287, 49);
 		panelOpcionesInicioSesion.add(btnSalir);
-		
-		List<JButton> botones = List.of(btnSalir,btnCrearCuenta,btnInicioSesion);
-		
+
+		List<JButton> botones = List.of(btnSalir, btnCrearCuenta, btnInicioSesion);
+
 		botones.forEach(b -> {
 			b.addMouseListener(new MouseAdapter() {
 				@Override
@@ -142,9 +143,9 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 		lblFondoPantalla.setBounds(0, 0, 790, 470);
 		lblFondoPantalla.setIcon(new ImageIcon(getClass().getResource("/fondo_menu_inicio_de_sesion.png")));
 		panelInicioFondo.add(lblFondoPantalla);
-		
+
 	}
-	
+
 	public MenuInicioSesionListener getListener() {
 		return listener;
 	}
@@ -160,9 +161,9 @@ public class MenuInicioSesion extends JFrame implements FormularioCreacionUsuari
 	public Object getFormularioCreacionUsuario() {
 		return this.formularioCreacionUsuario;
 	}
-	
+
 	@Override
-	public void onEntrarButtonClick(String usuario, String contrasenia)  {
+	public void onEntrarButtonClick(String usuario, String contrasenia) {
 		listener.onEntrarButtonClick(usuario, contrasenia);
 	}
 
