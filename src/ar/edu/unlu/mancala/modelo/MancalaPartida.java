@@ -26,13 +26,11 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 	private int turnoActual;
 	private boolean partidaTerminada;
 	private Jugador ultimoEnMover;
-	private List<Jugador> jugadores;
 	private final JugadorService service;
 	private List<Jugador> jugadoresConectados = new LinkedList<Jugador>();
 
 	public MancalaPartida(JugadorService service) throws RemoteException {
 		this.service = service;
-		this.jugadores = service.obtenerJugadores();
 	}
 
 	@Override
@@ -154,11 +152,10 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 
 	@Override
 	public void verificarCredenciales(String nombre, String contrasenia) throws RemoteException {
-		Jugador jugadorConectado = getJugadores().stream()
+		Jugador jugadorConectado = service.obtenerJugadores().stream()
 				.filter(jugador -> jugador.getNombre().equals(nombre)
 						&& Encriptador.verificarContrasenia(contrasenia, jugador.getContrasenia()))
 				.findFirst().orElse(null);
-
 		if (jugadorConectado == null) {
 			notificarObservadores(EstadoPersistencia.CREDENCIALES_INVALIDAS);
 		} else {
@@ -190,28 +187,28 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 			jugador.setPerdidas(0);
 			service.guardar(jugador);
 			jugadoresConectados.add(jugador);
-			this.jugadores = service.obtenerJugadores();
 			notificarObservadores(EstadoPersistencia.GUARDADO_EXITOSO);
 		}
 	}
 
 	@Override
 	public void actualizarJugadores(Jugador jugador1, Jugador jugador2) throws RemoteException {
-		this.jugadores = service.obtenerJugadores();
-		this.jugadores.forEach(jugador -> {
+		List<Jugador> jugadores = service.obtenerJugadores();
+		jugadores.forEach(jugador -> {
 			if (jugador.equals(jugador1)) {
-				this.jugadores.set(jugadores.indexOf(jugador), jugador1);
+				jugadores.set(jugadores.indexOf(jugador), jugador1);
 			} else if (jugador.equals(jugador2)) {
-				this.jugadores.set(jugadores.indexOf(jugador), jugador2);
+				jugadores.set(jugadores.indexOf(jugador), jugador2);
 			}
 		});
-		this.service.guardar(this.jugadores);
+		this.service.guardar(jugadores);
 	}
 
 	@Override
 	public void desconectar(Jugador desconectado, IControladorRemoto controlador) throws RemoteException {
 		this.jugadoresConectados.remove(desconectado);
 		removerObservador(controlador);
+		// si el jugador estaba en partida y se deconecta
 		if (this.jugadoresEnJuego.containsValue(desconectado) && !isPartidaTerminada()
 				&& this.jugadoresEnJuego.size() == 2) {
 			this.partidaTerminada = true;
@@ -221,6 +218,7 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 			desconectado.setPerdidas((desconectado.getPerdidas() + 1));
 			actualizarJugadores(desconectado, conectado);
 			notificarObservadores(EstadoPartida.USUARIO_DESCONECTADO);
+			// si el jugador estaba en la sala de espera y se desconecta
 		} else if (this.jugadoresEnJuego.containsValue(desconectado) && this.jugadoresEnJuego.size() == 1) {
 			this.jugadoresEnJuego.remove(1);
 		}
@@ -228,8 +226,8 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 
 	@Override
 	public List<JugadorLectura> getTop(int limite) throws RemoteException {
-		this.jugadores = this.service.obtenerJugadores();
-		return this.jugadores.stream().map(j -> (JugadorLectura) j).sorted((j1, j2) -> {
+		List<Jugador> jugadores = this.service.obtenerJugadores();
+		return jugadores.stream().map(j -> (JugadorLectura) j).sorted((j1, j2) -> {
 			// comparo por ganadas de manera descendente
 			int comparacionPorGanadas = Integer.compare(j2.getGanadas(), j1.getGanadas());
 			if (comparacionPorGanadas != 0) {
@@ -254,11 +252,6 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 	@Override
 	public Jugador getJugador(Jugador jugador) throws RemoteException {
 		return service.obtenerJugadorPorNombre(jugador.getNombre());
-	}
-
-	@Override
-	public List<Jugador> getJugadores() throws RemoteException {
-		return this.jugadores;
 	}
 
 	@Override

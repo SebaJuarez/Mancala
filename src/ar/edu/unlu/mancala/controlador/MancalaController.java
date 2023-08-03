@@ -67,8 +67,6 @@ public class MancalaController implements IControladorRemoto {
 
 	@Override
 	public void actualizar(IObservableRemoto modelo, Object evento) throws RemoteException {
-		// el jugador le tocaría mover.
-
 		if (evento instanceof EstadoPartida) {
 			Jugador jugadorMueve = mancalaPartida.getJugadoresEnJuego().get(mancalaPartida.getTurnoActual());
 			switch ((EstadoPartida) evento) {
