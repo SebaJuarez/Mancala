@@ -32,7 +32,7 @@ Además, la aplicación permitirá persistir los estados de los jugadores para i
 - Sistema de Ranking.
 - Juego en red.
   
-[Presentación del proyecto](https://docs.google.com/presentation/d/1fWQsRSXQ8bhxAgxH6VhdDxDE8P_ciPaZ4OcUF1Bp2EE/edit#slide=id.g25ea9b4ce3b_1_35)
+[Presentación del proyecto](https://docs.google.com/presentation/d/1fWQsRSXQ8bhxAgxH6VhdDxDE8P_ciPaZ4OcUF1Bp2EE/edit?usp=sharing)
 
 ## Requisitos
 
