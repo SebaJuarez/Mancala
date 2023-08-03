@@ -33,8 +33,6 @@ public interface IMancalaPartida extends IObservableRemoto {
 
 	void actualizarJugadores(Jugador jugador1, Jugador jugador2) throws RemoteException;
 
-	List<Jugador> getJugadores() throws RemoteException;
-
 	List<Jugador> getJugadoresConectados() throws RemoteException;
 
 	TableroLectura getTablero() throws RemoteException;
