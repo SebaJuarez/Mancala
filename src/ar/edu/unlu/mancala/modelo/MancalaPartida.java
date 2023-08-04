@@ -86,23 +86,7 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 
 	@Override
 	public void termino() throws RemoteException {
-		boolean ladoVacio = true;
-		for (int i = 1; i < tablero.getPOS_CASAJ1(); i++) {
-			if (this.tablero.getAgujeros()[i].getHabas() != 0) {
-				ladoVacio = false;
-				break;
-			}
-		}
-		if (!ladoVacio) {
-			ladoVacio = true;
-			for (int i = tablero.getPOS_CASAJ1() + 1; i < tablero.getLONGUITUD_TABLERO(); i++) {
-				if (this.tablero.getAgujeros()[i].getHabas() != 0) {
-					ladoVacio = false;
-					break;
-				}
-			}
-		}
-		this.setPartidaTerminada(ladoVacio);
+		this.setPartidaTerminada(tablero.ladoVacio());
 	}
 
 	@Override
@@ -148,16 +132,14 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 		if (jugador1.equals(ganador)) {
 			jugador1.setGanadas(jugador1.getGanadas() + 1);
 			jugador2.setPerdidas(jugador2.getPerdidas() + 1);
-			actualizarJugadores(jugador1, jugador2);
 		} else if (jugador2.equals(ganador)) {
 			jugador1.setPerdidas(jugador1.getPerdidas() + 1);
 			jugador2.setGanadas(jugador2.getGanadas() + 1);
-			actualizarJugadores(jugador1, jugador2);
 		} else {
 			jugador1.setEmpatadas(jugador1.getEmpatadas() + 1);
 			jugador2.setEmpatadas(jugador2.getEmpatadas() + 1);
-			actualizarJugadores(jugador1, jugador2);
 		}
+		actualizarJugadores(jugador1, jugador2);
 	}
 
 	// metodos de persistencia de jugadores
