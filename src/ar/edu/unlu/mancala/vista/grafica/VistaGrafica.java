@@ -97,6 +97,11 @@ public class VistaGrafica
 		flujoActual = EstadosFlujo.MOVIMIENTOS;
 		if (!this.tablero.isVisible()) {
 			this.tablero.setListener(this);
+			try {
+				this.tablero.setJugadores(controlador.obtenerJugadoresEnPartida());
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 			this.tablero.setVisible(true);
 			this.menuPrincipal.setVisible(false);
 		}

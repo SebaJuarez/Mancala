@@ -29,6 +29,7 @@ public class Tablero implements TableroLectura, Serializable {
 				this.agujeros[indice] = new Hoyo(CANTIDAD_HABAS, indice);
 			}
 		}
+
 		((Hoyo) agujeros[LONGUITUD_TABLERO - 1]).setAntesDeCasa(true);
 		((Hoyo) agujeros[POS_CASAJ1 - 1]).setAntesDeCasa(true);
 	}
@@ -55,6 +56,21 @@ public class Tablero implements TableroLectura, Serializable {
 			return EstadoTablero.MOVIMIENTO_VALIDO_SIGUE;
 		} else {
 			return EstadoTablero.MOVIMIENTO_REALIZADO;
+		}
+	}
+
+	public void juntarHabas() {
+		Casa casa1 = (Casa) agujeros[POS_CASAJ1];
+		Casa casa2 = (Casa) agujeros[POS_CASAJ2];
+		for (int i = 0; i < LONGUITUD_TABLERO; i++) {
+			Agujero agujero = agujeros[i];
+			if (agujero instanceof Hoyo) {
+				if (agujero.getJugador() == 1) {
+					casa1.ponerHaba(((Hoyo) agujero).tomarHabas());
+				} else {
+					casa2.ponerHaba(((Hoyo) agujero).tomarHabas());
+				}
+			}
 		}
 	}
 

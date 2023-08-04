@@ -117,18 +117,11 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 		AgujeroLectura casaJ2 = (AgujeroLectura) tablero.getAgujeros()[tablero.getPOS_CASAJ2()];
 		Jugador jugador1 = jugadoresEnJuego.get(1);
 		Jugador jugador2 = jugadoresEnJuego.get(2);
-		actualizarJugadores(jugador1, jugador2);
 		if (casaJ1.getHabas() > casaJ2.getHabas()) {
-			jugador1.setGanadas(jugador1.getGanadas() + 1);
-			jugador2.setPerdidas(jugador2.getPerdidas() + 1);
 			return jugador1;
 		} else if (casaJ1.getHabas() < casaJ2.getHabas()) {
-			jugador1.setPerdidas(jugador1.getPerdidas() + 1);
-			jugador2.setGanadas(jugador2.getGanadas() + 1);
 			return jugador2;
 		} else {
-			jugador1.setEmpatadas(jugador1.getEmpatadas() + 1);
-			jugador2.setEmpatadas(jugador2.getEmpatadas() + 1);
 			return null;
 		}
 	}
@@ -142,9 +135,28 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 	public void setPartidaTerminada(boolean partidaTerminada) throws RemoteException {
 		this.partidaTerminada = partidaTerminada;
 		if (partidaTerminada) {
+			tablero.juntarHabas();
+			actualizarGanador(jugadoresEnJuego.get(1), jugadoresEnJuego.get(2));
 			notificarObservadores(EstadoPartida.PARTIDA_TERMINADA);
 		} else {
 			notificarObservadores(EstadoPartida.PARTIDA_EN_PROGRESO);
+		}
+	}
+
+	private void actualizarGanador(Jugador jugador1, Jugador jugador2) throws RemoteException {
+		Jugador ganador = obtenerGanador();
+		if (jugador1.equals(ganador)) {
+			jugador1.setGanadas(jugador1.getGanadas() + 1);
+			jugador2.setPerdidas(jugador2.getPerdidas() + 1);
+			actualizarJugadores(jugador1, jugador2);
+		} else if (jugador2.equals(ganador)) {
+			jugador1.setPerdidas(jugador1.getPerdidas() + 1);
+			jugador2.setGanadas(jugador2.getGanadas() + 1);
+			actualizarJugadores(jugador1, jugador2);
+		} else {
+			jugador1.setEmpatadas(jugador1.getEmpatadas() + 1);
+			jugador2.setEmpatadas(jugador2.getEmpatadas() + 1);
+			actualizarJugadores(jugador1, jugador2);
 		}
 	}
 
