@@ -74,6 +74,26 @@ public class Tablero implements TableroLectura, Serializable {
 		}
 	}
 
+	public boolean ladoVacio() {
+		boolean ladoVacio = true;
+		for (int i = 1; i < POS_CASAJ1; i++) {
+			if (this.agujeros[i].getHabas() != 0) {
+				ladoVacio = false;
+				break;
+			}
+		}
+		if (!ladoVacio) {
+			ladoVacio = true;
+			for (int i = POS_CASAJ1 + 1; i < LONGUITUD_TABLERO; i++) {
+				if (this.agujeros[i].getHabas() != 0) {
+					ladoVacio = false;
+					break;
+				}
+			}
+		}
+		return ladoVacio;
+	}
+	
 	private boolean sigueMoviendo(int jugador, Agujero agujeroUltimo) {
 		return agujeroUltimo.getJugador() == jugador && agujeroUltimo instanceof Casa;
 	}
