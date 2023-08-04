@@ -322,6 +322,7 @@ public class VistaConsola extends JFrame implements Ivista {
 			e.printStackTrace();
 		}
 		informar(jugador, "Le toca al jugador: ");
+		pantalla.setCaretPosition(pantalla.getDocument().getLength());
 		this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;
 	}
 

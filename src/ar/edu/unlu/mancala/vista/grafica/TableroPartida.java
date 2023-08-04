@@ -264,9 +264,6 @@ public class TableroPartida extends JFrame {
 	}
 
 	public void actualizarTablero(AgujeroLectura[] agujeroLecturas) {
-		if (this.lblJ1Name.getText().isEmpty()) {
-			listener.solicitarJugadores();
-		}
 		for (int i = 0; i < agujeroLecturas.length; i++) {
 			hoyos.get(i).setText(Integer.toString(agujeroLecturas[i].getHabas()));
 		}

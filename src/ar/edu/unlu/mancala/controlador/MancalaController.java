@@ -111,13 +111,14 @@ public class MancalaController implements IControladorRemoto {
 					// para tener la ultima actualizacion en las estadisticas despues de la
 					// finalizacion de la partida
 					this.jugador = mancalaPartida.getJugador(this.jugador);
+					Jugador jugadorGanador = mancalaPartida.obtenerGanador();
 					vista.mostrarPartida((TableroLectura) mancalaPartida.getTablero(), (JugadorLectura) jugadorMueve);
-					if (this.mancalaPartida.obtenerGanador().equals(this.jugador)) {
-						vista.mostrarGanador((JugadorLectura) this.jugador);
-					} else if (mancalaPartida.obtenerGanador() != null) {
-						vista.mostrarPerdedor((JugadorLectura) this.jugador);
-					} else {
+					if (jugadorGanador == null) {
 						vista.mostrarEmpate((JugadorLectura) this.jugador);
+					} else if (jugadorGanador.equals(this.jugador)) {
+						vista.mostrarGanador((JugadorLectura) this.jugador);
+					} else {
+						vista.mostrarPerdedor((JugadorLectura) this.jugador);
 					}
 				}
 				break;
