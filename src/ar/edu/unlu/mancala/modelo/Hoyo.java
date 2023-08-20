@@ -9,6 +9,10 @@ public class Hoyo extends Agujero {
 		super(habas, indice);
 	}
 
+	public Hoyo() {
+		super();
+	}
+
 	public boolean getAntesDeCasa() {
 		return this.antesDeCasa;
 	}

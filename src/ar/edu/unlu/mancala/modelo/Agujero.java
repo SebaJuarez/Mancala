@@ -17,6 +17,9 @@ public abstract class Agujero implements Serializable, AgujeroLectura {
 		this.jugador = indice <= 6 ? 1 : 2;
 	}
 
+	public Agujero() {
+	}
+
 	public void ponerHaba() {
 		this.habas++;
 	}
@@ -37,6 +40,10 @@ public abstract class Agujero implements Serializable, AgujeroLectura {
 		return this.indice;
 	}
 
+	public boolean hayHaba() {
+		return  habas == 0;
+	}
+	
 	public abstract int siguienteAgujero(int jugadorActual, int longuitudTablero);
 
 	@Override
