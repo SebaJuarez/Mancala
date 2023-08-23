@@ -1,6 +1,5 @@
 package ar.edu.unlu.mancala.modelo;
 
-import java.util.Collection;
 import java.util.List;
 
 public class LadoTablero {
@@ -28,7 +27,7 @@ public class LadoTablero {
 	    return agujeros.stream()
 	            .allMatch(agujero -> {
 	                if (agujero instanceof Hoyo) {
-	                    return agujero.hayHaba();
+	                    return !agujero.hayHaba();
 	                } else {
 	                    return true;
 	                }
@@ -36,10 +35,10 @@ public class LadoTablero {
 	}
 
 	public void juntarEnCasa() {
-		Casa casa = getCasa();
+		Casa casa = obtenerCasa();
 		agujeros.forEach(agujero -> {
 			if(agujero instanceof Hoyo) {
-				casa.setHabas(agujero.getHabas());
+				casa.ponerHaba(((Hoyo) agujero).tomarHabas());
 			}
 		});
 	}
@@ -48,7 +47,7 @@ public class LadoTablero {
 		return this.jugador.equals(jugador);
 	}
 
-	public Collection<Agujero> getAgujeros() {
+	public List<Agujero> getAgujeros() {
 		return agujeros;
 	}
 
@@ -60,11 +59,20 @@ public class LadoTablero {
 		return jugador;
 	}
 
+	public Hoyo obtenerHoyo(int indice){
+		try {
+			Hoyo hoyo = (Hoyo) agujeros.get(indice-1);
+			return hoyo;
+		} catch(Exception e) {
+			return null;
+		}
+	}
+	
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
 	
-	public Casa getCasa() {
+	public Casa obtenerCasa() {
 		return (Casa) agujeros.stream()
 				.filter(agujero -> agujero instanceof Casa)
 				.findFirst()

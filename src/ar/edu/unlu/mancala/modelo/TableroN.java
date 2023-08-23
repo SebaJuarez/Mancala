@@ -4,7 +4,7 @@ import java.util.List;
 public class TableroN {
 	
 	private List<LadoTablero> ladosDelTablero;
-	
+
 	public void agregarLado(LadoTablero ladoTablero) {
 		ladosDelTablero.add(ladoTablero);
 	}
@@ -17,6 +17,7 @@ public class TableroN {
 
 		int totalLados = ladosDelTablero.size();
 		int indiceLadoProviene = ladosDelTablero.indexOf(ladoProviene);
+		// todos los tableros deben ser par, ya que no tendrian opuesto de otra forma
 		int distanciaHaciaOpuesto = totalLados / 2;
 		int indiceLadoOpuesto = (indiceLadoProviene + distanciaHaciaOpuesto) % totalLados;
 		return ladosDelTablero.get(indiceLadoOpuesto);
@@ -47,6 +48,14 @@ public class TableroN {
 	}
 	
 	public Casa getCasaDeJugador(Jugador jugador) {
-		return getLado(jugador).getCasa();
+		return getLado(jugador).obtenerCasa();
+	}
+	
+	public Hoyo getHoyo(Jugador jugador, int indice) {
+		return getLado(jugador).obtenerHoyo(indice);
+	}
+	
+	public List<LadoTablero> getLadosDelTablero() {
+		return ladosDelTablero;
 	}
 }

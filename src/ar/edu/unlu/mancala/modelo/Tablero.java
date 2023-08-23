@@ -3,7 +3,7 @@ package ar.edu.unlu.mancala.modelo;
 import java.io.Serializable;
 import java.util.List;
 
-import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
+import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
 
@@ -34,7 +34,7 @@ public class Tablero implements TableroLectura, Serializable {
 		((Hoyo) agujeros[POS_CASAJ1 - 1]).setAntesDeCasa(true);
 	}
 
-	public EstadoTablero mover(int indice, int jugador) {
+	public EstadoMovimiento mover(int indice, int jugador) {
 		// tomo las habas del lugar indicado
 		int habas = ((Hoyo) this.agujeros[indice]).tomarHabas();
 		// mientras no haya distribuido todas las habas que estaban en el hoyo
@@ -51,11 +51,11 @@ public class Tablero implements TableroLectura, Serializable {
 		// si puedo realizar camptura devuelvo que se ha hecho
 		if (puedoTomarHabas(jugador, agujeroUltimo)) {
 			this.capturarHabas(agujeroUltimo.getIndice());
-			return EstadoTablero.CAPTURA_REALIZADA;
+			return EstadoMovimiento.CAPTURA_REALIZADA;
 		} else if (sigueMoviendo(jugador, agujeroUltimo)) {
-			return EstadoTablero.MOVIMIENTO_VALIDO_SIGUE;
+			return EstadoMovimiento.MOVIMIENTO_VALIDO_SIGUE;
 		} else {
-			return EstadoTablero.MOVIMIENTO_REALIZADO;
+			return EstadoMovimiento.MOVIMIENTO_REALIZADO;
 		}
 	}
 

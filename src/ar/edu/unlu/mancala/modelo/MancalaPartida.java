@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
-import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.security.Encriptador;
 import ar.edu.unlu.mancala.serializacion.services.JugadorService;
 import ar.edu.unlu.mancala.vista.AgujeroLectura;
@@ -69,12 +69,12 @@ public class MancalaPartida extends ObservableRemoto implements IMancalaPartida 
 			notificarObservadores(EstadoPartida.ESPERANDO_USUARIO);
 		} else {
 			// valido el movimiento
-			EstadoTablero estado = this.moveValidator.validarMovimiento(tablero, turnoActual,
+			EstadoMovimiento estado = this.moveValidator.validarMovimiento(tablero, turnoActual,
 					obtenerClaveDeJugador(jugador), indice);
-			if (estado == EstadoTablero.MOVIMIENTO_VALIDO) {
-				EstadoTablero movimientoEstado = tablero.mover(indice, obtenerClaveDeJugador(jugador));
+			if (estado == EstadoMovimiento.MOVIMIENTO_VALIDO) {
+				EstadoMovimiento movimientoEstado = tablero.mover(indice, obtenerClaveDeJugador(jugador));
 				notificarObservadores(movimientoEstado);
-				if (EstadoTablero.MOVIMIENTO_VALIDO_SIGUE != movimientoEstado) {
+				if (EstadoMovimiento.MOVIMIENTO_VALIDO_SIGUE != movimientoEstado) {
 					this.cambiarTurno();
 				}
 				termino();

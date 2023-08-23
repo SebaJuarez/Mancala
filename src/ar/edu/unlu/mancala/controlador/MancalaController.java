@@ -6,9 +6,9 @@ import java.util.List;
 
 import ar.edu.unlu.mancala.modelo.IMancalaPartida;
 import ar.edu.unlu.mancala.modelo.Jugador;
+import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
-import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.TableroLectura;
@@ -126,8 +126,8 @@ public class MancalaController implements IControladorRemoto {
 				break;
 			}
 		}
-		if (evento instanceof EstadoTablero) {
-			switch ((EstadoTablero) evento) {
+		if (evento instanceof EstadoMovimiento) {
+			switch ((EstadoMovimiento) evento) {
 			case MOVIMIENTO_REALIZADO:
 				if (mancalaPartida.getJugadoresEnJuego().containsValue(this.jugador)) {
 					if (mancalaPartida.getUltimoEnMover().equals(this.jugador)) {

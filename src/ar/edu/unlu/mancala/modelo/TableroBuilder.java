@@ -11,7 +11,7 @@ public class TableroBuilder {
 		TableroN tablero = new TableroN();
 		
 		// por cada lado configurado
-		for(int i = 0; i < configuracionTablero.getCantLados(); i++) {
+		for(int i = 1; i <= configuracionTablero.getCantLados(); i++) {
 			LadoTablero lado = new LadoTablero();
 			var agujeros = new LinkedList<Agujero>();
 			// por la cantidad de agujeros configurado
@@ -29,7 +29,9 @@ public class TableroBuilder {
 			lado.setAgujeros(agujeros);
 			// agrego el lado del tablero al tablero
 			tablero.agregarLado(lado);
-		}	
+		}
+		// inicializo agujeros con las habas correspondientes
+		tablero.inicializarLados(configuracionTablero.getCantHabasIniciales());
 		return tablero;
 	}
 

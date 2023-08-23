@@ -1,28 +1,28 @@
 package ar.edu.unlu.mancala.modelo;
 
-import ar.edu.unlu.mancala.modelo.estados.tablero.EstadoTablero;
+import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 
 public class MoveValidator {
 
-	public EstadoTablero validarMovimiento(Tablero tablero, int turnoActual, int jugador, int indice) {
+	public EstadoMovimiento validarMovimiento(Tablero tablero, int turnoActual, int jugador, int indice) {
 
 		if (!enTurno(turnoActual, jugador)) {
-			return EstadoTablero.TURNO_INVALIDO;
+			return EstadoMovimiento.TURNO_INVALIDO;
 		}
 
 		if (!enRango(indice, tablero)) {
-			return EstadoTablero.MOVIMIENTO_INVALIDO_RANGO;
+			return EstadoMovimiento.MOVIMIENTO_INVALIDO_RANGO;
 		}
 
 		if (!enPosicion(tablero, jugador, indice)) {
-			return EstadoTablero.MOVIMIENTO_INVALIDO_POSICION;
+			return EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION;
 		}
 
 		if (!hayHabas(tablero, indice)) {
-			return EstadoTablero.MOVIMIENTO_INVALIDO_HABAS;
+			return EstadoMovimiento.MOVIMIENTO_INVALIDO_HABAS;
 		}
 
-		return EstadoTablero.MOVIMIENTO_VALIDO;
+		return EstadoMovimiento.MOVIMIENTO_VALIDO;
 	}
 
 	private boolean hayHabas(Tablero tablero, int indice) {

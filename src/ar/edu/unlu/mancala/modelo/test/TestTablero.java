@@ -1,5 +1,8 @@
 package ar.edu.unlu.mancala.modelo.test;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import ar.edu.unlu.mancala.modelo.Tablero;
 
 public class TestTablero {
@@ -25,8 +28,25 @@ public class TestTablero {
 		 * System.out.println(tablero.mover(1, 1)); mostrar(tablero);
 		 */
 
-		Tablero tablero = new Tablero();
-		System.out.println(tablero.toString());
+		//Tablero tablero = new Tablero();
+		//System.out.println(tablero.toString());
+		
+		Queue<Integer> cola = new LinkedList<>();
+
+        // Encolar los números del 1 al 10
+        for (int i = 1; i <= 10; i++) {
+            cola.offer(i);
+        }
+        
+        System.out.println(cola.toString());
+
+        for (int i = 1; i <= 10; i++) {
+            System.out.println(cola.poll());
+            cola.add(i);
+            System.out.println(cola.toString());
+        }
+        
+		
 
 	}
 

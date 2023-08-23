@@ -41,7 +41,7 @@ public abstract class Agujero implements Serializable, AgujeroLectura {
 	}
 
 	public boolean hayHaba() {
-		return  habas == 0;
+		return  habas > 0;
 	}
 	
 	public abstract int siguienteAgujero(int jugadorActual, int longuitudTablero);
