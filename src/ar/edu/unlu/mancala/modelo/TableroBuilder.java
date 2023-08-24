@@ -1,14 +1,16 @@
 package ar.edu.unlu.mancala.modelo;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class TableroBuilder {
+public class TableroBuilder implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private TableroConfig configuracionTablero;
 	
-	public TableroN build() {
+	public Tablero build() {
 		
-		TableroN tablero = new TableroN();
+		Tablero tablero = new Tablero();
 		
 		// por cada lado configurado
 		for(int i = 1; i <= configuracionTablero.getCantLados(); i++) {

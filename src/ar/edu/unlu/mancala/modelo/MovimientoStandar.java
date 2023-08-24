@@ -9,7 +9,7 @@ import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 public class MovimientoStandar implements Movimiento {
 
 	@Override
-	public EstadoMovimiento distribuirHabas(TableroN tablero, Hoyo hoyo, Jugador jugadorMueve) {
+	public EstadoMovimiento distribuirHabas(Tablero tablero, Hoyo hoyo, Jugador jugadorMueve) {
 
 		// covierto el sentido del tablero en sentido horario pasandolos a una cola
 		Queue<LadoTablero> ladosTablero = convertirSentidoHorario(tablero, jugadorMueve);
@@ -63,12 +63,12 @@ public class MovimientoStandar implements Movimiento {
 		return EstadoMovimiento.MOVIMIENTO_VALIDO;
 	}
 
-	private Queue<LadoTablero> convertirSentidoHorario(TableroN tablero, Jugador jugadorMueve) {
+	private Queue<LadoTablero> convertirSentidoHorario(Tablero tablero, Jugador jugadorMueve) {
 		// transformo los lados en una cola
 		Queue<LadoTablero> ladosTablero = new LinkedList<LadoTablero>(tablero.getLadosDelTablero());
 		
 		// obtengo el lado del jugador que mueve
-		LadoTablero ladoQueMueve = tablero.getLado(jugadorMueve);
+		LadoTableroLectura ladoQueMueve = tablero.getLado(jugadorMueve);
 		
 		// pongo el lado del jugador que mueve en frente de la cola
 		while(!(ladosTablero.peek() == ladoQueMueve)) {

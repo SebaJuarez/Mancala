@@ -1,7 +1,10 @@
 package ar.edu.unlu.mancala.modelo;
 
-public class TableroConfig {
+import java.io.Serializable;
 
+public class TableroConfig implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private int cantHabasIniciales;
 	private int cantLados;
 	private int cantAgujerosPorLado;

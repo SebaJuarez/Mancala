@@ -1,5 +1,6 @@
 package ar.edu.unlu.mancala.modelo;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,17 +12,27 @@ import java.util.stream.Collectors;
 import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 
-public class Partida {
-
+public class Partida implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private boolean partidaTerminada = true;
 	private Queue<Jugador> jugadores;
 	private Jugador turnoActual;
-	private Integer participantesLimite;
+	private int participantesLimite;
 	private Movimiento estrategiaMovimiento ;
 	private TableroBuilder constructorTablero;
-	private TableroN tablero;
+	private Tablero tablero;
+	private TipoPartida tipoPartida;
 	
-	public void crearTablero(TipoPartida tipoPartida) {
+	public Partida(TipoPartida tipoPartida) {
+		this.tipoPartida = tipoPartida;
+		partidaTerminada = false;
+		constructorTablero = new TableroBuilder();
+		crearTablero(tipoPartida);
+	}
+	
+	private void crearTablero(TipoPartida tipoPartida) {
 		TableroConfig tableroConfig = new TableroConfig();
 		switch(tipoPartida) {
 		case PARTIDA_STANDAR : {
@@ -31,6 +42,7 @@ public class Partida {
 			tableroConfig.setCantHabasIniciales(4);
 			tableroConfig.setPosCasaPorLado(7);
 			estrategiaMovimiento = new MovimientoStandar();
+			//estrategiaMovimiento = new MovimientoSentidoHorario();
 			break;
 		}
 		case PARTIDA_4v4_HORARIO : {
@@ -51,6 +63,7 @@ public class Partida {
 	
 	public EstadoPartida agregarJugador(Jugador jugador) {
 		if(jugadores.size() < participantesLimite) {
+			jugadores.add(jugador);
 			tablero.asignarJugadorAlLado(jugador);
 			return EstadoPartida.USUARIO_CONECTADO;
 		} else {
@@ -60,7 +73,6 @@ public class Partida {
 	
 	public EstadoPartida listoParaComezar(){
 		if(jugadores.size() == participantesLimite) {
-			partidaTerminada = false;
 			asignarTurno();
 			return EstadoPartida.COMENZANDO_PARTIDA;
 		} else {
@@ -74,6 +86,7 @@ public class Partida {
 		jugadores.clear();
 		jugadores.addAll(jugadoresMezclados);
 		turnoActual = jugadores.poll();
+		jugadores.add(turnoActual);
 	}
 
 	public EstadoMovimiento mover(Jugador jugador, int indice) {
@@ -90,13 +103,9 @@ public class Partida {
 		if (EstadoMovimiento.MOVIMIENTO_VALIDO_SIGUE != estadoMovimiento) {
 			this.cambiarTurno();
 		}
-		// llamar a este metodo despues de mover en MancalaPartida
-		//termino();
 		return estadoMovimiento;
 	}
-		
-		//return distribuirHabas(tablero,hoyo);
-	
+			
 	
 	private EstadoMovimiento distribuirHabas(Hoyo hoyo, Jugador jugador) {
 		return estrategiaMovimiento.distribuirHabas(tablero,hoyo,jugador);
@@ -105,6 +114,7 @@ public class Partida {
 	public List<Jugador> obtenerGanador() {
 		
 		var jugadorPuntos = new HashMap<Jugador,Integer>();
+		
 		jugadores.forEach(jugadorn -> {
 			jugadorPuntos.put(jugadorn, tablero.getCasaDeJugador(jugadorn).getHabas());
 		});
@@ -113,6 +123,10 @@ public class Partida {
 	            .max((p1,p2) -> p1.compareTo(p2))
 	            .orElse(0);
 
+	    // voy a obtener una lista de los jugadores que tengan el mayor puntaje
+	    // en caso de ser partida = 2 jugadores, entonces habra sido un empate entre ellos
+	    // en caso de ser partida > 2 jugadores, entonces el que no está en la lista perdio y los que estan empataron
+	    // en cualquier caso si solo hay 1 entonces ganó
 	    return jugadorPuntos.entrySet().stream()
 	            .filter(entry -> entry.getValue() == maxPuntos)
 	            .map(Map.Entry::getKey)
@@ -120,10 +134,16 @@ public class Partida {
 	}
 	
 	public EstadoPartida termino() {
-		return tablero.ladoVacio()? EstadoPartida.PARTIDA_TERMINADA : EstadoPartida.PARTIDA_EN_PROGRESO;
+		if(tablero.ladoVacio()) {
+			this.partidaTerminada = true;
+			tablero.juntarHabasLadoVacio();
+			return EstadoPartida.PARTIDA_TERMINADA;
+		} else {
+			return EstadoPartida.PARTIDA_EN_PROGRESO;
+		}
 	}
 	
-	public void cambiarTurno() {
+	private void cambiarTurno() {
 		turnoActual = jugadores.poll();
 		jugadores.add(turnoActual);
 	}
@@ -137,4 +157,28 @@ public class Partida {
 		return partidaTerminada;
 	}
 	
+	public List<Jugador> getJugadores() {
+		return List.copyOf(jugadores);
+	}
+
+	public void setPartidaTerminada(boolean partidaTerminada) {
+		this.partidaTerminada = partidaTerminada;
+	}
+	
+	public int getParticipantesLimite() {
+		return participantesLimite;
+	}
+	
+	public Jugador getTurnoActual() {
+		return turnoActual;
+	}
+
+	public TipoPartida getTipoPartida() {
+		return tipoPartida;
+	}
+
+	public Tablero getTablero() {
+		return this.tablero;
+	}
+
 }

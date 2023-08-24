@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import ar.edu.unlu.mancala.modelo.MancalaPartida;
+import ar.edu.unlu.mancala.modelo.Mancala;
 import ar.edu.unlu.mancala.serializacion.services.JugadorService;
 import ar.edu.unlu.mancala.serializacion.services.JugadorServiceImpl;
 import ar.edu.unlu.rmimvc.RMIMVCException;
@@ -23,7 +23,7 @@ public class AppServidor {
 				"Seleccione el puerto en el que escuchará peticiones el servidor", "Puerto del servidor",
 				JOptionPane.QUESTION_MESSAGE, null, null, 8888);
 		JugadorService service = new JugadorServiceImpl();
-		MancalaPartida modelo = new MancalaPartida(service);
+		Mancala modelo = new Mancala(service);
 		Servidor servidor = new Servidor(ip, Integer.parseInt(port));
 		try {
 			servidor.iniciar(modelo);

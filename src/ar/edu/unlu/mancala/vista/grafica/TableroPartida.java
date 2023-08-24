@@ -19,6 +19,9 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import ar.edu.unlu.mancala.modelo.Agujero;
+import ar.edu.unlu.mancala.modelo.LadoTablero;
+import ar.edu.unlu.mancala.modelo.LadoTableroLectura;
 import ar.edu.unlu.mancala.vista.AgujeroLectura;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.grafica.listener.TableroPartidaListener;
@@ -263,9 +266,14 @@ public class TableroPartida extends JFrame {
 		this.textController.setCaretPosition(posicionVisible);
 	}
 
-	public void actualizarTablero(AgujeroLectura[] agujeroLecturas) {
-		for (int i = 0; i < agujeroLecturas.length; i++) {
-			hoyos.get(i).setText(Integer.toString(agujeroLecturas[i].getHabas()));
+	public void actualizarTablero(List<LadoTablero> list) {
+		int i = 0;
+		for(LadoTablero lado : list ) {
+			List<Agujero> agujeros = lado.getAgujeros();
+			for(Agujero agujero : agujeros) {
+				hoyos.get(i).setText(Integer.toString(agujero.getHabas()));
+				i ++;
+			}
 		}
 	}
 

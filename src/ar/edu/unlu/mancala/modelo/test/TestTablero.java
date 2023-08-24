@@ -1,9 +1,9 @@
 package ar.edu.unlu.mancala.modelo.test;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
-import ar.edu.unlu.mancala.modelo.Tablero;
 
 public class TestTablero {
 
@@ -40,21 +40,17 @@ public class TestTablero {
         
         System.out.println(cola.toString());
 
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 2; i++) {
             System.out.println(cola.poll());
             cola.add(i);
             System.out.println(cola.toString());
         }
         
+        List<Integer> lista = List.copyOf(cola);
+        
+        System.out.println(lista.get(lista.size()-1));
+        
 		
 
-	}
-
-	public static void mostrar(Tablero tablero) {
-		System.out.println("tablero");
-		for (int i = 0; i < tablero.getAgujeros().length; i++) {
-			System.out.println(tablero.getAgujeros()[i].toString());
-		}
-		System.out.println("movimiento");
 	}
 }

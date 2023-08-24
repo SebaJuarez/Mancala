@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
+import ar.edu.unlu.mancala.modelo.LadoTablero;
 import ar.edu.unlu.mancala.vista.AgujeroLectura;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
@@ -89,7 +90,7 @@ public class VistaGrafica
 	}
 
 	@Override
-	public void mostrarPartida(TableroLectura tablero, JugadorLectura jugadorMueve) {
+	public void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve){
 
 		if (flujoActual == EstadosFlujo.ESPERA) {
 			salaDeEspera.setVisible(false);
@@ -105,7 +106,7 @@ public class VistaGrafica
 			this.tablero.setVisible(true);
 			this.menuPrincipal.setVisible(false);
 		}
-		this.tablero.actualizarTablero((AgujeroLectura[]) tablero.getAgujeros());
+		this.tablero.actualizarTablero(ladosTablero);
 		informar(jugadorMueve, "Le toca al jugador: ");
 	}
 

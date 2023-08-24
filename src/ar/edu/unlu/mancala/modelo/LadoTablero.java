@@ -1,9 +1,11 @@
 package ar.edu.unlu.mancala.modelo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class LadoTablero {
+public class LadoTablero implements LadoTableroLectura, Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private List<Agujero> agujeros;
 	private Jugador jugador;
 	
@@ -27,7 +29,7 @@ public class LadoTablero {
 	    return agujeros.stream()
 	            .allMatch(agujero -> {
 	                if (agujero instanceof Hoyo) {
-	                    return !agujero.hayHaba();
+	                    return !((Hoyo) agujero).hayHaba();
 	                } else {
 	                    return true;
 	                }
@@ -46,8 +48,9 @@ public class LadoTablero {
 	public boolean perteneceJugador(Jugador jugador) {
 		return this.jugador.equals(jugador);
 	}
-
-	public List<Agujero> getAgujeros() {
+	
+	@Override
+	public List<Agujero> getAgujeros(){
 		return agujeros;
 	}
 
@@ -55,6 +58,7 @@ public class LadoTablero {
 		this.agujeros = agujeros;
 	}
 
+	@Override
 	public Jugador getJugador() {
 		return jugador;
 	}

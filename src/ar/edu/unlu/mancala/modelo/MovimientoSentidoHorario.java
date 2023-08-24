@@ -10,7 +10,7 @@ import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 public class MovimientoSentidoHorario implements Movimiento {
 
 	@Override
-	public EstadoMovimiento distribuirHabas(TableroN tablero, Hoyo hoyo, Jugador jugadorMueve) {
+	public EstadoMovimiento distribuirHabas(Tablero tablero, Hoyo hoyo, Jugador jugadorMueve) {
 
 		// convierto en sentido horario la cola que por naturaleza representa el sentido antihorario
 		Queue<LadoTablero> ladosTablero = convertirSentidoHorario(tablero, jugadorMueve);
@@ -64,7 +64,7 @@ public class MovimientoSentidoHorario implements Movimiento {
 		return EstadoMovimiento.MOVIMIENTO_VALIDO;
 	}
 
-	private Queue<LadoTablero> convertirSentidoHorario(TableroN tablero, Jugador jugadorMueve) {
+	private Queue<LadoTablero> convertirSentidoHorario(Tablero tablero, Jugador jugadorMueve) {
 		
 		// transformo los lados en una cola
 		Queue<LadoTablero> ladosTablero = new LinkedList<LadoTablero>(tablero.getLadosDelTablero());
