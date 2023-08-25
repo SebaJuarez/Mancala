@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -230,11 +231,11 @@ public class TableroPartida extends JFrame {
 		scrollPane.setBounds(218, 90, 381, 45);
 		contentPane.add(scrollPane);
 
-		hoyos = List.of(casaJ2, hoyo1, hoyo2, hoyo3, hoyo4, hoyo5, hoyo6, casaJ1, hoyo7, hoyo8, hoyo9, hoyo10, hoyo11,
-				hoyo12);
+		hoyos = List.of( hoyo1, hoyo2, hoyo3, hoyo4, hoyo5, hoyo6, casaJ1, hoyo7, hoyo8, hoyo9, hoyo10, hoyo11,
+				hoyo12,casaJ2);
 
 		for (int i = 0; i < hoyos.size(); i++) {
-			hoyos.get(i).setName(Integer.toString(i));
+			hoyos.get(i).setName(Integer.toString(i+1));
 		}
 
 		hoyos.forEach(boton -> {
@@ -266,15 +267,20 @@ public class TableroPartida extends JFrame {
 		this.textController.setCaretPosition(posicionVisible);
 	}
 
-	public void actualizarTablero(List<LadoTablero> list) {
+	public void actualizarTablero(List<LadoTablero> ladosTablero) {
 		int i = 0;
-		for(LadoTablero lado : list ) {
+		List<JugadorLectura> jugadores = new LinkedList<JugadorLectura>();
+		for(LadoTablero lado : ladosTablero ) {
 			List<Agujero> agujeros = lado.getAgujeros();
 			for(Agujero agujero : agujeros) {
 				hoyos.get(i).setText(Integer.toString(agujero.getHabas()));
 				i ++;
 			}
+			jugadores.add(lado.getJugador());
 		}
+		
+		setJugadores(jugadores);
+		
 	}
 
 	public TableroPartidaListener getListener() {
@@ -289,7 +295,7 @@ public class TableroPartida extends JFrame {
 		this.textController.setText("");
 		this.lblJ1Name.setText(jugadoresEnPartida.get(0).getNombre());
 		this.lblJ2Name.setText(jugadoresEnPartida.get(1).getNombre());
-		this.lblJ2Zona.setText("ZONA DE : " + jugadoresEnPartida.get(1).getNombre());
 		this.lblJ1Zona.setText("ZONA DE : " + jugadoresEnPartida.get(0).getNombre());
+		this.lblJ2Zona.setText("ZONA DE : " + jugadoresEnPartida.get(1).getNombre());
 	}
 }

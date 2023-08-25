@@ -2,17 +2,19 @@ package ar.edu.unlu.mancala.controlador;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import ar.edu.unlu.mancala.modelo.IMancalaPartida;
 import ar.edu.unlu.mancala.modelo.Jugador;
+import ar.edu.unlu.mancala.modelo.LadoTablero;
 import ar.edu.unlu.mancala.modelo.TipoPartida;
 import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
-import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
@@ -83,15 +85,15 @@ public class MancalaController implements IControladorRemoto {
 				break;
 			case USUARIO_DESCONECTADO:
 				if (mancalaPartida.getJugadoresEnPartida().contains(this.jugador)) {
-					// para tener las ultimas actualizaciones de las estadisticas despues del
-					// abandono
+					// para tener las ultimas actualizaciones de las estadisticas despues del abandono
 					this.jugador = mancalaPartida.getJugador(this.jugador);
-					if(mancalaPartida.getJugadoresEnPartida().size() > 1) {
-						vista.mostrarEmpate(this.jugador);
-						vista.informar("se desconecto un rival. Empato automaticamente!");
-					} else {
+					if(mancalaPartida.getJugadoresEnPartida().size() == 1) {
+						System.out.println("entre");
 						vista.mostrarGanador(this.jugador);
 						vista.informar("se desconecto su rival. Gana automaticamente!");
+					} else {
+						vista.mostrarEmpate(this.jugador);
+						vista.informar("se desconecto un rival. Empato automaticamente!");
 					}
 				}
 				break;
@@ -99,18 +101,18 @@ public class MancalaController implements IControladorRemoto {
 				vista.informar("no se admiten mas participantes");
 				break;
 			case ESPERANDO_USUARIO:
-				if (mancalaPartida.getJugadoresEnPartida().get(mancalaPartida.getJugadoresEnPartida().size()-1).equals(this.jugador)) {
+				if (mancalaPartida.getJugadoresEnPartida().get(0).equals(this.jugador)) {
 					vista.informar("esperando usuario... ");
 				}
 				break;
 			case COMENZANDO_PARTIDA:
 				if (mancalaPartida.getJugadoresEnPartida().contains(this.jugador)) {
-					vista.mostrarPartida(mancalaPartida.getTablero(), (JugadorLectura) jugadorMueve);
+					vista.mostrarPartida(ordenarLados(mancalaPartida.getTablero()), (JugadorLectura) jugadorMueve);
 				}
 				break;
 			case PARTIDA_EN_PROGRESO:
 				if (mancalaPartida.getJugadoresEnPartida().contains(this.jugador)) {
-					vista.mostrarPartida(mancalaPartida.getTablero(), (JugadorLectura) jugadorMueve);
+					vista.mostrarPartida(ordenarLados(mancalaPartida.getTablero()), (JugadorLectura) jugadorMueve);
 				}
 				break;
 			case PARTIDA_TERMINADA:
@@ -119,7 +121,7 @@ public class MancalaController implements IControladorRemoto {
 					// finalizacion de la partida
 					this.jugador = mancalaPartida.getJugador(this.jugador);
 					List<Jugador> jugadorGanador = mancalaPartida.obtenerGanador();
-					vista.mostrarPartida(mancalaPartida.getTablero(), (JugadorLectura) jugadorMueve);
+					vista.mostrarPartida(ordenarLados(mancalaPartida.getTablero()), (JugadorLectura) jugadorMueve);
 					// si hay mas de un jugado entonces hay empate
 					if(jugadorGanador.size() > 1) {
 						if(jugadorGanador.contains(this.jugador)) {
@@ -158,24 +160,24 @@ public class MancalaController implements IControladorRemoto {
 				break;
 			case MOVIMIENTO_INVALIDO_POSICION:
 				if (mancalaPartida.getJugadoresEnPartida().get(mancalaPartida.getJugadoresEnPartida().size()-1).equals(this.jugador)) {
-					vista.informar("ingreso un indice que no le pertenece");
+					vista.informar("Ingreso un agujero invalido!");
 				}
 				break;
 			case CAPTURA_REALIZADA:
-				if (mancalaPartida.getJugadoresEnPartida().get(mancalaPartida.getJugadoresEnPartida().size()-1).equals(this.jugador)) {
-					vista.informar("excelente, realizo una captura!!");
+				if (mancalaPartida.getJugadoresEnPartida().get(0).equals(this.jugador)) {
+					vista.informar("Excelente, realizo una captura!!");
 				} else {
-					vista.informar("capuraron uno de sus agujeros!");
+					vista.informar("Capuraron uno de sus agujeros!");
 				}
 				break;
 			case TURNO_INVALIDO:
-				if (mancalaPartida.getJugadoresEnPartida().get(mancalaPartida.getJugadoresEnPartida().size()-1).equals(this.jugador)) {
-					vista.informar("no es su turno!!");
+				if (mancalaPartida.getJugadoresEnPartida().get(0).equals(this.jugador)) {
+					vista.informar("No es su turno!!");
 				}
 				break;
 			case MOVIMIENTO_INVALIDO_HABAS:
 				if (mancalaPartida.getJugadoresEnPartida().get(mancalaPartida.getJugadoresEnPartida().size()-1).equals(this.jugador)) {
-					vista.informar("no hay habas para mover en ese indice");
+					vista.informar("No hay habas para mover en ese indice");
 				}
 				break;
 			case MOVIMIENTO_VALIDO_SIGUE:
@@ -197,13 +199,13 @@ public class MancalaController implements IControladorRemoto {
 					setJugador(mancalaPartida.getJugadoresConectados()
 							.get(mancalaPartida.getJugadoresConectados().size() - 1));
 					vista.mostrarMenuPrincipal();
-					vista.informar("logeado con exito!!");
+					vista.informar("Logeado con exito!!");
 				}
 				this.nombreIntento = "";
 				break;
 			case NOMBRE_EXISTENTE:
 				if (this.nombreIntento.equals(vista.getNombreIntento()))
-					vista.informar("el nombre de usuario ya existe!!, ingrese otro.");
+					vista.informar("El nombre de usuario ya existe!!, ingrese otro.");
 				this.nombreIntento = "";
 				break;
 			case GUARDADO_EXITOSO:
@@ -211,7 +213,7 @@ public class MancalaController implements IControladorRemoto {
 					setJugador(mancalaPartida.getJugadoresConectados()
 							.get(mancalaPartida.getJugadoresConectados().size() - 1));
 					vista.mostrarMenuPrincipal();
-					vista.informar("se creo la cuenta con exito!! No olvide sus credenciales.");
+					vista.informar("Se creo la cuenta con exito!! No olvide sus credenciales.");
 				}
 				this.nombreIntento = "";
 				break;
@@ -236,7 +238,14 @@ public class MancalaController implements IControladorRemoto {
 		this.mancalaPartida = (IMancalaPartida) modeloRemoto;
 	}
 
-	public List<JugadorLectura> obtenerJugadoresEnPartida() throws RemoteException {
-		return new ArrayList<>(this.mancalaPartida.getJugadoresEnPartida());
+	
+	private List<LadoTablero> ordenarLados(List<LadoTablero> ladosTablero){
+		Queue<LadoTablero> ladosOrdenados = new LinkedList<LadoTablero>(ladosTablero);
+		LadoTablero lado;
+		while(!ladosOrdenados.peek().perteneceJugador(this.jugador)) {
+			lado = ladosOrdenados.poll();
+			ladosOrdenados.add(lado);
+		}
+		return List.copyOf(ladosOrdenados);
 	}
 }

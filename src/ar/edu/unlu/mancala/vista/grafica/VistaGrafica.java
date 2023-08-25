@@ -5,10 +5,8 @@ import java.util.List;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.LadoTablero;
-import ar.edu.unlu.mancala.vista.AgujeroLectura;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
-import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.mancala.vista.consola.EstadosFlujo;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuInicioSesionListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuPrincipalListener;
@@ -98,11 +96,6 @@ public class VistaGrafica
 		flujoActual = EstadosFlujo.MOVIMIENTOS;
 		if (!this.tablero.isVisible()) {
 			this.tablero.setListener(this);
-			try {
-				this.tablero.setJugadores(controlador.obtenerJugadoresEnPartida());
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
 			this.tablero.setVisible(true);
 			this.menuPrincipal.setVisible(false);
 		}
@@ -246,15 +239,6 @@ public class VistaGrafica
 		try {
 			controlador.mover(Integer.parseInt(indice));
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void solicitarJugadores() {
-		try {
-			this.tablero.setJugadores(controlador.obtenerJugadoresEnPartida());
-		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}

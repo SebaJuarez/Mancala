@@ -19,10 +19,13 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 		});
 	}
 	
-	public Hoyo HoyoOpuesto(LadoTablero ladoProviene, Hoyo hoyo) {
+	public Agujero HoyoOpuesto(LadoTablero ladoProviene, Hoyo hoyo) {
 		int indiceProviene = ladoProviene.agujeros.indexOf(hoyo);
-		int indiceAgujeroOpuesto = agujeros.size() - indiceProviene;
-		return (Hoyo) this.agujeros.get(indiceAgujeroOpuesto);
+		// primer -1 por el size , segundo -1 por el espacio que ocupa la casa 
+		System.out.println("indice proviene " +  indiceProviene);
+		int indiceAgujeroOpuesto = agujeros.size() - 1 - indiceProviene - 1;
+		System.out.println("indice opuesto " + indiceAgujeroOpuesto);
+		return this.agujeros.get(indiceAgujeroOpuesto);
 	}
 	
 	public boolean ladoVacio() {

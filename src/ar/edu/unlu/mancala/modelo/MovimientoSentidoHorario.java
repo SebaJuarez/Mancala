@@ -54,14 +54,15 @@ public class MovimientoSentidoHorario implements Movimiento {
 					// termino con este while para ir al principal y cambiar al lado siguiente
 					break;
 				}
-				if(habasAMover == 0 && agujeroActual.getHabas() == 1 && ladoFrente.perteneceJugador(jugadorMueve)){
-					return tomarHabasOpuestas(tablero,hoyo,jugadorMueve);
+				if(habasAMover == 0 && agujeroActual.getHabas() == 1 && ladoFrente.perteneceJugador(jugadorMueve)
+						&& !(agujeroActual instanceof Casa)){
+					return tomarHabasOpuestas(tablero,(Hoyo) agujeroActual,jugadorMueve);
 				} else if(habasAMover == 0 && ladoFrente.perteneceJugador(jugadorMueve) && agujeroActual instanceof Casa) {
 					return EstadoMovimiento.MOVIMIENTO_VALIDO_SIGUE;
 				}
 			}
 		} 
-		return EstadoMovimiento.MOVIMIENTO_VALIDO;
+		return EstadoMovimiento.MOVIMIENTO_REALIZADO;
 	}
 
 	private Queue<LadoTablero> convertirSentidoHorario(Tablero tablero, Jugador jugadorMueve) {

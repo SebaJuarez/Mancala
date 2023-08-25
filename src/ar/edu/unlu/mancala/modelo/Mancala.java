@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 import ar.edu.unlu.mancala.modelo.estados.persistencia.EstadoPersistencia;
 import ar.edu.unlu.mancala.security.Encriptador;
@@ -48,12 +49,19 @@ public class Mancala extends ObservableRemoto implements IMancalaPartida {
 
 	@Override
 	public void mover(int indice, Jugador jugador) throws RemoteException {
-		notificarObservadores(partida.mover(jugador, indice));
-		EstadoPartida estado = partida.termino();
-		if(estado == EstadoPartida.PARTIDA_TERMINADA) {
-			actualizarJugadores(partida.getJugadores());			
+		EstadoMovimiento estadoMov = partida.mover(jugador, indice);
+		notificarObservadores(estadoMov);
+		if(!isMovimientoInvalido(estadoMov)) {
+			EstadoPartida estadoPartida = partida.termino();
+			if(estadoPartida == EstadoPartida.PARTIDA_TERMINADA) {
+				actualizarJugadores(partida.getJugadores());			
+			}
+			notificarObservadores(estadoPartida);			
 		}
-		notificarObservadores(estado);
+	}
+
+	private boolean isMovimientoInvalido(EstadoMovimiento estadoMov) {
+		return estadoMov == EstadoMovimiento.TURNO_INVALIDO || estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION || estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_HABAS;
 	}
 
 	@Override

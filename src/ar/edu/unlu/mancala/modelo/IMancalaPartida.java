@@ -14,7 +14,6 @@ public interface IMancalaPartida extends IObservableRemoto {
 
 	void mover(int indice, Jugador jugador) throws RemoteException;
 
-
 	void verificarCredenciales(String nombre, String contrasenia) throws RemoteException;
 
 	void agregarJugador(String nombre, String contrasenia) throws RemoteException;
