@@ -4,11 +4,10 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import ar.edu.unlu.mancala.vista.JugadorLectura;
-import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
-public interface IMancalaPartida extends IObservableRemoto {
+public interface IMancala extends IObservableRemoto {
 
 	void conectarJugador(Jugador jugador) throws RemoteException;
 
@@ -21,7 +20,7 @@ public interface IMancalaPartida extends IObservableRemoto {
 	void actualizarJugadores(List<Jugador> jugadores) throws RemoteException;
 
 	List<Jugador> getJugadoresConectados() throws RemoteException;
-	
+
 	List<Jugador> obtenerGanador() throws RemoteException;
 
 	void desconectar(Jugador jugador, IControladorRemoto controlador) throws RemoteException;
@@ -30,12 +29,12 @@ public interface IMancalaPartida extends IObservableRemoto {
 
 	Jugador getJugador(Jugador jugador) throws RemoteException;
 
-	void crearPartida(Jugador jugador, TipoPartida tipoPartida) throws RemoteException;
-
 	List<Jugador> getJugadoresEnPartida() throws RemoteException;
-	
+
 	Partida getPartida() throws RemoteException;
 
 	List<LadoTablero> getTablero() throws RemoteException;
+
+	void iniciarPartida(Jugador jugador, TipoPartida tipoPartida) throws RemoteException;
 
 }

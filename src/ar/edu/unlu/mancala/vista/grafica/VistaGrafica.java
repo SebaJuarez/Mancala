@@ -5,6 +5,7 @@ import java.util.List;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.modelo.LadoTablero;
+import ar.edu.unlu.mancala.modelo.TipoPartida;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.consola.EstadosFlujo;
@@ -22,7 +23,7 @@ public class VistaGrafica
 	// Jframes --------------------------------------------------------
 	private MenuInicioSesion menuInicioSesion = new MenuInicioSesion();
 	private MenuPrincipal menuPrincipal = new MenuPrincipal();
-	private TableroPartida tablero = new TableroPartida();
+	private TableroVistaGrafica tablero = new TableroVistaGrafica();
 	private SalaDeEspera salaDeEspera = new SalaDeEspera();
 	private CartelGanador cartelGanador = new CartelGanador();
 	private CartelPerdedor cartelPerdedor = new CartelPerdedor();
@@ -88,15 +89,18 @@ public class VistaGrafica
 	}
 
 	@Override
-	public void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve){
+	public void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve, TipoPartida tipoPartida) {
 
 		if (flujoActual == EstadosFlujo.ESPERA) {
 			salaDeEspera.setVisible(false);
 		}
+
 		flujoActual = EstadosFlujo.MOVIMIENTOS;
 		if (!this.tablero.isVisible()) {
+			tablero.iniciarTablero(tipoPartida);
 			this.tablero.setListener(this);
 			this.tablero.setVisible(true);
+			this.tablero.inicializar();
 			this.menuPrincipal.setVisible(false);
 		}
 		this.tablero.actualizarTablero(ladosTablero);

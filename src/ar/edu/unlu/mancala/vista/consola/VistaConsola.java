@@ -24,9 +24,10 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
+import ar.edu.unlu.mancala.modelo.LadoTablero;
+import ar.edu.unlu.mancala.modelo.TipoPartida;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
-import ar.edu.unlu.mancala.vista.TableroLectura;
 
 public class VistaConsola extends JFrame implements Ivista {
 
@@ -38,6 +39,7 @@ public class VistaConsola extends JFrame implements Ivista {
 	private JPanel panelComandos;
 	private boolean esperandoTecla = false;
 	private String nombreIntento;
+	private TableroVistaConsola tableroVistaConsola = new TableroVistaConsola();
 
 	public VistaConsola() {
 		// Configuración de la ventana principal
@@ -146,6 +148,7 @@ public class VistaConsola extends JFrame implements Ivista {
 					cerrarJuego();
 				} catch (RemoteException e1) {
 					e1.printStackTrace();
+					System.out.println("algo paso, no se que");
 				}
 			}
 		});
@@ -311,22 +314,6 @@ public class VistaConsola extends JFrame implements Ivista {
 	}
 
 	@Override
-	public void mostrarPartida(TableroLectura tablero, JugadorLectura jugador) {
-		if (this.estadoFlujo != EstadosFlujo.MOVIMIENTOS) {
-			clearScreen();
-			informar("comienza la partida!!");
-		}
-		try {
-			pantalla.append(tablero.toString(controlador.obtenerJugadoresEnPartida()) + "\n");
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		informar(jugador, "Le toca al jugador: ");
-		pantalla.setCaretPosition(pantalla.getDocument().getLength());
-		this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;
-	}
-
-	@Override
 	public void informar(JugadorLectura jugador, String string) {
 		informar(string + jugador.getNombre());
 	}
@@ -416,23 +403,16 @@ public class VistaConsola extends JFrame implements Ivista {
 		DecimalFormat decimalFormat = new DecimalFormat("#.##");
 		println(Banner.ESTADISTICA);
 		JugadorLectura jugador = controlador.getJugador();
-		int ganadas = jugador.getGanadas();
-		int empatadas = jugador.getEmpatadas();
-		int perdidas = jugador.getPerdidas();
-		int jugadas = ganadas + perdidas + empatadas;
-		double winRate = (ganadas > 0) ? ((double) ganadas / jugadas * 100) : 0;
-		double loseRate = (perdidas > 0) ? ((double) perdidas / jugadas * 100) : 0;
-		double drawRate = (empatadas > 0) ? ((double) empatadas / jugadas * 100) : 0;
 		println("Ganadas : " + jugador.getGanadas() + "  <<");
 		println("");
 		println("Perdidas : " + jugador.getPerdidas() + "  <<");
 		println("");
 		println("Empatadas : " + jugador.getEmpatadas() + "  <<");
 		println("");
-		println("Win Rate : " + decimalFormat.format(winRate) + "     Lose Rate : " + decimalFormat.format(loseRate)
-				+ "     Draw Rate : " + decimalFormat.format(drawRate));
+		println("Win Rate : " + decimalFormat.format(jugador.winRate()) + "%     Lose Rate : "
+				+ decimalFormat.format(jugador.loseRate()) + "%     Draw Rate : "
+				+ decimalFormat.format(jugador.drawnRate()) + "%");
 		println("");
-
 	}
 	// ---------------------------------------------------------------------------
 
@@ -447,5 +427,17 @@ public class VistaConsola extends JFrame implements Ivista {
 		this.controlador = controlador;
 	}
 	// ---------------------------------------------------------------------------
+
+	@Override
+	public void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve, TipoPartida tipoPartida) {
+		if (this.estadoFlujo != EstadosFlujo.MOVIMIENTOS) {
+			clearScreen();
+			informar("comienza la partida!!");
+		}
+		pantalla.append(tableroVistaConsola.mostrarTablero(ladosTablero, tipoPartida) + "\n");
+		informar(jugadorMueve, "Le toca al jugador: ");
+		pantalla.setCaretPosition(pantalla.getDocument().getLength());
+		this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;
+	}
 
 }

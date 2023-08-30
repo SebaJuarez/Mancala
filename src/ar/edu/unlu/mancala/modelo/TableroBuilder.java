@@ -3,23 +3,23 @@ package ar.edu.unlu.mancala.modelo;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class TableroBuilder implements Serializable{
+public class TableroBuilder implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private TableroConfig configuracionTablero;
-	
+
 	public Tablero build() {
-		
+
 		Tablero tablero = new Tablero();
-		
+
 		// por cada lado configurado
-		for(int i = 1; i <= configuracionTablero.getCantLados(); i++) {
+		for (int i = 1; i <= configuracionTablero.getCantLados(); i++) {
 			LadoTablero lado = new LadoTablero();
 			var agujeros = new LinkedList<Agujero>();
 			// por la cantidad de agujeros configurado
-			for(int j = 1; j <= configuracionTablero.getCantAgujerosPorLado(); j++){
+			for (int j = 1; j <= configuracionTablero.getCantAgujerosPorLado(); j++) {
 				// seteo la casa en su posicion
-				if(j == configuracionTablero.getPosCasaPorLado()) {
+				if (j == configuracionTablero.getPosCasaPorLado()) {
 					Casa casa = new Casa();
 					agujeros.add(casa);
 				} else {

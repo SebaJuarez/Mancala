@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
 import ar.edu.unlu.mancala.vista.Ivista;
-import ar.edu.unlu.mancala.vista.consola.VistaConsola;
 import ar.edu.unlu.mancala.vista.grafica.VistaGrafica;
 import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.Util;
@@ -28,7 +27,7 @@ public class AppCliente {
 		String portServidor = (String) JOptionPane.showInputDialog(null,
 				"Seleccione el puerto en el que corre el servidor", "Puerto del servidor", JOptionPane.QUESTION_MESSAGE,
 				null, null, 8888);
-		// Ivista vista = new VistaConsola();
+	    //Ivista vista = new VistaConsola();
 		Ivista vista = new VistaGrafica();
 		MancalaController controlador = new MancalaController(vista);
 		vista.setControlador(controlador);
@@ -37,10 +36,8 @@ public class AppCliente {
 		try {
 			c.iniciar(controlador);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (RMIMVCException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

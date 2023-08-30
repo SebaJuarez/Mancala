@@ -146,19 +146,12 @@ public class Estadistica extends JFrame {
 
 	public void mostrarEstadisticas(JugadorLectura jugador) {
 		DecimalFormat decimalFormat = new DecimalFormat("#.##");
-		int ganadas = jugador.getGanadas();
-		int empatadas = jugador.getEmpatadas();
-		int perdidas = jugador.getPerdidas();
-		int jugadas = ganadas + perdidas + empatadas;
-		double winRate = (ganadas > 0) ? ((double) ganadas / jugadas * 100) : 0;
-		double loseRate = (perdidas > 0) ? ((double) perdidas / jugadas * 100) : 0;
-		double drawRate = (empatadas > 0) ? ((double) empatadas / jugadas * 100) : 0;
-		lblEmpatadasP.setText(empatadas + "");
-		lblGanadasP.setText(ganadas + "");
-		lblPerdidasP.setText(perdidas + "");
-		lblEmpatadasRate.setText(decimalFormat.format(drawRate) + " %");
-		lblGanadasRate.setText(decimalFormat.format(winRate) + " %");
-		lblPerdidasRate.setText(decimalFormat.format(loseRate) + " %");
+		lblEmpatadasP.setText(jugador.getEmpatadas() + "");
+		lblGanadasP.setText(jugador.getGanadas() + "");
+		lblPerdidasP.setText(jugador.getPerdidas() + "");
+		lblEmpatadasRate.setText(decimalFormat.format(jugador.drawnRate()) + " %");
+		lblGanadasRate.setText(decimalFormat.format(jugador.winRate()) + " %");
+		lblPerdidasRate.setText(decimalFormat.format(jugador.loseRate()) + " %");
 	}
 
 	public VolverListener getListener() {

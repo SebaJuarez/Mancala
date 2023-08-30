@@ -22,12 +22,10 @@ import javax.swing.border.EmptyBorder;
 
 import ar.edu.unlu.mancala.modelo.Agujero;
 import ar.edu.unlu.mancala.modelo.LadoTablero;
-import ar.edu.unlu.mancala.modelo.LadoTableroLectura;
-import ar.edu.unlu.mancala.vista.AgujeroLectura;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.mancala.vista.grafica.listener.TableroPartidaListener;
 
-public class TableroPartida extends JFrame {
+public class TableroStandar extends JFrame implements ITablero {
 
 	private static final long serialVersionUID = 1L;
 	private TableroPartidaListener listener;
@@ -40,7 +38,7 @@ public class TableroPartida extends JFrame {
 	private JLabel lblJ2Zona;
 	private JLabel lblJ1Zona;
 
-	public TableroPartida() {
+	public TableroStandar() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
@@ -231,11 +229,11 @@ public class TableroPartida extends JFrame {
 		scrollPane.setBounds(218, 90, 381, 45);
 		contentPane.add(scrollPane);
 
-		hoyos = List.of( hoyo1, hoyo2, hoyo3, hoyo4, hoyo5, hoyo6, casaJ1, hoyo7, hoyo8, hoyo9, hoyo10, hoyo11,
-				hoyo12,casaJ2);
+		hoyos = List.of(hoyo1, hoyo2, hoyo3, hoyo4, hoyo5, hoyo6, casaJ1, hoyo7, hoyo8, hoyo9, hoyo10, hoyo11, hoyo12,
+				casaJ2);
 
 		for (int i = 0; i < hoyos.size(); i++) {
-			hoyos.get(i).setName(Integer.toString(i+1));
+			hoyos.get(i).setName(Integer.toString(i + 1));
 		}
 
 		hoyos.forEach(boton -> {
@@ -259,6 +257,7 @@ public class TableroPartida extends JFrame {
 		});
 	}
 
+	@Override
 	public void informar(String texto) {
 		this.textController.append(texto + "\n");
 		int posicionFinal = this.textController.getDocument().getLength();
@@ -267,35 +266,43 @@ public class TableroPartida extends JFrame {
 		this.textController.setCaretPosition(posicionVisible);
 	}
 
+	@Override
 	public void actualizarTablero(List<LadoTablero> ladosTablero) {
 		int i = 0;
 		List<JugadorLectura> jugadores = new LinkedList<JugadorLectura>();
-		for(LadoTablero lado : ladosTablero ) {
+		for (LadoTablero lado : ladosTablero) {
 			List<Agujero> agujeros = lado.getAgujeros();
-			for(Agujero agujero : agujeros) {
+			for (Agujero agujero : agujeros) {
 				hoyos.get(i).setText(Integer.toString(agujero.getHabas()));
-				i ++;
+				i++;
 			}
 			jugadores.add(lado.getJugador());
 		}
-		
+
 		setJugadores(jugadores);
-		
+
 	}
 
+	@Override
 	public TableroPartidaListener getListener() {
 		return listener;
 	}
 
+	@Override
 	public void setListener(TableroPartidaListener listener) {
 		this.listener = listener;
 	}
 
+	@Override
 	public void setJugadores(List<JugadorLectura> jugadoresEnPartida) {
-		this.textController.setText("");
 		this.lblJ1Name.setText(jugadoresEnPartida.get(0).getNombre());
 		this.lblJ2Name.setText(jugadoresEnPartida.get(1).getNombre());
 		this.lblJ1Zona.setText("ZONA DE : " + jugadoresEnPartida.get(0).getNombre());
 		this.lblJ2Zona.setText("ZONA DE : " + jugadoresEnPartida.get(1).getNombre());
+	}
+
+	@Override
+	public void inicializar() {
+		this.textController.setText("");
 	}
 }

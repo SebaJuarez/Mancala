@@ -14,7 +14,7 @@ import ar.edu.unlu.mancala.vista.JugadorLectura;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
-public class Mancala extends ObservableRemoto implements IMancalaPartida {
+public class Mancala extends ObservableRemoto implements IMancala {
 
 	private Partida partida;
 	private final JugadorService service;
@@ -23,27 +23,28 @@ public class Mancala extends ObservableRemoto implements IMancalaPartida {
 	public Mancala(JugadorService service) throws RemoteException {
 		this.service = service;
 	}
-	
+
 	@Override
-	public void crearPartida(Jugador jugador, TipoPartida tipoPartida) throws RemoteException {
-		if(partida == null || partida.isPartidaTerminada()) {
+	public void iniciarPartida(Jugador jugador, TipoPartida tipoPartida) throws RemoteException {
+		if (partida == null || partida.isPartidaTerminada()) {
 			partida = new Partida(tipoPartida);
 		}
-		conectarJugador(jugador);			
+		conectarJugador(jugador);
 	}
-	
+
 	@Override
 	public void conectarJugador(Jugador jugador) throws RemoteException {
 		EstadoPartida estadoActual = partida.agregarJugador(jugador);
-		switch(estadoActual) {
-		case USUARIO_CONECTADO : 
+		switch (estadoActual) {
+		case USUARIO_CONECTADO:
 			notificarObservadores(estadoActual);
 			notificarObservadores(partida.listoParaComezar());
 			break;
-		case PARTIDA_LLENA : 
+		case PARTIDA_LLENA:
 			notificarObservadores(estadoActual);
 			break;
-		default : ;
+		default:
+			;
 		}
 	}
 
@@ -51,21 +52,23 @@ public class Mancala extends ObservableRemoto implements IMancalaPartida {
 	public void mover(int indice, Jugador jugador) throws RemoteException {
 		EstadoMovimiento estadoMov = partida.mover(jugador, indice);
 		notificarObservadores(estadoMov);
-		if(!isMovimientoInvalido(estadoMov)) {
+		if (!isMovimientoInvalido(estadoMov)) {
 			EstadoPartida estadoPartida = partida.termino();
-			if(estadoPartida == EstadoPartida.PARTIDA_TERMINADA) {
-				actualizarJugadores(partida.getJugadores());			
+			if (estadoPartida == EstadoPartida.PARTIDA_TERMINADA) {
+				actualizarJugadores(partida.getJugadores());
 			}
-			notificarObservadores(estadoPartida);			
+			notificarObservadores(estadoPartida);
 		}
 	}
 
 	private boolean isMovimientoInvalido(EstadoMovimiento estadoMov) {
-		return estadoMov == EstadoMovimiento.TURNO_INVALIDO || estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION || estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_HABAS;
+		return estadoMov == EstadoMovimiento.TURNO_INVALIDO
+				|| estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION
+				|| estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_HABAS;
 	}
 
 	@Override
-	public List<Jugador> obtenerGanador()  throws RemoteException{
+	public List<Jugador> obtenerGanador() throws RemoteException {
 		return partida.obtenerGanador();
 	}
 
@@ -73,17 +76,19 @@ public class Mancala extends ObservableRemoto implements IMancalaPartida {
 	public void actualizarJugadores(List<Jugador> jugadores) throws RemoteException {
 		List<Jugador> ganador = obtenerGanador();
 		List<Jugador> perdedor = jugadores.stream()
-								.filter(jugador -> !ganador.contains(jugador))
-								.collect(Collectors.toList());
-		// si hay mas de un ganador entonces fueron empates, si hay uno solo entonces ganó
-		if(ganador.size() > 1) {
+				.filter(jugador -> !ganador.contains(jugador))
+				.collect(Collectors.toList());
+		// si hay mas de un ganador entonces fueron empates, si hay uno solo entonces
+		// ganó
+
+		if (ganador.size() > 1) {
 			ganador.forEach(jugador -> jugador.incEmpatadas());
 		} else {
 			ganador.forEach(jugador -> jugador.incGanadas());
-		}	
+		}
 		perdedor.forEach(jugador -> jugador.incPerdidas());
-		
-		//guardo la actualizacion de perdedores y ganadores
+
+		// guardo la actualizacion de perdedores y ganadores
 		ganador.addAll(perdedor);
 		guardarJugadores(ganador);
 	}
@@ -95,7 +100,8 @@ public class Mancala extends ObservableRemoto implements IMancalaPartida {
 		Jugador jugadorConectado = service.obtenerJugadores().stream()
 				.filter(jugador -> jugador.getNombre().equals(nombre)
 						&& Encriptador.verificarContrasenia(contrasenia, jugador.getContrasenia()))
-				.findFirst().orElse(null);
+				.findFirst()
+				.orElse(null);
 		if (jugadorConectado == null) {
 			notificarObservadores(EstadoPersistencia.CREDENCIALES_INVALIDAS);
 		} else {
@@ -133,11 +139,13 @@ public class Mancala extends ObservableRemoto implements IMancalaPartida {
 
 	private void guardarJugadores(List<Jugador> jugadores) throws RemoteException {
 		List<Jugador> jugadoresN = service.obtenerJugadores();
-		jugadoresN.replaceAll(j -> jugadores.stream()
-									.filter(j1 -> j1.equals(j))
-									.findFirst()
-									.orElse(null));
-		this.service.guardar(jugadores);
+
+		jugadoresN.replaceAll(jugadorViejo -> jugadores.stream()
+				.filter(jugadorNuevo -> jugadorNuevo.equals(jugadorViejo))
+				.findFirst()
+				.orElse(jugadorViejo));
+
+		this.service.guardar(jugadoresN); // Guardar la lista actualizada
 	}
 
 	@Override
@@ -145,31 +153,32 @@ public class Mancala extends ObservableRemoto implements IMancalaPartida {
 		this.jugadoresConectados.remove(desconectado);
 		removerObservador(controlador);
 		// si el jugador estaba en partida y se deconecta
-		if (partida.getJugadores().contains(desconectado) && !partida.isPartidaTerminada() 
-				&& partida.getJugadores().size() == partida.getParticipantesLimite()){
-			partida.setPartidaTerminada(true);
-			// obtengo los conectados en partida
-			List<Jugador> conectados = getJugadoresEnPartida().stream()
-					.filter(jugador -> !jugador.equals(desconectado))
-					.collect(Collectors.toList());
-			
-			// si hay un solo conectado, entonces gano, si hay mas entonces empataron
-			if(conectados.size() > 1) {
-				conectados.forEach(conectado -> conectado.incEmpatadas());
-			} else {
-				conectados.forEach(conectado -> conectado.incGanadas());
+		if (partida != null)
+			if (partida.getJugadores().contains(desconectado) && !partida.isPartidaTerminada()
+					&& partida.getJugadores().size() == partida.getParticipantesLimite()) {
+				partida.setPartidaTerminada(true);
+				partida.desconectarJugador(desconectado);
+				// obtengo los conectados en partida
+				List<Jugador> conectados = new LinkedList<Jugador>(getJugadoresEnPartida());
+				// si hay un solo conectado, entonces gano, si hay mas entonces empataron
+				if (conectados.size() > 1) {
+					conectados.forEach(conectado -> conectado.incEmpatadas());
+				} else {
+					conectados.forEach(conectado -> conectado.incGanadas());
+				}
+				// el desconectado perdio automaticamente
+				desconectado.incPerdidas();
+
+				// actualizo los desc y los conectados
+				conectados.add(desconectado);
+				guardarJugadores(conectados);
+				notificarObservadores(EstadoPartida.USUARIO_DESCONECTADO);
+				// si el jugador estaba en la sala de espera y se desconecta
+			} else if (partida.getJugadores().contains(desconectado)
+					&& partida.getJugadores().size() < partida.getParticipantesLimite()
+					&& !partida.isPartidaTerminada()) {
+				partida.desconectarJugador(desconectado);
 			}
-			// el desconectado perdio automaticamente
-			desconectado.incPerdidas();
-			
-			// actualizo los desc y los conectados
-			conectados.add(desconectado);
-			actualizarJugadores(conectados);
-			notificarObservadores(EstadoPartida.USUARIO_DESCONECTADO);
-			// si el jugador estaba en la sala de espera y se desconecta
-		} else if (partida.getJugadores().contains(desconectado) && partida.getJugadores().size() < partida.getParticipantesLimite()) {
-			partida.getJugadores().remove(desconectado);
-		}
 	}
 
 	@Override
@@ -208,11 +217,12 @@ public class Mancala extends ObservableRemoto implements IMancalaPartida {
 	}
 
 	@Override
-	public List<Jugador> getJugadoresEnPartida() throws RemoteException{
+	public List<Jugador> getJugadoresEnPartida() throws RemoteException {
 		return partida.getJugadores();
 	}
-	
-	public Partida getPartida() throws RemoteException{
+
+	@Override
+	public Partida getPartida() throws RemoteException {
 		return partida;
 	}
 

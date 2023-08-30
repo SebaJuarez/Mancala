@@ -8,10 +8,12 @@ import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 
 public class MovimientoStandar implements Movimiento {
 
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public EstadoMovimiento distribuirHabas(Tablero tablero, Hoyo hoyo, Jugador jugadorMueve) {
 		// covierto el sentido del tablero en sentido horario pasandolos a una cola
-		Queue<LadoTablero> ladosTablero = convertirSentidoHorario(tablero, jugadorMueve);
+		Queue<LadoTablero> ladosTablero = convertirSentidoAntiHorario(tablero, jugadorMueve);
 		// agarro todas las habas del hoyo
 		int habasAMover = hoyo.tomarHabas();
 		Agujero agujeroActual = hoyo;
@@ -59,10 +61,11 @@ public class MovimientoStandar implements Movimiento {
 				}
 			}
 		}
+		System.out.println("mov realizado");
 		return EstadoMovimiento.MOVIMIENTO_REALIZADO;
 	}
 
-	private Queue<LadoTablero> convertirSentidoHorario(Tablero tablero, Jugador jugadorMueve) {
+	private Queue<LadoTablero> convertirSentidoAntiHorario(Tablero tablero, Jugador jugadorMueve) {
 		// transformo los lados en una cola
 		Queue<LadoTablero> ladosTablero = new LinkedList<LadoTablero>(tablero.getLadosDelTablero());
 		// obtengo el lado del jugador que mueve

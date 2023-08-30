@@ -12,30 +12,31 @@ import java.util.stream.Collectors;
 import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 import ar.edu.unlu.mancala.modelo.estados.partida.EstadoPartida;
 
-public class Partida implements Serializable{
-	
+public class Partida implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private boolean partidaTerminada = true;
 	private Queue<Jugador> jugadores;
 	private Jugador turnoActual;
 	private int participantesLimite;
-	private Movimiento estrategiaMovimiento ;
+	private Movimiento estrategiaMovimiento;
 	private TableroBuilder constructorTablero;
 	private Tablero tablero;
 	private TipoPartida tipoPartida;
-	
+	private Jugador ultimoEnMover;
+
 	public Partida(TipoPartida tipoPartida) {
 		this.tipoPartida = tipoPartida;
 		partidaTerminada = false;
 		constructorTablero = new TableroBuilder();
 		crearTablero(tipoPartida);
 	}
-	
+
 	private void crearTablero(TipoPartida tipoPartida) {
 		TableroConfig tableroConfig = new TableroConfig();
-		switch(tipoPartida) {
-		case PARTIDA_STANDAR : {
+		switch (tipoPartida) {
+		case PARTIDA_STANDAR: {
 			this.participantesLimite = 2;
 			tableroConfig.setCantLados(participantesLimite);
 			tableroConfig.setCantAgujerosPorLado(7);
@@ -45,24 +46,33 @@ public class Partida implements Serializable{
 			//estrategiaMovimiento = new MovimientoSentidoHorario();
 			break;
 		}
-		case PARTIDA_4v4_HORARIO : {
+		case PARTIDA_4_S_AHORARIO: {
 			this.participantesLimite = 4;
 			tableroConfig.setCantLados(participantesLimite);
-			tableroConfig.setCantAgujerosPorLado(5);
-			tableroConfig.setCantHabasIniciales(2);
-			tableroConfig.setPosCasaPorLado(1);
-			estrategiaMovimiento = new MovimientoSentidoHorario();
-			//estrategiaMovimiento = new MovimientoStandar();
+			tableroConfig.setCantAgujerosPorLado(4);
+			tableroConfig.setCantHabasIniciales(3);
+			tableroConfig.setPosCasaPorLado(4);
+			estrategiaMovimiento = new MovimientoStandar();
+			// estrategiaMovimiento = new MovimientoSentidoHorario();
 			break;
+		}
+		case PARTIDA_MODO_CAPTURA: {
+			this.participantesLimite = 2;
+			tableroConfig.setCantLados(participantesLimite);
+			tableroConfig.setCantAgujerosPorLado(7);
+			tableroConfig.setCantHabasIniciales(1);
+			tableroConfig.setPosCasaPorLado(7);
+			// estrategiaMovimiento = new MovimientoStandar();
+			estrategiaMovimiento = new MovimientoSentidoHorario();
 		}
 		}
 		constructorTablero.setConfiguracionTablero(tableroConfig);
 		tablero = constructorTablero.build();
 		jugadores = new LinkedList<Jugador>();
 	}
-	
+
 	public EstadoPartida agregarJugador(Jugador jugador) {
-		if(jugadores.size() < participantesLimite) {
+		if (jugadores.size() < participantesLimite) {
 			jugadores.add(jugador);
 			tablero.asignarJugadorAlLado(jugador);
 			return EstadoPartida.USUARIO_CONECTADO;
@@ -70,16 +80,16 @@ public class Partida implements Serializable{
 			return EstadoPartida.PARTIDA_LLENA;
 		}
 	}
-	
-	public EstadoPartida listoParaComezar(){
-		if(jugadores.size() == participantesLimite) {
+
+	public EstadoPartida listoParaComezar() {
+		if (jugadores.size() == participantesLimite) {
 			asignarTurno();
 			return EstadoPartida.COMENZANDO_PARTIDA;
 		} else {
 			return EstadoPartida.ESPERANDO_USUARIO;
 		}
 	}
-	
+
 	private void asignarTurno() {
 		var jugadoresMezclados = new LinkedList<Jugador>(jugadores);
 		Collections.shuffle(jugadoresMezclados);
@@ -90,65 +100,61 @@ public class Partida implements Serializable{
 	}
 
 	public EstadoMovimiento mover(Jugador jugador, int indice) {
-		if(!jugador.equals(turnoActual)){
+		this.ultimoEnMover = jugador;
+		if (!jugador.equals(turnoActual)) {
 			return EstadoMovimiento.TURNO_INVALIDO;
 		}
 		Hoyo hoyo = tablero.getHoyo(jugador, indice);
-		if(hoyo == null) {
+		if (hoyo == null) {
 			return EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION;
 		} else if (!hoyo.hayHaba()) {
 			return EstadoMovimiento.MOVIMIENTO_INVALIDO_HABAS;
 		}
-		EstadoMovimiento estadoMovimiento = distribuirHabas(hoyo,jugador);
+		EstadoMovimiento estadoMovimiento = distribuirHabas(hoyo, jugador);
 		if (EstadoMovimiento.MOVIMIENTO_VALIDO_SIGUE != estadoMovimiento) {
 			this.cambiarTurno();
 		}
 		return estadoMovimiento;
 	}
-			
-	
+
 	private EstadoMovimiento distribuirHabas(Hoyo hoyo, Jugador jugador) {
-		return estrategiaMovimiento.distribuirHabas(tablero,hoyo,jugador);
+		return estrategiaMovimiento.distribuirHabas(tablero, hoyo, jugador);
 	}
 
 	public List<Jugador> obtenerGanador() {
-		
-		var jugadorPuntos = new HashMap<Jugador,Integer>();
-		
+
+		var jugadorPuntos = new HashMap<Jugador, Integer>();
+
 		jugadores.forEach(jugadorn -> {
 			jugadorPuntos.put(jugadorn, tablero.getCasaDeJugador(jugadorn).getHabas());
 		});
-		
-	    int maxPuntos = jugadorPuntos.values().stream()
-	            .max((p1,p2) -> p1.compareTo(p2))
-	            .orElse(0);
 
-	    // voy a obtener una lista de los jugadores que tengan el mayor puntaje
-	    // en caso de ser partida = 2 jugadores, entonces habra sido un empate entre ellos
-	    // en caso de ser partida > 2 jugadores, entonces el que no está en la lista perdio y los que estan empataron
-	    // en cualquier caso si solo hay 1 entonces ganó
-	    return jugadorPuntos.entrySet().stream()
-	            .filter(entry -> entry.getValue() == maxPuntos)
-	            .map(Map.Entry::getKey)
-	            .collect(Collectors.toList());
+		int maxPuntos = jugadorPuntos.values().stream()
+				.max((p1, p2) -> p1.compareTo(p2))
+				.orElse(0);
+
+		return jugadorPuntos.entrySet().stream()
+				.filter(entry -> entry.getValue() == maxPuntos)
+				.map(Map.Entry::getKey)
+				.collect(Collectors.toList());
 	}
-	
+
 	public EstadoPartida termino() {
-		if(tablero.ladoVacio()) {
+		if (tablero.ladoVacio()) {
 			this.partidaTerminada = true;
-			tablero.juntarHabasLadoVacio();
+			tablero.juntarHabasLadoNoVacio();
 			return EstadoPartida.PARTIDA_TERMINADA;
 		} else {
 			return EstadoPartida.PARTIDA_EN_PROGRESO;
 		}
 	}
-	
+
 	private void cambiarTurno() {
 		turnoActual = jugadores.poll();
 		jugadores.add(turnoActual);
 	}
-	
-	public EstadoPartida desconectarJugador(Jugador jugadorDesconectado){
+
+	public EstadoPartida desconectarJugador(Jugador jugadorDesconectado) {
 		jugadores.remove(jugadorDesconectado);
 		return EstadoPartida.USUARIO_DESCONECTADO;
 	}
@@ -156,7 +162,7 @@ public class Partida implements Serializable{
 	public boolean isPartidaTerminada() {
 		return partidaTerminada;
 	}
-	
+
 	public List<Jugador> getJugadores() {
 		return List.copyOf(jugadores);
 	}
@@ -164,11 +170,11 @@ public class Partida implements Serializable{
 	public void setPartidaTerminada(boolean partidaTerminada) {
 		this.partidaTerminada = partidaTerminada;
 	}
-	
+
 	public int getParticipantesLimite() {
 		return participantesLimite;
 	}
-	
+
 	public Jugador getTurnoActual() {
 		return turnoActual;
 	}
@@ -179,6 +185,10 @@ public class Partida implements Serializable{
 
 	public Tablero getTablero() {
 		return this.tablero;
+	}
+
+	public Jugador getUltimoEnMover() {
+		return ultimoEnMover;
 	}
 
 }
