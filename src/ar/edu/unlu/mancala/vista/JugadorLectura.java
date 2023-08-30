@@ -10,4 +10,9 @@ public interface JugadorLectura {
 
 	int getGanadas();
 
+	double winRate();
+
+	double loseRate();
+
+	double drawnRate();
 }

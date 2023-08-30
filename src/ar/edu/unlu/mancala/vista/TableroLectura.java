@@ -2,11 +2,9 @@ package ar.edu.unlu.mancala.vista;
 
 import java.util.List;
 
-import ar.edu.unlu.mancala.modelo.Agujero;
+import ar.edu.unlu.mancala.modelo.LadoTablero;
 
 public interface TableroLectura {
 
-	String toString(List<JugadorLectura> jugadores);
-
-	Agujero[] getAgujeros();
+	List<LadoTablero> getLadosDelTablero();
 }

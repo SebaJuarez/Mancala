@@ -3,6 +3,8 @@ package ar.edu.unlu.mancala.vista;
 import java.util.List;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
+import ar.edu.unlu.mancala.modelo.LadoTablero;
+import ar.edu.unlu.mancala.modelo.TipoPartida;
 
 public interface Ivista {
 
@@ -22,7 +24,7 @@ public interface Ivista {
 
 	void mostrarEstadisticas();
 
-	void mostrarPartida(TableroLectura tablero, JugadorLectura jugadorMueve);
+	void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve, TipoPartida tipoPartida);
 
 	void mostrarSalaDeEspera();
 

@@ -4,10 +4,10 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import ar.edu.unlu.mancala.controlador.MancalaController;
-import ar.edu.unlu.mancala.vista.AgujeroLectura;
+import ar.edu.unlu.mancala.modelo.LadoTablero;
+import ar.edu.unlu.mancala.modelo.TipoPartida;
 import ar.edu.unlu.mancala.vista.Ivista;
 import ar.edu.unlu.mancala.vista.JugadorLectura;
-import ar.edu.unlu.mancala.vista.TableroLectura;
 import ar.edu.unlu.mancala.vista.consola.EstadosFlujo;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuInicioSesionListener;
 import ar.edu.unlu.mancala.vista.grafica.listener.MenuPrincipalListener;
@@ -23,7 +23,7 @@ public class VistaGrafica
 	// Jframes --------------------------------------------------------
 	private MenuInicioSesion menuInicioSesion = new MenuInicioSesion();
 	private MenuPrincipal menuPrincipal = new MenuPrincipal();
-	private TableroPartida tablero = new TableroPartida();
+	private TableroVistaGrafica tablero = new TableroVistaGrafica();
 	private SalaDeEspera salaDeEspera = new SalaDeEspera();
 	private CartelGanador cartelGanador = new CartelGanador();
 	private CartelPerdedor cartelPerdedor = new CartelPerdedor();
@@ -89,23 +89,21 @@ public class VistaGrafica
 	}
 
 	@Override
-	public void mostrarPartida(TableroLectura tablero, JugadorLectura jugadorMueve) {
+	public void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve, TipoPartida tipoPartida) {
 
 		if (flujoActual == EstadosFlujo.ESPERA) {
 			salaDeEspera.setVisible(false);
 		}
+
 		flujoActual = EstadosFlujo.MOVIMIENTOS;
 		if (!this.tablero.isVisible()) {
+			tablero.iniciarTablero(tipoPartida);
 			this.tablero.setListener(this);
-			try {
-				this.tablero.setJugadores(controlador.obtenerJugadoresEnPartida());
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
 			this.tablero.setVisible(true);
+			this.tablero.inicializar();
 			this.menuPrincipal.setVisible(false);
 		}
-		this.tablero.actualizarTablero((AgujeroLectura[]) tablero.getAgujeros());
+		this.tablero.actualizarTablero(ladosTablero);
 		informar(jugadorMueve, "Le toca al jugador: ");
 	}
 
@@ -245,15 +243,6 @@ public class VistaGrafica
 		try {
 			controlador.mover(Integer.parseInt(indice));
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void solicitarJugadores() {
-		try {
-			this.tablero.setJugadores(controlador.obtenerJugadoresEnPartida());
-		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}

@@ -12,7 +12,6 @@ public class Jugador implements JugadorLectura, Serializable {
 	private String nombre;
 	private String contrasenia;
 	private int ganadas;
-
 	private int perdidas;
 	private int empatadas;
 
@@ -66,5 +65,33 @@ public class Jugador implements JugadorLectura, Serializable {
 			return false;
 		Jugador other = (Jugador) obj;
 		return Objects.equals(nombre, other.nombre);
+	}
+
+	public void incGanadas() {
+		this.ganadas = ganadas + 1;
+	}
+
+	public void incPerdidas() {
+		this.perdidas = perdidas + 1;
+	}
+
+	public void incEmpatadas() {
+		this.empatadas = empatadas + 1;
+	}
+
+	public double winRate() {
+		return (totalJugadas() > 0) ? ((double) ganadas / totalJugadas()) * 100 : 0;
+	}
+
+	public double loseRate() {
+		return (totalJugadas() > 0) ? ((double) perdidas / totalJugadas()) * 100 : 0;
+	}
+
+	public double drawnRate() {
+		return (totalJugadas() > 0) ? ((double) empatadas / totalJugadas()) * 100 : 0;
+	}
+
+	private int totalJugadas() {
+		return perdidas + ganadas + empatadas;
 	}
 }
