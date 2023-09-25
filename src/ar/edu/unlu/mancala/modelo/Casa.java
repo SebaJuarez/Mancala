@@ -7,4 +7,14 @@ public class Casa extends Agujero {
 	public void ponerHaba(int cantidad) {
 		this.habas += cantidad;
 	}
+
+	@Override
+	protected boolean isHoyo() {
+		return false;
+	}
+
+	@Override
+	protected boolean isCasa() {
+		return true;
+	}
 }

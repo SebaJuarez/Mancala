@@ -82,4 +82,5 @@ public class SalaDeEspera extends JFrame {
 	public void setListener(Cerrable listener) {
 		this.listener = listener;
 	}
+
 }

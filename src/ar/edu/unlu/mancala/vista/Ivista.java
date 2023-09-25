@@ -1,12 +1,8 @@
 package ar.edu.unlu.mancala.vista;
 
-import java.util.List;
-
 import ar.edu.unlu.mancala.controlador.MancalaController;
-import ar.edu.unlu.mancala.modelo.LadoTablero;
-import ar.edu.unlu.mancala.modelo.TipoPartida;
 
-public interface Ivista {
+public interface Ivista extends IVistaPartida, IVistaJugador {
 
 	void iniciar();
 
@@ -14,29 +10,6 @@ public interface Ivista {
 
 	void setControlador(MancalaController controlador);
 
-	void informar(String string);
-
-	void informar(JugadorLectura modelo, String string);
-
-	void mostrarGanador(JugadorLectura obtenerGanador);
-
-	void mostrarMenuInicioSesion();
-
-	void mostrarEstadisticas();
-
-	void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve, TipoPartida tipoPartida);
-
-	void mostrarSalaDeEspera();
-
-	void mostrarMenuPrincipal();
-
 	void mostrarReglas();
 
-	void mostrarTop(List<JugadorLectura> topTen);
-
-	void mostrarPerdedor(JugadorLectura jugador);
-
-	void mostrarEmpate(JugadorLectura jugador);
-
-	String getNombreIntento();
 }

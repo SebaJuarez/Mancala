@@ -20,4 +20,8 @@ public abstract class Agujero implements Serializable, AgujeroLectura {
 	public void setHabas(int habas) {
 		this.habas = habas;
 	}
+
+	protected abstract boolean isHoyo();
+
+	protected abstract boolean isCasa();
 }

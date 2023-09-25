@@ -1,19 +1,19 @@
 package ar.edu.unlu.mancala.modelo;
 
 import java.io.Serializable;
+import java.util.Queue;
 
 import ar.edu.unlu.mancala.modelo.estados.movimiento.EstadoMovimiento;
 
 public interface Movimiento extends Serializable {
 
-	EstadoMovimiento distribuirHabas(Tablero tablero, Hoyo hoyo, Jugador jugadorMueve);
+	EstadoMovimiento distribuirHabas(Partida partida, Hoyo hoyo, Jugador jugadorMueve);
 
-	default EstadoMovimiento tomarHabasOpuestas(Tablero tablero, Hoyo hoyo, Jugador jugadorMueve) {
-		Agujero hoyoOpuesto = tablero.ladoOpuesto(hoyo).HoyoOpuesto(tablero.getLado(jugadorMueve), hoyo);
-		if (hoyoOpuesto.getHabas() > 0 && hoyoOpuesto instanceof Hoyo) {
-			tablero.getCasaDeJugador(jugadorMueve).ponerHaba(((Hoyo) hoyoOpuesto).tomarHabas());
-			return EstadoMovimiento.CAPTURA_REALIZADA;
+	default void ponerLadoJugadorAlFrente(Queue<LadoTablero> ladosTablero, LadoTablero ladoQueMueve) {
+		// pongo el lado del jugador que mueve en frente de la cola
+		while (!(ladosTablero.peek() == ladoQueMueve)) {
+			LadoTablero ladoFrente = ladosTablero.poll();
+			ladosTablero.add(ladoFrente);
 		}
-		return EstadoMovimiento.MOVIMIENTO_REALIZADO;
 	}
 }

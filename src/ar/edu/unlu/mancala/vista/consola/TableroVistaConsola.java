@@ -59,41 +59,39 @@ public class TableroVistaConsola {
 		tablero += "************************************************";
 		return tablero;
 	}
-	
-	private static String mostrarTablero4Lados(List<LadoTablero> ladosTablero) {
-	    String tablero = "";
-	    List<Agujero> lado1A = ladosTablero.get(0).getAgujeros();
-	    List<Agujero> lado2A = ladosTablero.get(1).getAgujeros();
-	    List<Agujero> lado3A = ladosTablero.get(2).getAgujeros();
-	    List<Agujero> lado4A = ladosTablero.get(3).getAgujeros();
-	    
-	    tablero = "************************************************\r\n"
-	            + "*              <<   TABLERO   >>               *\r\n"
-	            + "*----------------------------------------------*\r\n"
-	            + "* Lado 3:" + ladosTablero.get(2).getJugador().getNombre()
-	            + "       Lado 4:" + ladosTablero.get(3).getJugador().getNombre()+ "\n"
-	            + "*       ________________________________       *\r\n"
-	            + "*      |             LADO 3             |      *\r\n"
-	            + "*      | L " 
-	            + "| "+lado3A.get(3).getHabas()+" || "+lado3A.get(2).getHabas()+" || "+lado3A.get(1).getHabas()+" || "+lado3A.get(0).getHabas()+" |"
-	            + "| "+lado2A.get(3).getHabas()+" |" + "| L |      *\r\n"
-	            + "*      | A " + "| "+lado4A.get(0).getHabas()+" |" + "               " 
-	            + "| "+lado2A.get(2).getHabas()+" |" + "| A |      *\r\n"
-	            + "*      | D " + "| "+lado4A.get(1).getHabas()+" |" + "               " 
-	            + "| "+lado2A.get(1).getHabas()+" |" + "| D |      *\r\n"
-	            + "*      | O " + "| "+lado4A.get(2).getHabas()+" |" + "               " 
-	            + "| "+lado2A.get(0).getHabas()+" |" + "| 0 |      *\r\n"
-	            + "*      | 4 " + "| "+lado4A.get(3).getHabas()+" |" + 
-	            "| "+lado1A.get(0).getHabas()+" || "+lado1A.get(1).getHabas()+" || "+lado1A.get(2).getHabas()+" || "+lado1A.get(3).getHabas()+" |" + "| 2 |      *\r\n"
-	            + "*      |          ↑    ↑    ↑           |      *\r\n"
-	            + "*      |__________1____2____3___________|      *\r\n"
-	            + "*                   LADO 1                     *\r\n"
-	            + "*        (ingrese el indice para mover)        *\r\n"
-	            + "*  Lado 1: " + ladosTablero.get(0).getJugador().getNombre()
-	            + "     Lado 2:" + ladosTablero.get(1).getJugador().getNombre()+ "\n"
-	            + "************************************************";
 
-	    return tablero;
+	private static String mostrarTablero4Lados(List<LadoTablero> ladosTablero) {
+		String tablero = "";
+		List<Agujero> lado1A = ladosTablero.get(0).getAgujeros();
+		List<Agujero> lado2A = ladosTablero.get(1).getAgujeros();
+		List<Agujero> lado3A = ladosTablero.get(2).getAgujeros();
+		List<Agujero> lado4A = ladosTablero.get(3).getAgujeros();
+
+		tablero = "************************************************\r\n"
+				+ "*              <<   TABLERO   >>               *\r\n"
+				+ "*----------------------------------------------*\r\n" + "* Lado 3:"
+				+ ladosTablero.get(2).getJugador().getNombre() + "       Lado 4:"
+				+ ladosTablero.get(3).getJugador().getNombre() + "\n"
+				+ "*       ________________________________       *\r\n"
+				+ "*      |             LADO 3             |      *\r\n" + "*      | L " + "| "
+				+ lado3A.get(3).getHabas() + " || " + lado3A.get(2).getHabas() + " || " + lado3A.get(1).getHabas()
+				+ " || " + lado3A.get(0).getHabas() + " |" + "| " + lado2A.get(3).getHabas() + " |" + "| L |      *\r\n"
+				+ "*      | A " + "| " + lado4A.get(0).getHabas() + " |" + "               " + "| "
+				+ lado2A.get(2).getHabas() + " |" + "| A |      *\r\n" + "*      | D " + "| " + lado4A.get(1).getHabas()
+				+ " |" + "               " + "| " + lado2A.get(1).getHabas() + " |" + "| D |      *\r\n" + "*      | O "
+				+ "| " + lado4A.get(2).getHabas() + " |" + "               " + "| " + lado2A.get(0).getHabas() + " |"
+				+ "| 0 |      *\r\n" + "*      | 4 " + "| " + lado4A.get(3).getHabas() + " |" + "| "
+				+ lado1A.get(0).getHabas() + " || " + lado1A.get(1).getHabas() + " || " + lado1A.get(2).getHabas()
+				+ " || " + lado1A.get(3).getHabas() + " |" + "| 2 |      *\r\n"
+				+ "*      |          ↑    ↑    ↑           |      *\r\n"
+				+ "*      |__________1____2____3___________|      *\r\n"
+				+ "*                   LADO 1                     *\r\n"
+				+ "*        (ingrese el indice para mover)        *\r\n" + "*  Lado 1: "
+				+ ladosTablero.get(0).getJugador().getNombre() + "     Lado 2:"
+				+ ladosTablero.get(1).getJugador().getNombre() + "\n"
+				+ "************************************************";
+
+		return tablero;
 	}
 
 }

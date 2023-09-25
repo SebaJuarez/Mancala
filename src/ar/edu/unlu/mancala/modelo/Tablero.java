@@ -21,9 +21,8 @@ public class Tablero implements TableroLectura, Serializable {
 	}
 
 	public LadoTablero ladoOpuesto(Hoyo hoyo) {
-		LadoTableroLectura ladoProviene = ladosDelTablero.stream()
-				.filter(lado -> lado.getAgujeros()
-						.contains(hoyo))
+		LadoTablero ladoProviene = ladosDelTablero.stream()
+				.filter(lado -> lado.perteneceAgujero(hoyo))
 				.findFirst()
 				.orElse(null);
 
@@ -38,15 +37,13 @@ public class Tablero implements TableroLectura, Serializable {
 	}
 
 	public boolean ladoVacio() {
-		return ladosDelTablero.stream()
-				.anyMatch(lado -> lado.ladoVacio());
+		return ladosDelTablero.stream().anyMatch(lado -> lado.ladoVacio());
 	}
 
 	public LadoTablero getLado(Jugador jugador) {
-		return ladosDelTablero.stream()
-				.filter(lado -> lado.getJugador().equals(jugador))
-				.findFirst()
-				.orElse(null);
+		return ladosDelTablero.stream().filter(lado -> lado.perteneceJugador(jugador))
+														.findFirst()
+														.orElse(null);
 	}
 
 	public void inicializarLados(int habas) {
@@ -55,7 +52,7 @@ public class Tablero implements TableroLectura, Serializable {
 
 	public void asignarJugadorAlLado(Jugador jugador) {
 		ladosDelTablero.stream()
-		.filter(lado -> lado.getJugador() == null)
+		.filter(lado -> !lado.tieneJugador())
 		.findFirst().orElse(null)
 		.setJugador(jugador);
 	}
@@ -73,9 +70,17 @@ public class Tablero implements TableroLectura, Serializable {
 	}
 
 	public void juntarHabasLadoNoVacio() {
-		ladosDelTablero.stream()
-		.filter(lado -> !lado.ladoVacio())
-		.collect(Collectors.toList())
-		.forEach(lado -> lado.juntarEnCasa());
+		ladosDelTablero.stream().filter(lado -> !lado.ladoVacio()).collect(Collectors.toList())
+				.forEach(lado -> lado.juntarEnCasa());
 	}
+
+	public void tomarHabasOpuestas(Hoyo hoyo, Jugador jugadorMueve) {
+		Agujero hoyoOpuesto = hoyoOpuesto(hoyo, jugadorMueve);
+		getCasaDeJugador(jugadorMueve).ponerHaba(((Hoyo) hoyoOpuesto).tomarHabas());
+	}
+
+	public Agujero hoyoOpuesto(Hoyo hoyo, Jugador jugadorMueve) {
+		return ladoOpuesto(hoyo).HoyoOpuesto(getLado(jugadorMueve), hoyo);
+	}
+
 }

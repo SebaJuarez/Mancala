@@ -22,15 +22,15 @@ public class VistaGrafica
 	private EstadosFlujo flujoActual = EstadosFlujo.LOG_IN;
 	// Jframes --------------------------------------------------------
 	private MenuInicioSesion menuInicioSesion = new MenuInicioSesion();
-	private MenuPrincipal menuPrincipal = new MenuPrincipal();
-	private TableroVistaGrafica tablero = new TableroVistaGrafica();
-	private SalaDeEspera salaDeEspera = new SalaDeEspera();
-	private CartelGanador cartelGanador = new CartelGanador();
-	private CartelPerdedor cartelPerdedor = new CartelPerdedor();
-	private CartelEmpate cartelEmpate = new CartelEmpate();
-	private Estadistica estadistica = new Estadistica();
-	private TopJugadores topJugadores = new TopJugadores();
-	private Reglas reglas = new Reglas();
+	private MenuPrincipal menuPrincipal;
+	private TableroVistaGrafica tablero;
+	private SalaDeEspera salaDeEspera;
+	private CartelGanador cartelGanador;
+	private CartelPerdedor cartelPerdedor;
+	private CartelEmpate cartelEmpate;
+	private Estadistica estadistica;
+	private TopJugadores topJugadores;
+	private Reglas reglas;
 
 	@Override
 	public void iniciar() {
@@ -57,13 +57,12 @@ public class VistaGrafica
 			((FormularioCreacionUsuario) menuInicioSesion.getFormularioCreacionUsuario()).mostrarAviso(string);
 			break;
 		case MOVIMIENTOS:
-			if (!string.equals("no se admiten mas participantes")) {
-				tablero.informar(string);
-			}
+			tablero.informar(string);
 			break;
 		case MENU_PRINCIPAL:
 			menuPrincipal.informar(string);
 		default:
+			menuPrincipal.informar(string);
 			break;
 		}
 	}
@@ -82,18 +81,28 @@ public class VistaGrafica
 
 	@Override
 	public void mostrarEstadisticas() {
+		if (estadistica == null)
+			estadistica = new Estadistica();
 		menuPrincipal.setVisible(false);
-		estadistica.mostrarEstadisticas(controlador.getJugador());
+		try {
+			estadistica.mostrarEstadisticas(controlador.getJugador());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		estadistica.setListener(this);
 		estadistica.setVisible(true);
 	}
 
 	@Override
-	public void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve, TipoPartida tipoPartida) {
+	public void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve, TipoPartida tipoPartida,
+			JugadorLectura yo) {
 
 		if (flujoActual == EstadosFlujo.ESPERA) {
 			salaDeEspera.setVisible(false);
 		}
+
+		if (tablero == null)
+			tablero = new TableroVistaGrafica();
 
 		flujoActual = EstadosFlujo.MOVIMIENTOS;
 		if (!this.tablero.isVisible()) {
@@ -103,12 +112,14 @@ public class VistaGrafica
 			this.tablero.inicializar();
 			this.menuPrincipal.setVisible(false);
 		}
-		this.tablero.actualizarTablero(ladosTablero);
+		this.tablero.actualizarTablero(ordenarLados(ladosTablero, yo));
 		informar(jugadorMueve, "Le toca al jugador: ");
 	}
 
 	@Override
 	public void mostrarSalaDeEspera() {
+		if (salaDeEspera == null)
+			salaDeEspera = new SalaDeEspera();
 		flujoActual = EstadosFlujo.ESPERA;
 		menuPrincipal.setVisible(false);
 		salaDeEspera.setListener(this);
@@ -117,6 +128,8 @@ public class VistaGrafica
 
 	@Override
 	public void mostrarMenuPrincipal() {
+		if (menuPrincipal == null)
+			menuPrincipal = new MenuPrincipal();
 		flujoActual = EstadosFlujo.MENU_PRINCIPAL;
 		this.menuInicioSesion.terminar();
 		this.menuPrincipal.setListener(this);
@@ -125,6 +138,8 @@ public class VistaGrafica
 
 	@Override
 	public void mostrarReglas() {
+		if (reglas == null)
+			reglas = new Reglas();
 		this.menuPrincipal.setVisible(false);
 		this.reglas.setListener(this);
 		this.reglas.setVisible(true);
@@ -132,6 +147,8 @@ public class VistaGrafica
 
 	@Override
 	public void mostrarTop(List<JugadorLectura> topTen) {
+		if (topJugadores == null)
+			topJugadores = new TopJugadores();
 		menuPrincipal.setVisible(false);
 		topJugadores.setListener(this);
 		topJugadores.mostrarJugadores(topTen);
@@ -140,6 +157,8 @@ public class VistaGrafica
 
 	@Override
 	public void mostrarGanador(JugadorLectura obtenerGanador) {
+		if (cartelGanador == null)
+			cartelGanador = new CartelGanador();
 		tablero.setVisible(false);
 		cartelGanador.setListener(this);
 		cartelGanador.setVisible(true);
@@ -148,6 +167,8 @@ public class VistaGrafica
 
 	@Override
 	public void mostrarPerdedor(JugadorLectura jugador) {
+		if (cartelPerdedor == null)
+			cartelPerdedor = new CartelPerdedor();
 		tablero.setVisible(false);
 		cartelPerdedor.setListener(this);
 		cartelPerdedor.setVisible(true);
@@ -156,6 +177,8 @@ public class VistaGrafica
 
 	@Override
 	public void mostrarEmpate(JugadorLectura jugador) {
+		if (cartelEmpate == null)
+			cartelEmpate = new CartelEmpate();
 		tablero.setVisible(false);
 		cartelEmpate.setListener(this);
 		cartelEmpate.setVisible(true);
@@ -249,22 +272,22 @@ public class VistaGrafica
 
 	@Override
 	public void onVolverButtonClick() {
-		if (cartelGanador.isVisible()) {
+		if (cartelGanador != null && cartelGanador.isVisible()) {
 			cartelGanador.setVisible(false);
 		}
-		if (cartelPerdedor.isVisible()) {
+		if (cartelPerdedor != null && cartelPerdedor.isVisible()) {
 			cartelPerdedor.setVisible(false);
 		}
-		if (cartelEmpate.isVisible()) {
+		if (cartelEmpate != null && cartelEmpate.isVisible()) {
 			cartelEmpate.setVisible(false);
 		}
-		if (estadistica.isVisible()) {
+		if (estadistica != null && estadistica.isVisible()) {
 			estadistica.setVisible(false);
 		}
-		if (topJugadores.isVisible()) {
+		if (topJugadores != null && topJugadores.isVisible()) {
 			topJugadores.setVisible(false);
 		}
-		if (reglas.isVisible()) {
+		if (reglas != null && reglas.isVisible()) {
 			reglas.setVisible(false);
 		}
 		menuPrincipal.setVisible(true);
