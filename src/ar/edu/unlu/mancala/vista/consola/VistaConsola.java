@@ -402,7 +402,12 @@ public class VistaConsola extends JFrame implements Ivista {
 		clearScreen();
 		DecimalFormat decimalFormat = new DecimalFormat("#.##");
 		println(Banner.ESTADISTICA);
-		JugadorLectura jugador = controlador.getJugador();
+		JugadorLectura jugador = null;
+		try {
+			jugador = controlador.getJugador();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		println("Ganadas : " + jugador.getGanadas() + "  <<");
 		println("");
 		println("Perdidas : " + jugador.getPerdidas() + "  <<");
@@ -429,12 +434,13 @@ public class VistaConsola extends JFrame implements Ivista {
 	// ---------------------------------------------------------------------------
 
 	@Override
-	public void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve, TipoPartida tipoPartida) {
+	public void mostrarPartida(List<LadoTablero> ladosTablero, JugadorLectura jugadorMueve, TipoPartida tipoPartida,
+			JugadorLectura yo) {
 		if (this.estadoFlujo != EstadosFlujo.MOVIMIENTOS) {
 			clearScreen();
 			informar("comienza la partida!!");
 		}
-		pantalla.append(tableroVistaConsola.mostrarTablero(ladosTablero, tipoPartida) + "\n");
+		pantalla.append(tableroVistaConsola.mostrarTablero(ordenarLados(ladosTablero, yo), tipoPartida) + "\n");
 		informar(jugadorMueve, "Le toca al jugador: ");
 		pantalla.setCaretPosition(pantalla.getDocument().getLength());
 		this.estadoFlujo = EstadosFlujo.MOVIMIENTOS;

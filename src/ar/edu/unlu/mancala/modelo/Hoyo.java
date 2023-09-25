@@ -13,4 +13,14 @@ public class Hoyo extends Agujero {
 		this.setHabas(0);
 		return habas;
 	}
+
+	@Override
+	protected boolean isHoyo() {
+		return true;
+	}
+
+	@Override
+	protected boolean isCasa() {
+		return false;
+	}
 }

@@ -11,7 +11,7 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 
 	public void inicializar(int habas) {
 		agujeros.stream().forEach(agujero -> {
-			if (agujero instanceof Hoyo) {
+			if (agujero.isHoyo()) {
 				agujero.setHabas(habas);
 			} else {
 				agujero.setHabas(0);
@@ -28,7 +28,7 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 
 	public boolean ladoVacio() {
 		return agujeros.stream().allMatch(agujero -> {
-			if (agujero instanceof Hoyo) {
+			if (agujero.isHoyo()) {
 				return !((Hoyo) agujero).hayHaba();
 			} else {
 				return true;
@@ -39,7 +39,7 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 	public void juntarEnCasa() {
 		Casa casa = obtenerCasa();
 		agujeros.forEach(agujero -> {
-			if (agujero instanceof Hoyo) {
+			if (agujero.isHoyo()) {
 				casa.ponerHaba(((Hoyo) agujero).tomarHabas());
 			}
 		});
@@ -77,9 +77,17 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 	}
 
 	public Casa obtenerCasa() {
-		return (Casa) agujeros.stream()
-				.filter(agujero -> agujero instanceof Casa)
+		return (Casa) agujeros.stream().filter(agujero -> agujero.isCasa())
 				.findFirst()
 				.orElse(null);
 	}
+
+	public boolean tieneJugador() {
+		return jugador != null;
+	}
+
+	public boolean perteneceAgujero(Hoyo hoyo) {
+		return agujeros.contains(hoyo);
+	}
+
 }

@@ -12,59 +12,50 @@ public class MovimientoSentidoHorario implements Movimiento {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public EstadoMovimiento distribuirHabas(Tablero tablero, Hoyo hoyo, Jugador jugadorMueve) {
+	public EstadoMovimiento distribuirHabas(Partida partida, Hoyo hoyo, Jugador jugadorMueve) {
 
 		// convierto en sentido horario la cola que por naturaleza representa el sentido
 		// antihorario
-		Queue<LadoTablero> ladosTablero = convertirSentidoHorario(tablero, jugadorMueve);
-
+		Queue<LadoTablero> ladosTablero = convertirSentidoHorario(partida.getTablero(), jugadorMueve);
 		// agarro todas las habas del hoyo
 		int habasAMover = hoyo.tomarHabas();
 		Agujero agujeroActual = hoyo;
 		// preparo el indice siguiente del hoyo que quiero mover
 		int indice = ladosTablero.peek().getAgujeros().indexOf(agujeroActual) - 1;
-
+		LadoTablero ladoFrente = ladosTablero.peek();
 		// las distribuyo hasta quedarme sin habas
 		while (habasAMover > 0) {
-			LadoTablero ladoFrente = ladosTablero.poll();
+			ladoFrente = ladosTablero.poll();
 			List<Agujero> agujeros = ladoFrente.getAgujeros();
-			// si hay habas para distribuir
-			while (habasAMover > 0) {
-				// si el indice esta dentro del rango de la cantidad de agujeros
-				if (indice >= 0) {
-					// recupero el agujero del indice determinado
-					agujeroActual = agujeros.get(indice);
-					// si el agujero es una casa
-					if (agujeroActual instanceof Casa) {
-						// si la casa le pertenece al jugador que esta moviendo
-						if (ladoFrente.perteneceJugador(jugadorMueve)) {
-							// pongo una haba
-							agujeroActual.ponerHaba();
-							habasAMover--;
-						}
-					} else {
-						// si es un hoyo entonces pongo la haba sin importar a quien le pertenece
+			// si el indice esta dentro del rango de la cantidad de agujeros
+			while (indice >= 0 && habasAMover > 0) {
+				// recupero el agujero del indice determinado
+				agujeroActual = agujeros.get(indice);
+				// si el agujero es una casa
+				if (agujeroActual.isCasa()) {
+					// si la casa le pertenece al jugador que esta moviendo
+					if (ladoFrente.perteneceJugador(jugadorMueve)) {
+						// pongo una haba
 						agujeroActual.ponerHaba();
 						habasAMover--;
 					}
-					// paso al siguiente indice
-					indice--;
 				} else {
-					// seteo el indice en en el ultimo agujero
-					indice = tablero.getLado(jugadorMueve).getAgujeros().size() - 1;
-					// pongo al final de cola el lado que ya recorrí
-					ladosTablero.add(ladoFrente);
-					// termino con este while para ir al principal y cambiar al lado siguiente
-					break;
+					// si es un hoyo entonces pongo la haba sin importar a quien le pertenece
+					agujeroActual.ponerHaba();
+					habasAMover--;
 				}
-				if (habasAMover == 0 && agujeroActual.getHabas() == 1 && ladoFrente.perteneceJugador(jugadorMueve)
-						&& !(agujeroActual instanceof Casa)) {
-					return tomarHabasOpuestas(tablero, (Hoyo) agujeroActual, jugadorMueve);
-				} else if (habasAMover == 0 && ladoFrente.perteneceJugador(jugadorMueve)
-						&& agujeroActual instanceof Casa) {
-					return EstadoMovimiento.MOVIMIENTO_VALIDO_SIGUE;
-				}
-			}
+				// paso al siguiente indice
+				indice--;
+			} 
+			// seteo el indice en en el ultimo agujero
+			indice = partida.getLado(jugadorMueve).getAgujeros().size() - 1;
+			// pongo al final de cola el lado que ya recorrí
+			ladosTablero.add(ladoFrente);
+		}	
+		if (partida.tomarHabasOpuestas(jugadorMueve, agujeroActual, ladoFrente)) {
+			return EstadoMovimiento.CAPTURA_REALIZADA;
+		} else if (partida.puedeSeguirJugando(jugadorMueve, agujeroActual, ladoFrente)) {
+			return EstadoMovimiento.MOVIMIENTO_VALIDO_SIGUE;
 		}
 		return EstadoMovimiento.MOVIMIENTO_REALIZADO;
 	}
@@ -80,12 +71,15 @@ public class MovimientoSentidoHorario implements Movimiento {
 		// obtengo el lado del jugador que mueve
 		LadoTablero ladoQueMueve = tablero.getLado(jugadorMueve);
 
-		// pongo el lado del jugador que mueve en frente de la cola
-		while (!(ladosTablero.peek() == ladoQueMueve)) {
-			LadoTablero ladoFrente = ladosTablero.poll();
-			ladosTablero.add(ladoFrente);
-		}
+		ponerLadoJugadorAlFrente(ladosTablero, ladoQueMueve);
 
+		setearSentidoHorario(ladosTablero, pila, ladoQueMueve);
+
+		return ladosTablero;
+	}
+
+	private void setearSentidoHorario(Queue<LadoTablero> ladosTablero, Stack<LadoTablero> pila,
+			LadoTablero ladoQueMueve) {
 		// paso los lados a una pila para darlos vuelta
 		while (!ladosTablero.isEmpty()) {
 			LadoTablero lado = ladosTablero.poll();
@@ -93,7 +87,6 @@ public class MovimientoSentidoHorario implements Movimiento {
 				pila.push(lado);
 			}
 		}
-
 		// pongo el lado que mueve al tope de la pila
 		pila.push(ladoQueMueve);
 
@@ -101,8 +94,5 @@ public class MovimientoSentidoHorario implements Movimiento {
 		while (!pila.isEmpty()) {
 			ladosTablero.add(pila.pop());
 		}
-
-		return ladosTablero;
 	}
-
 }

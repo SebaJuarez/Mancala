@@ -161,4 +161,5 @@ public class MenuPrincipal extends JFrame {
 	public void informar(String string) {
 		lblInforme.setText(string);
 	}
+
 }

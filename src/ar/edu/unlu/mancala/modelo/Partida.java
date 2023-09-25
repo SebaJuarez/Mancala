@@ -43,7 +43,7 @@ public class Partida implements Serializable {
 			tableroConfig.setCantHabasIniciales(4);
 			tableroConfig.setPosCasaPorLado(7);
 			estrategiaMovimiento = new MovimientoStandar();
-			//estrategiaMovimiento = new MovimientoSentidoHorario();
+			// estrategiaMovimiento = new MovimientoSentidoHorario();
 			break;
 		}
 		case PARTIDA_4_S_AHORARIO: {
@@ -82,7 +82,7 @@ public class Partida implements Serializable {
 	}
 
 	public EstadoPartida listoParaComezar() {
-		if (jugadores.size() == participantesLimite) {
+		if (partidaLlena()) {
 			asignarTurno();
 			return EstadoPartida.COMENZANDO_PARTIDA;
 		} else {
@@ -118,7 +118,7 @@ public class Partida implements Serializable {
 	}
 
 	private EstadoMovimiento distribuirHabas(Hoyo hoyo, Jugador jugador) {
-		return estrategiaMovimiento.distribuirHabas(tablero, hoyo, jugador);
+		return estrategiaMovimiento.distribuirHabas(this, hoyo, jugador);
 	}
 
 	public List<Jugador> obtenerGanador() {
@@ -129,13 +129,9 @@ public class Partida implements Serializable {
 			jugadorPuntos.put(jugadorn, tablero.getCasaDeJugador(jugadorn).getHabas());
 		});
 
-		int maxPuntos = jugadorPuntos.values().stream()
-				.max((p1, p2) -> p1.compareTo(p2))
-				.orElse(0);
+		int maxPuntos = jugadorPuntos.values().stream().max((p1, p2) -> p1.compareTo(p2)).orElse(0);
 
-		return jugadorPuntos.entrySet().stream()
-				.filter(entry -> entry.getValue() == maxPuntos)
-				.map(Map.Entry::getKey)
+		return jugadorPuntos.entrySet().stream().filter(entry -> entry.getValue() == maxPuntos).map(Map.Entry::getKey)
 				.collect(Collectors.toList());
 	}
 
@@ -157,6 +153,14 @@ public class Partida implements Serializable {
 	public EstadoPartida desconectarJugador(Jugador jugadorDesconectado) {
 		jugadores.remove(jugadorDesconectado);
 		return EstadoPartida.USUARIO_DESCONECTADO;
+	}
+
+	public boolean isJugadorUltimoEnMover(Jugador jugador) {
+		return jugador.equals(ultimoEnMover);
+	}
+
+	public boolean isJugadorEnPartida(Jugador jugador) {
+		return jugadores.contains(jugador);
 	}
 
 	public boolean isPartidaTerminada() {
@@ -189,6 +193,48 @@ public class Partida implements Serializable {
 
 	public Jugador getUltimoEnMover() {
 		return ultimoEnMover;
+	}
+
+	public Jugador ultimoJugadorConectado() {
+		return getJugadores().get(jugadores.size() - 1);
+	}
+
+	public boolean partidaLlena() {
+		return jugadores.size() == participantesLimite;
+	}
+
+
+	public boolean puedeSeguirJugando(Jugador jugadorMueve, Agujero agujeroActual,
+			LadoTablero ladoFrente) {
+		return ladoFrente.perteneceJugador(jugadorMueve) && agujeroActual.isCasa();
+	}
+
+	public boolean tomarHabasOpuestas(Jugador jugadorMueve, Agujero agujero,
+			LadoTablero ladoFrente) {
+		 if(puedeTomarHabas(jugadorMueve,  agujero, ladoFrente)) {
+			 tablero.tomarHabasOpuestas((Hoyo) agujero, jugadorMueve);
+			 return true;
+		 }
+		 return false;
+	}
+	
+	private boolean puedeTomarHabas(Jugador jugadorMueve, Agujero agujeroActual,
+			LadoTablero ladoFrente) {
+		return agujeroActual.getHabas() == 1 // utlimo hoyo con una haba
+				&& ladoFrente.perteneceJugador(jugadorMueve) //hoyo de lado del jugador que mueve
+				&& agujeroActual.isHoyo() // tiene que ser hoyo
+				&& tablero.hoyoOpuesto((Hoyo)agujeroActual, jugadorMueve).isHoyo() // el opuesto tiene que ser hoyo
+				&& tablero.hoyoOpuesto((Hoyo)agujeroActual, jugadorMueve).getHabas() > 0; // el opuesto tiene que tener habas
+	}
+
+	public LadoTablero getLado(Jugador jugadorMueve) {
+		return tablero.getLado(jugadorMueve);
+	}
+
+	public boolean isMovimientoInvalido(EstadoMovimiento estadoMov) {
+		return estadoMov == EstadoMovimiento.TURNO_INVALIDO
+				|| estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION
+				|| estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_HABAS;
 	}
 
 }
