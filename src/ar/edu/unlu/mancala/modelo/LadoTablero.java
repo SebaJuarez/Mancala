@@ -77,9 +77,7 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 	}
 
 	public Casa obtenerCasa() {
-		return (Casa) agujeros.stream().filter(agujero -> agujero.isCasa())
-				.findFirst()
-				.orElse(null);
+		return (Casa) agujeros.stream().filter(agujero -> agujero.isCasa()).findFirst().orElse(null);
 	}
 
 	public boolean tieneJugador() {

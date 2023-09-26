@@ -21,9 +21,7 @@ public class Tablero implements TableroLectura, Serializable {
 	}
 
 	public LadoTablero ladoOpuesto(Hoyo hoyo) {
-		LadoTablero ladoProviene = ladosDelTablero.stream()
-				.filter(lado -> lado.perteneceAgujero(hoyo))
-				.findFirst()
+		LadoTablero ladoProviene = ladosDelTablero.stream().filter(lado -> lado.perteneceAgujero(hoyo)).findFirst()
 				.orElse(null);
 
 		int totalLados = ladosDelTablero.size();
@@ -41,9 +39,7 @@ public class Tablero implements TableroLectura, Serializable {
 	}
 
 	public LadoTablero getLado(Jugador jugador) {
-		return ladosDelTablero.stream().filter(lado -> lado.perteneceJugador(jugador))
-														.findFirst()
-														.orElse(null);
+		return ladosDelTablero.stream().filter(lado -> lado.perteneceJugador(jugador)).findFirst().orElse(null);
 	}
 
 	public void inicializarLados(int habas) {
@@ -51,10 +47,7 @@ public class Tablero implements TableroLectura, Serializable {
 	}
 
 	public void asignarJugadorAlLado(Jugador jugador) {
-		ladosDelTablero.stream()
-		.filter(lado -> !lado.tieneJugador())
-		.findFirst().orElse(null)
-		.setJugador(jugador);
+		ladosDelTablero.stream().filter(lado -> !lado.tieneJugador()).findFirst().orElse(null).setJugador(jugador);
 	}
 
 	public Casa getCasaDeJugador(Jugador jugador) {

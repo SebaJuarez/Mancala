@@ -20,7 +20,7 @@ public class Partida implements Serializable {
 	private Queue<Jugador> jugadores;
 	private Jugador turnoActual;
 	private int participantesLimite;
-	private Movimiento estrategiaMovimiento;
+	private Movimiento movimiento;
 	private TableroBuilder constructorTablero;
 	private Tablero tablero;
 	private TipoPartida tipoPartida;
@@ -42,8 +42,8 @@ public class Partida implements Serializable {
 			tableroConfig.setCantAgujerosPorLado(7);
 			tableroConfig.setCantHabasIniciales(4);
 			tableroConfig.setPosCasaPorLado(7);
-			estrategiaMovimiento = new MovimientoStandar();
-			// estrategiaMovimiento = new MovimientoSentidoHorario();
+			movimiento = new Movimiento(new SentidoAntiHorario());
+			// movimiento = new Movimiento2(new SentidoHorario());
 			break;
 		}
 		case PARTIDA_4_S_AHORARIO: {
@@ -52,8 +52,8 @@ public class Partida implements Serializable {
 			tableroConfig.setCantAgujerosPorLado(4);
 			tableroConfig.setCantHabasIniciales(3);
 			tableroConfig.setPosCasaPorLado(4);
-			estrategiaMovimiento = new MovimientoStandar();
-			// estrategiaMovimiento = new MovimientoSentidoHorario();
+			movimiento = new Movimiento(new SentidoAntiHorario());
+			// movimiento = new Movimiento2(new SentidoHorario());
 			break;
 		}
 		case PARTIDA_MODO_CAPTURA: {
@@ -62,8 +62,8 @@ public class Partida implements Serializable {
 			tableroConfig.setCantAgujerosPorLado(7);
 			tableroConfig.setCantHabasIniciales(1);
 			tableroConfig.setPosCasaPorLado(7);
-			// estrategiaMovimiento = new MovimientoStandar();
-			estrategiaMovimiento = new MovimientoSentidoHorario();
+			// movimiento = new Movimiento2(new SentidoAntiHorario());
+			movimiento = new Movimiento(new SentidoHorario());
 		}
 		}
 		constructorTablero.setConfiguracionTablero(tableroConfig);
@@ -72,7 +72,7 @@ public class Partida implements Serializable {
 	}
 
 	public EstadoPartida agregarJugador(Jugador jugador) {
-		if (jugadores.size() < participantesLimite) {
+		if (!partidaLlena()) {
 			jugadores.add(jugador);
 			tablero.asignarJugadorAlLado(jugador);
 			return EstadoPartida.USUARIO_CONECTADO;
@@ -118,7 +118,7 @@ public class Partida implements Serializable {
 	}
 
 	private EstadoMovimiento distribuirHabas(Hoyo hoyo, Jugador jugador) {
-		return estrategiaMovimiento.distribuirHabas(this, hoyo, jugador);
+		return movimiento.distribuirHabas(this, hoyo, jugador);
 	}
 
 	public List<Jugador> obtenerGanador() {
@@ -167,12 +167,43 @@ public class Partida implements Serializable {
 		return partidaTerminada;
 	}
 
-	public List<Jugador> getJugadores() {
-		return List.copyOf(jugadores);
+	public Jugador ultimoJugadorConectado() {
+		return getJugadores().get(jugadores.size() - 1);
 	}
 
-	public void setPartidaTerminada(boolean partidaTerminada) {
-		this.partidaTerminada = partidaTerminada;
+	public boolean partidaLlena() {
+		return jugadores.size() == participantesLimite;
+	}
+
+	public boolean tomarHabasOpuestas(Jugador jugadorMueve, Agujero agujero, LadoTablero ladoFrente) {
+		if (puedeTomarHabas(jugadorMueve, agujero, ladoFrente)) {
+			tablero.tomarHabasOpuestas((Hoyo) agujero, jugadorMueve);
+			return true;
+		}
+		return false;
+	}
+
+	private boolean puedeTomarHabas(Jugador jugadorMueve, Agujero agujeroActual, LadoTablero ladoFrente) {
+		return agujeroActual.getHabas() == 1 // utlimo hoyo con una haba
+				&& ladoFrente.perteneceJugador(jugadorMueve) // hoyo de lado del jugador que mueve
+				&& agujeroActual.isHoyo() // tiene que ser hoyo
+				&& tablero.hoyoOpuesto((Hoyo) agujeroActual, jugadorMueve).isHoyo() // el opuesto tiene que ser hoyo
+				&& ((Hoyo) tablero.hoyoOpuesto((Hoyo) agujeroActual, jugadorMueve)).hayHaba(); // el opuesto tiene que
+																								// tener habas
+	}
+
+	public boolean puedeSeguirJugando(Jugador jugadorMueve, Agujero agujeroActual, LadoTablero ladoFrente) {
+		return ladoFrente.perteneceJugador(jugadorMueve) && agujeroActual.isCasa();
+	}
+
+	public LadoTablero getLado(Jugador jugadorMueve) {
+		return tablero.getLado(jugadorMueve);
+	}
+
+	public boolean isMovimientoInvalido(EstadoMovimiento estadoMov) {
+		return estadoMov == EstadoMovimiento.TURNO_INVALIDO
+				|| estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION
+				|| estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_HABAS;
 	}
 
 	public int getParticipantesLimite() {
@@ -195,46 +226,11 @@ public class Partida implements Serializable {
 		return ultimoEnMover;
 	}
 
-	public Jugador ultimoJugadorConectado() {
-		return getJugadores().get(jugadores.size() - 1);
+	public List<Jugador> getJugadores() {
+		return List.copyOf(jugadores);
 	}
 
-	public boolean partidaLlena() {
-		return jugadores.size() == participantesLimite;
+	public void setPartidaTerminada(boolean partidaTerminada) {
+		this.partidaTerminada = partidaTerminada;
 	}
-
-
-	public boolean puedeSeguirJugando(Jugador jugadorMueve, Agujero agujeroActual,
-			LadoTablero ladoFrente) {
-		return ladoFrente.perteneceJugador(jugadorMueve) && agujeroActual.isCasa();
-	}
-
-	public boolean tomarHabasOpuestas(Jugador jugadorMueve, Agujero agujero,
-			LadoTablero ladoFrente) {
-		 if(puedeTomarHabas(jugadorMueve,  agujero, ladoFrente)) {
-			 tablero.tomarHabasOpuestas((Hoyo) agujero, jugadorMueve);
-			 return true;
-		 }
-		 return false;
-	}
-	
-	private boolean puedeTomarHabas(Jugador jugadorMueve, Agujero agujeroActual,
-			LadoTablero ladoFrente) {
-		return agujeroActual.getHabas() == 1 // utlimo hoyo con una haba
-				&& ladoFrente.perteneceJugador(jugadorMueve) //hoyo de lado del jugador que mueve
-				&& agujeroActual.isHoyo() // tiene que ser hoyo
-				&& tablero.hoyoOpuesto((Hoyo)agujeroActual, jugadorMueve).isHoyo() // el opuesto tiene que ser hoyo
-				&& tablero.hoyoOpuesto((Hoyo)agujeroActual, jugadorMueve).getHabas() > 0; // el opuesto tiene que tener habas
-	}
-
-	public LadoTablero getLado(Jugador jugadorMueve) {
-		return tablero.getLado(jugadorMueve);
-	}
-
-	public boolean isMovimientoInvalido(EstadoMovimiento estadoMov) {
-		return estadoMov == EstadoMovimiento.TURNO_INVALIDO
-				|| estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION
-				|| estadoMov == EstadoMovimiento.MOVIMIENTO_INVALIDO_HABAS;
-	}
-
 }
