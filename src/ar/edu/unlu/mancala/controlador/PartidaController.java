@@ -157,14 +157,15 @@ public class PartidaController {
 	}
 
 	private void partidaLlena() throws RemoteException {
-		if(!mancala.isJugadorEnPartida(this.jugador))
+		if (!mancala.isJugadorEnPartida(this.jugador))
 			vista.informar("no se admiten mas participantes");
 	}
 
 	private void usuarioDesconectado() throws RemoteException {
 		if (mancala.isJugadorEnPartida(this.jugador)) {
 			this.jugador = mancala.getJugador(this.jugador.getNombre());
-			EstadoJugadorPartida estado = mancala.estadoJugadorPartida(this.jugador, EstadoPartida.USUARIO_DESCONECTADO);
+			EstadoJugadorPartida estado = mancala.estadoJugadorPartida(this.jugador,
+					EstadoPartida.USUARIO_DESCONECTADO);
 			vista.mostrarEstadoJugadorPartida(estado, (JugadorLectura) this.jugador);
 		}
 	}

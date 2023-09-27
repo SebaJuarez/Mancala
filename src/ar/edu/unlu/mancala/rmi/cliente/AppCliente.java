@@ -28,7 +28,7 @@ public class AppCliente {
 		String portServidor = (String) JOptionPane.showInputDialog(null,
 				"Seleccione el puerto en el que corre el servidor", "Puerto del servidor", JOptionPane.QUESTION_MESSAGE,
 				null, null, 8888);
-		//Ivista vista = new VistaConsola();
+		// Ivista vista = new VistaConsola();
 		Ivista vista = new VistaGrafica();
 		MancalaController controlador = new MancalaController(vista);
 		vista.setControlador(controlador);
