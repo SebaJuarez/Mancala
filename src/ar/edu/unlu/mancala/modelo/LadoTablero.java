@@ -19,7 +19,7 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 		});
 	}
 
-	public Agujero HoyoOpuesto(LadoTablero ladoProviene, Hoyo hoyo) {
+	public Agujero hoyoOpuesto(LadoTablero ladoProviene, Hoyo hoyo) {
 		int indiceProviene = ladoProviene.agujeros.indexOf(hoyo);
 		// primer -1 por el size , segundo -1 por el desplazamiento del tablero
 		int indiceAgujeroOpuesto = agujeros.size() - 1 - indiceProviene - 1;
@@ -36,7 +36,7 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 		});
 	}
 
-	public void juntarEnCasa() {
+	public void juntarHabasEnCasa() {
 		Casa casa = obtenerCasa();
 		agujeros.forEach(agujero -> {
 			if (agujero.isHoyo()) {
@@ -49,6 +49,30 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 		return this.jugador.equals(jugador);
 	}
 
+	public Hoyo obtenerHoyo(int indice) {
+		return (Hoyo)agujeros.get(indice - 1);
+	}
+
+	public Casa obtenerCasa() {
+		return (Casa) agujeros.stream().filter(agujero -> agujero.isCasa()).findFirst().orElse(null);
+	}
+
+	public boolean tieneJugador() {
+		return jugador != null;
+	}
+
+	public boolean perteneceAgujero(Agujero agujero) {
+		return agujeros.contains(agujero);
+	}
+
+	public boolean isHoyo(int indice) {
+		return agujeros.get(indice - 1).isHoyo();
+	}
+
+	public boolean enRango(int indice) {
+		return (indice - 1) < 0 || (indice - 1) <= agujeros.size() - 1;
+	}
+	
 	@Override
 	public List<Agujero> getAgujeros() {
 		return agujeros;
@@ -63,29 +87,7 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 		return jugador;
 	}
 
-	public Hoyo obtenerHoyo(int indice) {
-		try {
-			Hoyo hoyo = (Hoyo) agujeros.get(indice - 1);
-			return hoyo;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
-
-	public Casa obtenerCasa() {
-		return (Casa) agujeros.stream().filter(agujero -> agujero.isCasa()).findFirst().orElse(null);
-	}
-
-	public boolean tieneJugador() {
-		return jugador != null;
-	}
-
-	public boolean perteneceAgujero(Hoyo hoyo) {
-		return agujeros.contains(hoyo);
-	}
-
 }

@@ -18,7 +18,7 @@ public class Movimiento {
 		// covierto el sentido del tablero en sentido horario pasandolos a una cola
 		Queue<LadoTablero> ladosTablero = sentido.convertirSentidoMovimiento(partida.getTablero(), jugadorMueve);
 		// pongo el lado a mover al frente
-		ponerLadoJugadorAlFrente(ladosTablero, jugadorMueve);
+		ponerLadoJugadorAlFrente(ladosTablero, partida.getLado(jugadorMueve));
 
 		int habas = hoyo.tomarHabas();
 		boolean primerVuelta = true;
@@ -37,10 +37,7 @@ public class Movimiento {
 			}
 			for (Agujero agujero : agujeros) {
 				if (habas > 0) {
-					if (agujero.isCasa() && !ladoActual.perteneceJugador(jugadorMueve)) {
-						// si es una casa y no me pertenece, entonces no pongo nada
-					} else {
-						// en cualquier otro caso pongo una haba
+					if (partida.puedePonerHaba(agujero, jugadorMueve, ladoActual)) {
 						agujero.ponerHaba();
 						habas--;
 					}
@@ -53,7 +50,9 @@ public class Movimiento {
 			// pongo el lado al final de la cola
 			ladosTablero.add(ladoActual);
 		}
-		if (partida.tomarHabasOpuestas(jugadorMueve, agujeroActual, ladoActual)) {
+		if (partida.puedeTomarHabas(jugadorMueve, agujeroActual, ladoActual)) {
+			int habasTomadas = partida.getTablero().tomarHabasOpuestas((Hoyo)agujeroActual, jugadorMueve);
+			partida.getTablero().getCasaDeJugador(jugadorMueve).ponerHaba(habasTomadas);
 			return EstadoMovimiento.CAPTURA_REALIZADA;
 		} else if (partida.puedeSeguirJugando(jugadorMueve, agujeroActual, ladoActual)) {
 			return EstadoMovimiento.MOVIMIENTO_VALIDO_SIGUE;
@@ -75,9 +74,9 @@ public class Movimiento {
 		return agujeros;
 	}
 
-	private void ponerLadoJugadorAlFrente(Queue<LadoTablero> ladosTablero, Jugador jugador) {
+	private void ponerLadoJugadorAlFrente(Queue<LadoTablero> ladosTablero, LadoTablero ladoQueMueve) {
 		// pongo el lado del jugador que mueve en frente de la cola
-		while (!(ladosTablero.peek().perteneceJugador(jugador))) {
+		while (!(ladosTablero.peek() == ladoQueMueve)) {
 			LadoTablero ladoFrente = ladosTablero.poll();
 			ladosTablero.add(ladoFrente);
 		}

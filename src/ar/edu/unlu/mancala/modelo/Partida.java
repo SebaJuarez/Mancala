@@ -104,22 +104,29 @@ public class Partida implements Serializable {
 		if (!jugador.equals(turnoActual)) {
 			return EstadoMovimiento.TURNO_INVALIDO;
 		}
-		Hoyo hoyo = tablero.getHoyo(jugador, indice);
-		if (hoyo == null) {
+		
+		if(!tablero.enRango(jugador, indice)) {
 			return EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION;
-		} else if (!hoyo.hayHaba()) {
+		}
+		
+		if(!tablero.isHoyo(jugador,indice)) {
+			return EstadoMovimiento.MOVIMIENTO_INVALIDO_POSICION;
+		}
+		Hoyo hoyo = tablero.getHoyo(jugador, indice);
+
+		if (!hoyo.hayHaba()) {
 			return EstadoMovimiento.MOVIMIENTO_INVALIDO_HABAS;
 		}
-		EstadoMovimiento estadoMovimiento = distribuirHabas(hoyo, jugador);
+		
+		EstadoMovimiento estadoMovimiento = movimiento.distribuirHabas(this,hoyo, jugador);
+		
 		if (EstadoMovimiento.MOVIMIENTO_VALIDO_SIGUE != estadoMovimiento) {
 			this.cambiarTurno();
 		}
+		
 		return estadoMovimiento;
 	}
 
-	private EstadoMovimiento distribuirHabas(Hoyo hoyo, Jugador jugador) {
-		return movimiento.distribuirHabas(this, hoyo, jugador);
-	}
 
 	public List<Jugador> obtenerGanador() {
 
@@ -136,7 +143,7 @@ public class Partida implements Serializable {
 	}
 
 	public EstadoPartida termino() {
-		if (tablero.ladoVacio()) {
+		if (tablero.algunLadoVacio()) {
 			this.partidaTerminada = true;
 			tablero.juntarHabasLadoNoVacio();
 			return EstadoPartida.PARTIDA_TERMINADA;
@@ -175,27 +182,23 @@ public class Partida implements Serializable {
 		return jugadores.size() == participantesLimite;
 	}
 
-	public boolean tomarHabasOpuestas(Jugador jugadorMueve, Agujero agujero, LadoTablero ladoFrente) {
-		if (puedeTomarHabas(jugadorMueve, agujero, ladoFrente)) {
-			tablero.tomarHabasOpuestas((Hoyo) agujero, jugadorMueve);
-			return true;
-		}
-		return false;
-	}
-
-	private boolean puedeTomarHabas(Jugador jugadorMueve, Agujero agujeroActual, LadoTablero ladoFrente) {
+	public boolean puedeTomarHabas(Jugador jugadorMueve, Agujero agujeroActual, LadoTablero ladoFrente) {
 		return agujeroActual.getHabas() == 1 // utlimo hoyo con una haba
 				&& ladoFrente.perteneceJugador(jugadorMueve) // hoyo de lado del jugador que mueve
 				&& agujeroActual.isHoyo() // tiene que ser hoyo
 				&& tablero.hoyoOpuesto((Hoyo) agujeroActual, jugadorMueve).isHoyo() // el opuesto tiene que ser hoyo
-				&& ((Hoyo) tablero.hoyoOpuesto((Hoyo) agujeroActual, jugadorMueve)).hayHaba(); // el opuesto tiene que
-																								// tener habas
+				&& ((Hoyo) tablero.hoyoOpuesto((Hoyo) agujeroActual, jugadorMueve)).hayHaba(); // el opuesto tiene que tener habas
 	}
 
 	public boolean puedeSeguirJugando(Jugador jugadorMueve, Agujero agujeroActual, LadoTablero ladoFrente) {
 		return ladoFrente.perteneceJugador(jugadorMueve) && agujeroActual.isCasa();
 	}
 
+	public boolean puedePonerHaba(Agujero agujero, Jugador jugadorMueve, LadoTablero ladoActual) {
+		return (agujero.isHoyo() 
+				|| (agujero.isCasa() && ladoActual.perteneceJugador(jugadorMueve)));
+	}
+	
 	public LadoTablero getLado(Jugador jugadorMueve) {
 		return tablero.getLado(jugadorMueve);
 	}
@@ -233,4 +236,5 @@ public class Partida implements Serializable {
 	public void setPartidaTerminada(boolean partidaTerminada) {
 		this.partidaTerminada = partidaTerminada;
 	}
+
 }

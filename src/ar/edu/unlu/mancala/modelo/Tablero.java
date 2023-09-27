@@ -20,7 +20,7 @@ public class Tablero implements TableroLectura, Serializable {
 		ladosDelTablero.add(ladoTablero);
 	}
 
-	public LadoTablero ladoOpuesto(Hoyo hoyo) {
+	private LadoTablero ladoOpuesto(Hoyo hoyo) {
 		LadoTablero ladoProviene = ladosDelTablero.stream().filter(lado -> lado.perteneceAgujero(hoyo)).findFirst()
 				.orElse(null);
 
@@ -34,7 +34,7 @@ public class Tablero implements TableroLectura, Serializable {
 		return indiceLadoOpuesto >= 0 ? ladosDelTablero.get(indiceLadoOpuesto) : ladosDelTablero.get(totalLados - 1);
 	}
 
-	public boolean ladoVacio() {
+	public boolean algunLadoVacio() {
 		return ladosDelTablero.stream().anyMatch(lado -> lado.ladoVacio());
 	}
 
@@ -55,7 +55,7 @@ public class Tablero implements TableroLectura, Serializable {
 	}
 
 	public Hoyo getHoyo(Jugador jugador, int indice) {
-		return getLado(jugador).obtenerHoyo(indice);
+		return (Hoyo)getLado(jugador).obtenerHoyo(indice);
 	}
 
 	public List<LadoTablero> getLadosDelTablero() {
@@ -64,16 +64,24 @@ public class Tablero implements TableroLectura, Serializable {
 
 	public void juntarHabasLadoNoVacio() {
 		ladosDelTablero.stream().filter(lado -> !lado.ladoVacio()).collect(Collectors.toList())
-				.forEach(lado -> lado.juntarEnCasa());
+				.forEach(lado -> lado.juntarHabasEnCasa());
 	}
 
-	public void tomarHabasOpuestas(Hoyo hoyo, Jugador jugadorMueve) {
+	public int tomarHabasOpuestas(Hoyo hoyo, Jugador jugadorMueve) {
 		Agujero hoyoOpuesto = hoyoOpuesto(hoyo, jugadorMueve);
-		getCasaDeJugador(jugadorMueve).ponerHaba(((Hoyo) hoyoOpuesto).tomarHabas());
+		return ((Hoyo) hoyoOpuesto).tomarHabas();
 	}
 
 	public Agujero hoyoOpuesto(Hoyo hoyo, Jugador jugadorMueve) {
-		return ladoOpuesto(hoyo).HoyoOpuesto(getLado(jugadorMueve), hoyo);
+		return ladoOpuesto(hoyo).hoyoOpuesto(getLado(jugadorMueve), hoyo);
+	}
+
+	public boolean isHoyo(Jugador jugador, int indice) {
+		return getLado(jugador).isHoyo(indice);
+	}
+
+	public boolean enRango(Jugador jugador, int indice) {
+		return getLado(jugador).enRango(indice);
 	}
 
 }

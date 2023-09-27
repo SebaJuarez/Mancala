@@ -31,8 +31,8 @@ public class MancalaController implements IControladorRemoto {
 
 	public void jugar() throws RemoteException {
 		// partidaController.iniciarPartida(TipoPartida.PARTIDA_STANDAR);
-		partidaController.iniciarPartida(TipoPartida.PARTIDA_4_S_AHORARIO);
-		// partidaController.iniciarPartida(TipoPartida.PARTIDA_MODO_CAPTURA);
+		// partidaController.iniciarPartida(TipoPartida.PARTIDA_4_S_AHORARIO);
+		partidaController.iniciarPartida(TipoPartida.PARTIDA_MODO_CAPTURA);
 	}
 
 	public void agregarJugador(String nombre, String contrasenia) throws RemoteException {
