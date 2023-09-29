@@ -8,6 +8,7 @@ El proyecto consiste en la implementación del juego de mesa Mancala como parte 
 
 - [Introducción](#introducción)
 - [Características](#características)
+- [Diseño de clases general]([#diseño_de_clases])
 - [Requisitos previos](#requisitos)
 - [Instalación](#instalación)
 - [Uso](#uso)
@@ -33,6 +34,9 @@ Además, la aplicación permitirá persistir los estados de los jugadores para i
 - Juego en red.
   
 [Presentación del proyecto](https://docs.google.com/presentation/d/1fWQsRSXQ8bhxAgxH6VhdDxDE8P_ciPaZ4OcUF1Bp2EE/edit?usp=sharing)
+
+## Diseño de clases
+![Image](https://res.cloudinary.com/dwybyiio5/image/upload/v1695967295/ryz4jn4wrtb0sg2nhoj5.png)
 
 ## Requisitos
 
