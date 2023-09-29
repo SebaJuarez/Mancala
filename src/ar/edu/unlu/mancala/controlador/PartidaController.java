@@ -103,10 +103,12 @@ public class PartidaController {
 	}
 
 	private void capturaRealiazada() throws RemoteException {
-		if (mancala.isJugadorUltimoEnMover(this.jugador)) {
-			vista.informar("Excelente, realizo una captura!!");
-		} else {
-			vista.informar(mancala.getUltimoEnMover() + " Capturo un agujero!");
+		if(mancala.isJugadorEnPartida(this.jugador)) {			
+			if (mancala.isJugadorUltimoEnMover(this.jugador)) {
+				vista.informar("Excelente, realizo una captura!!");
+			} else {
+				vista.informar(mancala.getUltimoEnMover() + " Capturo un agujero!");
+			}
 		}
 	}
 
@@ -178,7 +180,8 @@ public class PartidaController {
 		Jugador ultimoJugador = mancala.ultimoJugadorEnPartida();
 		if (!mancala.isPartidaLLena() && ultimoJugador.equals(this.jugador)) {
 			vista.mostrarSalaDeEspera();
-		} else if (!mancala.isPartidaLLena() && !ultimoJugador.equals(this.jugador)) {
+		} else if (this.jugador != null && !mancala.isPartidaLLena() && !ultimoJugador.equals(this.jugador)
+				&& !mancala.isJugadorEnPartida(this.jugador)) {
 			vista.informar((JugadorLectura) ultimoJugador, "se creo una partida, en sala de espera está: ");
 		}
 	}

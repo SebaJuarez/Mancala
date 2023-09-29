@@ -159,6 +159,7 @@ public class Partida implements Serializable {
 
 	public EstadoPartida desconectarJugador(Jugador jugadorDesconectado) {
 		jugadores.remove(jugadorDesconectado);
+		tablero.removerJugador(jugadorDesconectado);
 		return EstadoPartida.USUARIO_DESCONECTADO;
 	}
 
