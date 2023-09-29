@@ -46,7 +46,7 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 	}
 
 	public boolean perteneceJugador(Jugador jugador) {
-		return this.jugador.equals(jugador);
+		return this.jugador == null? false : this.jugador.equals(jugador);
 	}
 
 	public Hoyo obtenerHoyo(int indice) {
@@ -70,7 +70,7 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 	}
 
 	public boolean enRango(int indice) {
-		return (indice - 1) < 0 || (indice - 1) <= agujeros.size() - 1;
+		return (indice - 1) >= 0 && (indice - 1) <= agujeros.size() - 1;
 	}
 	
 	@Override
@@ -89,5 +89,9 @@ public class LadoTablero implements LadoTableroLectura, Serializable {
 
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
+	}
+
+	public void removerJugador(Jugador jugadorDesconectado) {
+		this.jugador = null;
 	}
 }

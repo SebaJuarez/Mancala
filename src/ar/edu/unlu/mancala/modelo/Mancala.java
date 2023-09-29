@@ -30,10 +30,10 @@ public class Mancala extends ObservableRemoto implements IMancala {
 		if (partida == null || partida.isPartidaTerminada()) {
 			partida = new Partida(tipoPartida);
 		}
-		conectarJugador(jugador);
+		conectarJugadorAPartida(jugador);
 	}
 
-	private void conectarJugador(Jugador jugador) throws RemoteException {
+	private void conectarJugadorAPartida(Jugador jugador) throws RemoteException {
 		EstadoPartida estadoActual = partida.agregarJugador(jugador);
 		switch (estadoActual) {
 		case USUARIO_CONECTADO:

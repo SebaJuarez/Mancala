@@ -84,4 +84,9 @@ public class Tablero implements TableroLectura, Serializable {
 		return getLado(jugador).enRango(indice);
 	}
 
+	public void removerJugador(Jugador jugadorDesconectado) {
+		ladosDelTablero.stream().filter(lado -> lado.perteneceJugador(jugadorDesconectado)).findFirst().orElse(null)
+												.removerJugador(jugadorDesconectado);
+	}
+
 }
