@@ -8,7 +8,7 @@ El proyecto consiste en la implementación del juego de mesa Mancala como parte 
 
 - [Introducción](#introducción)
 - [Características](#características)
-- [Diseño de clases general]([#diseño_de_clases])
+- [Diseño de clases](#diseño-de-clases)
 - [Requisitos previos](#requisitos)
 - [Instalación](#instalación)
 - [Uso](#uso)
